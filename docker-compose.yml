@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/opt/project/src
+    environment:
+      WAIT_HOSTS: postgres:5432
+
+  postgres:
+    image: postgres:14.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+volumes:
+  postgresql-data:

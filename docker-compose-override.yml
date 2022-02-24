@@ -1,0 +1,7 @@
+version: "3"
+services:
+  app:
+    env_file: .env
+    volumes:
+      - .:/opt/project/
+      - /opt/project/node_modules
