@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,8 +7,131 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Word {
-  id   Int    @id @default(autoincrement())
-  word String
-  userId Int
+model User {
+  uid            String              @id @unique
+  username       String              @unique
+  firstName      String
+  lastName       String?
+  memberships    Membership[]
+  assignedEvents EventAssignedUser[]
+}
+
+model Agrupation {
+  id          Int               @id @unique @default(autoincrement())
+  name        String
+  type        String?
+  description String?
+  memberships Membership[]
+  songs       Song[]
+  events      Event[]
+  groups      InstrumentGroup[]
+}
+
+model Membership {
+  id           Int         @id @unique @default(autoincrement())
+  agrupation   Agrupation  @relation(fields: [agrupationId], references: [id])
+  user         User        @relation(fields: [userUid], references: [uid])
+  creationDate DateTime    @default(now())
+  agrupationId Int
+  userUid      String
+  instrument   Instrument?
+  admin        Admin?
+}
+
+model Song {
+  id           Int         @id @unique @default(autoincrement())
+  name         String
+  description  String?
+  link         String?
+  type         String?
+  agrupation   Agrupation? @relation(fields: [agrupationId], references: [id])
+  agrupationId Int?
+  parts        Part[]
+}
+
+model Part {
+  id         Int        @id @unique @default(autoincrement())
+  name       String
+  fileId     String
+  song       Song       @relation(fields: [songId], references: [id])
+  instrument Instrument
+  songId     Int
+}
+
+model Event {
+  id             Int                  @id @unique @default(autoincrement())
+  name           String
+  startDate      DateTime?
+  endDate        DateTime?
+  description    String?
+  eventType      String?
+  agrupation     Agrupation           @relation(fields: [agrupationId], references: [id])
+  agrupationId   Int
+  status         EventStatus          @default(DRAFT)
+  assignedGroups EventAssignedGroup[]
+  assignedUsers  EventAssignedUser[]
+}
+
+model EventAssignedGroup {
+  id                Int             @id @unique @default(autoincrement())
+  event             Event           @relation(fields: [eventId], references: [id])
+  group             InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
+  eventId           Int
+  instrumentGroupId Int
+}
+
+model EventAssignedUser {
+  id      Int    @id @unique @default(autoincrement())
+  event   Event  @relation(fields: [eventId], references: [id])
+  user    User   @relation(fields: [userUid], references: [uid])
+  eventId Int
+  userUid String
+}
+
+model Admin {
+  id           Int        @id @unique @default(autoincrement())
+  adminType    String?
+  membership   Membership @relation(fields: [membershipId], references: [id])
+  membershipId Int        @unique
+}
+
+model InstrumentGroup {
+  id                 Int                  @id @unique @default(autoincrement())
+  name               String
+  agrupation         Agrupation           @relation(fields: [agrupationId], references: [id])
+  agrupationId       Int
+  instruments        InstrumentInGroup[]
+  EventAssignedGroup EventAssignedGroup[]
+}
+
+model InstrumentInGroup {
+  id                Int             @id @unique @default(autoincrement())
+  instrumentGroup   InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
+  instrumentGroupId Int
+  instrument        Instrument
+}
+
+enum EventStatus {
+  DRAFT
+  CANCELED
+  POSTPONED
+  PUBLISHED
+}
+
+enum Instrument {
+  FLUTE
+  CLARINET
+  SAX
+  HORN
+  BASS
+  PERCUSSION
+  TRUMPET
+  TROMBONE
+  BASSOON
+  OBOE
+  VIOLIN
+  VIOLA
+  CELLO
+  GUITAR
+  PIANO
 }
