@@ -36,6 +36,8 @@ model Membership {
   userUid      String
   instrument   Instrument?
   admin        Admin?
+
+  @@unique([userUid, agrupationId])
 }
 
 model Song {
@@ -78,6 +80,8 @@ model EventAssignedGroup {
   group             InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
   eventId           Int
   instrumentGroupId Int
+
+  @@unique([eventId, instrumentGroupId])
 }
 
 model EventAssignedUser {
@@ -86,6 +90,8 @@ model EventAssignedUser {
   user    User   @relation(fields: [userUid], references: [uid])
   eventId Int
   userUid String
+
+  @@unique([eventId, userUid])
 }
 
 model Admin {
@@ -109,6 +115,8 @@ model InstrumentInGroup {
   instrumentGroup   InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
   instrumentGroupId Int
   instrument        Instrument
+
+  @@unique([instrument, instrumentGroupId])
 }
 
 enum EventStatus {
