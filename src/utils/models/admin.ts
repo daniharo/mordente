@@ -3,24 +3,24 @@ import prisma from "../../prisma/PrismaClient.js";
 
 export const isAdmin = ({
   userUid,
-  agrupationId,
+  ensembleId,
 }: {
   userUid: Membership["userUid"];
-  agrupationId: Membership["agrupationId"];
+  ensembleId: Membership["ensembleId"];
 }) =>
   prisma.membership
     .findUnique({
-      where: { userUid_agrupationId: { userUid, agrupationId } },
+      where: { userUid_ensembleId: { userUid, ensembleId } },
     })
     .admin() !== null;
 
 export const makeAdmin = async ({
   userUid,
-  agrupationId,
+  ensembleId,
   adminType,
 }: {
   userUid: Membership["userUid"];
-  agrupationId: Membership["agrupationId"];
+  ensembleId: Membership["ensembleId"];
   adminType?: Admin["adminType"];
 }) =>
   prisma.admin.create({
@@ -28,7 +28,7 @@ export const makeAdmin = async ({
       adminType,
       membership: {
         connect: {
-          userUid_agrupationId: { userUid, agrupationId },
+          userUid_ensembleId: { userUid, ensembleId },
         },
       },
     },
@@ -36,13 +36,13 @@ export const makeAdmin = async ({
 
 export const removeAdmin = async ({
   userUid,
-  agrupationId,
+  ensembleId,
 }: {
   userUid: Membership["userUid"];
-  agrupationId: Membership["agrupationId"];
+  ensembleId: Membership["ensembleId"];
 }) => {
   const membership = await prisma.membership.findUnique({
-    where: { userUid_agrupationId: { userUid, agrupationId } },
+    where: { userUid_ensembleId: { userUid, ensembleId } },
   });
   if (membership) {
     return prisma.admin.delete({ where: { membershipId: membership.id } });
@@ -52,16 +52,16 @@ export const removeAdmin = async ({
 
 export const updateAdmin = async ({
   userUid,
-  agrupationId,
+  ensembleId,
   adminType,
 }: {
   userUid: Membership["userUid"];
-  agrupationId: Membership["agrupationId"];
+  ensembleId: Membership["ensembleId"];
   adminType?: Admin["adminType"];
 }) => {
   return prisma.membership
     .update({
-      where: { userUid_agrupationId: { userUid, agrupationId } },
+      where: { userUid_ensembleId: { userUid, ensembleId } },
       data: {
         admin: {
           update: {

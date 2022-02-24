@@ -16,7 +16,7 @@ model User {
   assignedEvents EventAssignedUser[]
 }
 
-model Agrupation {
+model Ensemble {
   id          Int               @id @unique @default(autoincrement())
   name        String
   type        String?
@@ -29,26 +29,26 @@ model Agrupation {
 
 model Membership {
   id           Int         @id @unique @default(autoincrement())
-  agrupation   Agrupation  @relation(fields: [agrupationId], references: [id])
+  ensemble     Ensemble    @relation(fields: [ensembleId], references: [id])
   user         User        @relation(fields: [userUid], references: [uid])
   creationDate DateTime    @default(now())
-  agrupationId Int
+  ensembleId   Int
   userUid      String
   instrument   Instrument?
   admin        Admin?
 
-  @@unique([userUid, agrupationId])
+  @@unique([userUid, ensembleId])
 }
 
 model Song {
-  id           Int         @id @unique @default(autoincrement())
-  name         String
-  description  String?
-  link         String?
-  type         String?
-  agrupation   Agrupation? @relation(fields: [agrupationId], references: [id])
-  agrupationId Int?
-  parts        Part[]
+  id          Int       @id @unique @default(autoincrement())
+  name        String
+  description String?
+  link        String?
+  type        String?
+  ensemble    Ensemble? @relation(fields: [ensembleId], references: [id])
+  ensembleId  Int?
+  parts       Part[]
 }
 
 model Part {
@@ -67,8 +67,8 @@ model Event {
   endDate        DateTime?
   description    String?
   eventType      String?
-  agrupation     Agrupation           @relation(fields: [agrupationId], references: [id])
-  agrupationId   Int
+  ensemble       Ensemble             @relation(fields: [ensembleId], references: [id])
+  ensembleId     Int
   status         EventStatus          @default(DRAFT)
   assignedGroups EventAssignedGroup[]
   assignedUsers  EventAssignedUser[]
@@ -104,8 +104,8 @@ model Admin {
 model InstrumentGroup {
   id                 Int                  @id @unique @default(autoincrement())
   name               String
-  agrupation         Agrupation           @relation(fields: [agrupationId], references: [id])
-  agrupationId       Int
+  ensemble           Ensemble             @relation(fields: [ensembleId], references: [id])
+  ensembleId         Int
   instruments        InstrumentInGroup[]
   EventAssignedGroup EventAssignedGroup[]
 }
