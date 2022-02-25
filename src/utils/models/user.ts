@@ -1,7 +1,7 @@
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient.js";
 
-export const createUser = (user: User) => {
+export const createUser = (user: Prisma.UserCreateInput) => {
   return prisma.user.create({
     data: user,
   });
