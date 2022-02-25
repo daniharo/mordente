@@ -5,7 +5,7 @@ export const createEnsemble = async ({
   userId,
   ...rest
 }: Ensemble & { userId: User["id"] }) => {
-  return await prisma.ensemble.create({
+  return prisma.ensemble.create({
     data: {
       ...rest,
       memberships: {
