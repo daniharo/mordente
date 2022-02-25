@@ -34,7 +34,7 @@ export const makeAdmin = async ({
     },
   });
 
-export const removeAdmin = async ({
+export const deleteAdmin = async ({
   userUid,
   ensembleId,
 }: {
