@@ -8,7 +8,8 @@ datasource db {
 }
 
 model User {
-  uid            String              @id @unique
+  id             Int                 @id @default(autoincrement())
+  uid            String              @unique
   username       String              @unique
   firstName      String
   lastName       String?
@@ -17,7 +18,7 @@ model User {
 }
 
 model Ensemble {
-  id          Int               @id @unique @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   name        String
   type        String?
   description String?
@@ -28,7 +29,7 @@ model Ensemble {
 }
 
 model Membership {
-  id           Int         @id @unique @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   ensemble     Ensemble    @relation(fields: [ensembleId], references: [id])
   user         User        @relation(fields: [userUid], references: [uid])
   creationDate DateTime    @default(now())
@@ -41,7 +42,7 @@ model Membership {
 }
 
 model Song {
-  id          Int       @id @unique @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   description String?
   link        String?
@@ -52,7 +53,7 @@ model Song {
 }
 
 model Part {
-  id         Int        @id @unique @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   name       String
   fileId     String
   song       Song       @relation(fields: [songId], references: [id])
@@ -61,7 +62,7 @@ model Part {
 }
 
 model Event {
-  id             Int                  @id @unique @default(autoincrement())
+  id             Int                  @id @default(autoincrement())
   name           String
   startDate      DateTime?
   endDate        DateTime?
@@ -75,7 +76,7 @@ model Event {
 }
 
 model EventAssignedGroup {
-  id                Int             @id @unique @default(autoincrement())
+  id                Int             @id @default(autoincrement())
   event             Event           @relation(fields: [eventId], references: [id])
   group             InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
   eventId           Int
@@ -85,7 +86,7 @@ model EventAssignedGroup {
 }
 
 model EventAssignedUser {
-  id      Int    @id @unique @default(autoincrement())
+  id      Int    @id @default(autoincrement())
   event   Event  @relation(fields: [eventId], references: [id])
   user    User   @relation(fields: [userUid], references: [uid])
   eventId Int
@@ -95,14 +96,14 @@ model EventAssignedUser {
 }
 
 model Admin {
-  id           Int        @id @unique @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   adminType    String?
   membership   Membership @relation(fields: [membershipId], references: [id])
   membershipId Int        @unique
 }
 
 model InstrumentGroup {
-  id                 Int                  @id @unique @default(autoincrement())
+  id                 Int                  @id @default(autoincrement())
   name               String
   ensemble           Ensemble             @relation(fields: [ensembleId], references: [id])
   ensembleId         Int
@@ -111,7 +112,7 @@ model InstrumentGroup {
 }
 
 model InstrumentInGroup {
-  id                Int             @id @unique @default(autoincrement())
+  id                Int             @id @default(autoincrement())
   instrumentGroup   InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
   instrumentGroupId Int
   instrument        Instrument
