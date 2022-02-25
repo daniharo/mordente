@@ -2,24 +2,24 @@ import { Admin, Membership } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient.js";
 
 export const isAdmin = ({
-  userUid,
+  userId,
   ensembleId,
 }: {
-  userUid: Membership["userUid"];
+  userId: Membership["userId"];
   ensembleId: Membership["ensembleId"];
 }) =>
   prisma.membership
     .findUnique({
-      where: { userUid_ensembleId: { userUid, ensembleId } },
+      where: { userId_ensembleId: { userId, ensembleId } },
     })
     .admin() !== null;
 
 export const makeAdmin = async ({
-  userUid,
+  userId,
   ensembleId,
   adminType,
 }: {
-  userUid: Membership["userUid"];
+  userId: Membership["userId"];
   ensembleId: Membership["ensembleId"];
   adminType?: Admin["adminType"];
 }) =>
@@ -28,21 +28,21 @@ export const makeAdmin = async ({
       adminType,
       membership: {
         connect: {
-          userUid_ensembleId: { userUid, ensembleId },
+          userId_ensembleId: { userId, ensembleId },
         },
       },
     },
   });
 
 export const deleteAdmin = async ({
-  userUid,
+  userId,
   ensembleId,
 }: {
-  userUid: Membership["userUid"];
+  userId: Membership["userId"];
   ensembleId: Membership["ensembleId"];
 }) => {
   const membership = await prisma.membership.findUnique({
-    where: { userUid_ensembleId: { userUid, ensembleId } },
+    where: { userId_ensembleId: { userId, ensembleId } },
   });
   if (membership) {
     return prisma.admin.delete({ where: { membershipId: membership.id } });
@@ -51,17 +51,17 @@ export const deleteAdmin = async ({
 };
 
 export const updateAdmin = async ({
-  userUid,
+  userId,
   ensembleId,
   adminType,
 }: {
-  userUid: Membership["userUid"];
+  userId: Membership["userId"];
   ensembleId: Membership["ensembleId"];
   adminType?: Admin["adminType"];
 }) => {
   return prisma.membership
     .update({
-      where: { userUid_ensembleId: { userUid, ensembleId } },
+      where: { userId_ensembleId: { userId, ensembleId } },
       data: {
         admin: {
           update: {

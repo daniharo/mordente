@@ -31,14 +31,14 @@ model Ensemble {
 model Membership {
   id           Int         @id @default(autoincrement())
   ensemble     Ensemble    @relation(fields: [ensembleId], references: [id])
-  user         User        @relation(fields: [userUid], references: [uid])
+  user         User        @relation(fields: [userId], references: [id])
   creationDate DateTime    @default(now())
   ensembleId   Int
-  userUid      String
+  userId       Int
   instrument   Instrument?
   admin        Admin?
 
-  @@unique([userUid, ensembleId])
+  @@unique([userId, ensembleId])
 }
 
 model Song {
@@ -86,13 +86,13 @@ model EventAssignedGroup {
 }
 
 model EventAssignedUser {
-  id      Int    @id @default(autoincrement())
-  event   Event  @relation(fields: [eventId], references: [id])
-  user    User   @relation(fields: [userUid], references: [uid])
+  id      Int   @id @default(autoincrement())
+  event   Event @relation(fields: [eventId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
   eventId Int
-  userUid String
+  userId  Int
 
-  @@unique([eventId, userUid])
+  @@unique([eventId, userId])
 }
 
 model Admin {

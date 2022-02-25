@@ -21,3 +21,15 @@ export const updateUser = ({ uid, ...data }: User) => {
 export const deleteUser = ({ userUid }: { userUid: User["uid"] }) => {
   return prisma.user.delete({ where: { uid: userUid } });
 };
+
+export const getUserIdFromUID = async ({
+  userUid,
+}: {
+  userUid: User["uid"];
+}) => {
+  const user = await prisma.user.findUnique({
+    where: { uid: userUid },
+    select: { id: true },
+  });
+  return user?.id;
+};

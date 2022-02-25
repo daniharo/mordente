@@ -2,9 +2,9 @@ import { User, Ensemble } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient.js";
 
 export const createEnsemble = async ({
-  userUid,
+  userId,
   ...rest
-}: Ensemble & { userUid: User["uid"] }) => {
+}: Ensemble & { userId: User["id"] }) => {
   return await prisma.ensemble.create({
     data: {
       ...rest,
@@ -13,7 +13,7 @@ export const createEnsemble = async ({
           admin: {
             create: {},
           },
-          userUid,
+          userId,
         },
       },
     },
@@ -21,12 +21,12 @@ export const createEnsemble = async ({
 };
 
 export const getEnsemblesForUser = async ({
-  userUid,
+  userId,
 }: {
-  userUid: User["uid"];
+  userId: User["id"];
 }) => {
   const memberships = await prisma.membership.findMany({
-    where: { userUid },
+    where: { userId },
     select: { ensemble: true },
   });
   return memberships.map((membership) => membership.ensemble);
