@@ -15,20 +15,20 @@
     "@grammyjs/menu": "^1.0.4",
     "@moebius/fluent": "^1.0.0",
     "@prisma/client": "^3.10.0",
-    "dotenv": "^10.0.0",
-    "grammy": "^1.5.3",
+    "dotenv": "^16.0.0",
+    "grammy": "^1.7.0",
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@types/node": "^16.11.12",
+    "@types/node": "^16.11.26",
     "@types/pug": "^2.0.6",
     "husky": "^7.0.4",
-    "lint-staged": "^12.1.2",
+    "lint-staged": "^12.3.4",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "prisma": "^3.10.0",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.3"
+    "ts-node": "^10.6.0",
+    "typescript": "^4.6.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
