@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id             Int                 @id @default(autoincrement())
-  uid            String              @unique
-  username       String              @unique
+  uid            Int                 @unique
+  username       String?             @unique
   firstName      String
   lastName       String?
   memberships    Membership[]
