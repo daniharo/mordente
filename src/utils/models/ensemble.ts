@@ -46,3 +46,15 @@ export const deleteEnsemble = async ({
 }) => {
   return prisma.ensemble.delete({ where: { id: ensembleId } });
 };
+
+export const getEnsembleName = async ({
+  ensembleId,
+}: {
+  ensembleId: Ensemble["id"];
+}) => {
+  const ensemble = await prisma.ensemble.findUnique({
+    where: { id: ensembleId },
+    select: { name: true },
+  });
+  return ensemble?.name;
+};

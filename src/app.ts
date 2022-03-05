@@ -4,6 +4,11 @@ import { useFluent } from "@grammyjs/fluent";
 import fluent from "./locales/fluent";
 import { MyContext } from "./context";
 import { useTemplates } from "./middleware/templates";
+import { startMenu } from "./menus/startMenu";
+import { createUser, getUser } from "./utils/models/user";
+import { joinEnsemble } from "./utils/models/membership.js";
+import { getEnsembleName } from "./utils/models/ensemble.js";
+import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 
 dotenv.config();
 
@@ -23,5 +28,40 @@ bot.api.setMyCommands([
   { command: "add", description: "Add a word" },
   { command: "delete", description: "Delete a word" },
 ]);
+
+bot.command("start", async (ctx) => {
+  const fromId = ctx.from!.id;
+  let user = await getUser({ userUid: fromId });
+  if (!user) {
+    user = await createUser({
+      uid: fromId,
+      username: ctx.from?.username,
+      firstName: ctx.from!.first_name,
+      lastName: ctx.from?.last_name,
+    });
+  }
+  const ensembleId = Number(ctx.match);
+  if (Number.isInteger(ensembleId) && ensembleId > 0) {
+    await joinEnsemble({ userId: user.id, ensembleId });
+    const ensembleName = await getEnsembleName({ ensembleId });
+    ctx.reply(ctx.t("join_success", { ensembleName: ensembleName! }));
+    return;
+  }
+  ctx.reply(ctx.t("start_command_answer"), { reply_markup: startMenu });
+});
+
+bot.command("join", async (ctx) => {
+  ctx.reply(ctx.t("join_command_answer"));
+});
+
+bot.command("create", (ctx) => {});
+
+bot.on("message:entities:bot_command", (ctx) => {
+  const commandText = getCommandFromMessage(ctx.msg)!;
+  const command = analizeCommand(commandText);
+
+  console.log(`Command received: ${commandText}`);
+  console.log("Command object:", command);
+});
 
 bot.start();
