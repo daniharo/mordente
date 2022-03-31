@@ -18,14 +18,16 @@ model User {
 }
 
 model Ensemble {
-  id          Int               @id @default(autoincrement())
-  name        String
-  type        String?
-  description String?
-  memberships Membership[]
-  songs       Song[]
-  events      Event[]
-  groups      InstrumentGroup[]
+  id              Int               @id @default(autoincrement())
+  name            String
+  type            String?
+  description     String?
+  memberships     Membership[]
+  songs           Song[]
+  events          Event[]
+  groups          InstrumentGroup[]
+  joinCode        String            @unique @default(uuid())
+  joinCodeEnabled Boolean
 }
 
 model Membership {
@@ -62,35 +64,26 @@ model Part {
 }
 
 model Event {
-  id             Int                  @id @default(autoincrement())
-  name           String
-  startDate      DateTime?
-  endDate        DateTime?
-  description    String?
-  eventType      String?
-  ensemble       Ensemble             @relation(fields: [ensembleId], references: [id])
-  ensembleId     Int
-  status         EventStatus          @default(DRAFT)
-  assignedGroups EventAssignedGroup[]
-  assignedUsers  EventAssignedUser[]
-}
-
-model EventAssignedGroup {
-  id                Int             @id @default(autoincrement())
-  event             Event           @relation(fields: [eventId], references: [id])
-  group             InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
-  eventId           Int
-  instrumentGroupId Int
-
-  @@unique([eventId, instrumentGroupId])
+  id            Int                 @id @default(autoincrement())
+  name          String
+  startDate     DateTime?
+  endDate       DateTime?
+  description   String?
+  eventType     String?
+  ensemble      Ensemble            @relation(fields: [ensembleId], references: [id])
+  ensembleId    Int
+  status        EventStatus         @default(DRAFT)
+  assignedUsers EventAssignedUser[]
 }
 
 model EventAssignedUser {
-  id      Int   @id @default(autoincrement())
-  event   Event @relation(fields: [eventId], references: [id])
-  user    User  @relation(fields: [userId], references: [id])
-  eventId Int
-  userId  Int
+  id                      Int               @id @default(autoincrement())
+  event                   Event             @relation(fields: [eventId], references: [id])
+  user                    User              @relation(fields: [userId], references: [id])
+  eventId                 Int
+  userId                  Int
+  attendance              AttendanceAnswer?
+  attendanceJustification String?
 
   @@unique([eventId, userId])
 }
@@ -103,12 +96,11 @@ model Admin {
 }
 
 model InstrumentGroup {
-  id                 Int                  @id @default(autoincrement())
-  name               String
-  ensemble           Ensemble             @relation(fields: [ensembleId], references: [id])
-  ensembleId         Int
-  instruments        InstrumentInGroup[]
-  EventAssignedGroup EventAssignedGroup[]
+  id          Int                 @id @default(autoincrement())
+  name        String
+  ensemble    Ensemble            @relation(fields: [ensembleId], references: [id])
+  ensembleId  Int
+  instruments InstrumentInGroup[]
 }
 
 model InstrumentInGroup {
@@ -143,4 +135,10 @@ enum Instrument {
   CELLO
   GUITAR
   PIANO
+}
+
+enum AttendanceAnswer {
+  YES
+  NO
+  UNKNOWN
 }
