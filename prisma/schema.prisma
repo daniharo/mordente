@@ -27,13 +27,13 @@ model Ensemble {
   events          Event[]
   groups          InstrumentGroup[]
   joinCode        String            @unique @default(uuid())
-  joinCodeEnabled Boolean
+  joinCodeEnabled Boolean           @default(true)
 }
 
 model Membership {
   id           Int         @id @default(autoincrement())
-  ensemble     Ensemble    @relation(fields: [ensembleId], references: [id])
-  user         User        @relation(fields: [userId], references: [id])
+  ensemble     Ensemble    @relation(fields: [ensembleId], references: [id], onDelete: Cascade)
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   creationDate DateTime    @default(now())
   ensembleId   Int
   userId       Int
@@ -44,13 +44,13 @@ model Membership {
 }
 
 model Song {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
   link        String?
   type        String?
-  ensemble    Ensemble? @relation(fields: [ensembleId], references: [id])
-  ensembleId  Int?
+  ensemble    Ensemble @relation(fields: [ensembleId], references: [id], onDelete: Cascade)
+  ensembleId  Int
   parts       Part[]
 }
 
@@ -58,7 +58,7 @@ model Part {
   id         Int        @id @default(autoincrement())
   name       String
   fileId     String
-  song       Song       @relation(fields: [songId], references: [id])
+  song       Song       @relation(fields: [songId], references: [id], onDelete: Cascade)
   instrument Instrument
   songId     Int
 }
@@ -70,7 +70,7 @@ model Event {
   endDate       DateTime?
   description   String?
   eventType     String?
-  ensemble      Ensemble            @relation(fields: [ensembleId], references: [id])
+  ensemble      Ensemble            @relation(fields: [ensembleId], references: [id], onDelete: Cascade)
   ensembleId    Int
   status        EventStatus         @default(DRAFT)
   assignedUsers EventAssignedUser[]
@@ -78,8 +78,8 @@ model Event {
 
 model EventAssignedUser {
   id                      Int               @id @default(autoincrement())
-  event                   Event             @relation(fields: [eventId], references: [id])
-  user                    User              @relation(fields: [userId], references: [id])
+  event                   Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventId                 Int
   userId                  Int
   attendance              AttendanceAnswer?
@@ -91,21 +91,21 @@ model EventAssignedUser {
 model Admin {
   id           Int        @id @default(autoincrement())
   adminType    String?
-  membership   Membership @relation(fields: [membershipId], references: [id])
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
   membershipId Int        @unique
 }
 
 model InstrumentGroup {
   id          Int                 @id @default(autoincrement())
   name        String
-  ensemble    Ensemble            @relation(fields: [ensembleId], references: [id])
+  ensemble    Ensemble            @relation(fields: [ensembleId], references: [id], onDelete: Cascade)
   ensembleId  Int
   instruments InstrumentInGroup[]
 }
 
 model InstrumentInGroup {
   id                Int             @id @default(autoincrement())
-  instrumentGroup   InstrumentGroup @relation(fields: [instrumentGroupId], references: [id])
+  instrumentGroup   InstrumentGroup @relation(fields: [instrumentGroupId], references: [id], onDelete: Cascade)
   instrumentGroupId Int
   instrument        Instrument
 
