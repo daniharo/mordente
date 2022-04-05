@@ -5,9 +5,9 @@ import fluent from "./locales/fluent";
 import { MyContext } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
-import { createUser, getUser } from "./utils/models/user";
-import { joinEnsemble } from "./utils/models/membership.js";
-import { getEnsembleName } from "./utils/models/ensemble.js";
+import { createUser, getUser, getUserIdFromUID } from "./utils/models/user";
+import { joinEnsemble } from "./utils/models/membership";
+import { createEnsemble, getEnsembleName } from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 
 dotenv.config();
