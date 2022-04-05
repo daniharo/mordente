@@ -46,14 +46,14 @@ bot.command("start", async (ctx) => {
   if (Number.isInteger(ensembleId) && ensembleId > 0) {
     await joinEnsemble({ userId: user.id, ensembleId });
     const ensembleName = await getEnsembleName({ ensembleId });
-    ctx.reply(ctx.t("join_success", { ensembleName: ensembleName! }));
+    await ctx.reply(ctx.t("join_success", { ensembleName: ensembleName! }));
     return;
   }
-  ctx.reply(ctx.t("start_command_answer"), { reply_markup: startMenu });
+  await ctx.reply(ctx.t("start_command_answer"), { reply_markup: startMenu });
 });
 
 bot.command("join", async (ctx) => {
-  ctx.reply(ctx.t("join_command_answer"));
+  await ctx.reply(ctx.t("join_command_answer"));
 });
 
 bot.command("create", async (ctx, next) => {
