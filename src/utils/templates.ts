@@ -1,5 +1,6 @@
 import pug from "pug";
 import { TranslateFunction } from "@grammyjs/fluent";
+import { Ensemble } from "@prisma/client";
 
 type DefaultTemplateParameter = Parameters<
   ReturnType<typeof pug.compileFile>
@@ -15,9 +16,9 @@ function compileFile<Props extends DefaultTemplateParameter>(
   ) => string;
 }
 
-interface WordListProps {
-  words: Array<string>;
+interface EnsembleDetailProps {
+  ensemble: Ensemble;
 }
-export const wordListTemplate = compileFile<WordListProps>(
-  "../templates/word-list.pug"
+export const ensembleDetailTemplate = compileFile<EnsembleDetailProps>(
+  __dirname + "/../templates/ensemble-detail.pug"
 );
