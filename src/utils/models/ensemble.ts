@@ -4,7 +4,7 @@ import prisma from "../../prisma/PrismaClient";
 export const createEnsemble = async ({
   userId,
   ...rest
-}: Ensemble & { userId: User["id"] }) => {
+}: Prisma.EnsembleCreateInput & { userId: User["id"] }) => {
   return prisma.ensemble.create({
     data: {
       ...rest,
@@ -32,7 +32,10 @@ export const getEnsemblesForUser = async ({
   return memberships.map((membership) => membership.ensemble);
 };
 
-export const updateEnsemble = async ({ id, ...data }: Ensemble) => {
+export const updateEnsemble = async ({
+  id,
+  ...data
+}: { id: Ensemble["id"] } & Prisma.EnsembleUpdateInput) => {
   return prisma.ensemble.update({
     where: { id },
     data,
