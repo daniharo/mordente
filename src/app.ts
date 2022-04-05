@@ -60,6 +60,11 @@ bot.command("create", async (ctx, next) => {
   await createEnsembleHandler(ctx, next);
 });
 
+bot.command("cancel", async (ctx) => {
+  ctx.session.step = "idle";
+  await ctx.reply(ctx.t("operation_cancelled"));
+});
+
 bot.on("message:entities:bot_command", (ctx) => {
   const commandText = getCommandFromMessage(ctx.msg)!;
   const command = analizeCommand(commandText);

@@ -11,3 +11,5 @@ join_command_answer = Para unirte a un grupo, te tienen que proporcionar un enla
 create_command_answer = Vamos a crear un nuevo grupo. Por favor, indícanos el nombre del grupo
 
 ensemble = Ensemble
+
+operation_cancelled = Operación cancelada 👍
