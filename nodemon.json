@@ -6,5 +6,5 @@
     "ts": "node --require ts-node/register"
   },
   "watch": ["src/"],
-  "ext": "js,json,ts,pug"
+  "ext": "js,json,ts,pug,ftl"
 }
