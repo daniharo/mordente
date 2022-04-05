@@ -2,7 +2,9 @@ import { Context, SessionFlavor } from "grammy";
 import { FluentContextFlavor } from "@grammyjs/fluent";
 import * as templates from "../utils/templates";
 
-interface SessionData {}
+export interface SessionData {
+  step: "idle" | "create_ensemble_name";
+}
 
 type Templates = {
   [p in keyof typeof templates]: (
