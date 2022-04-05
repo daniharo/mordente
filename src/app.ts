@@ -2,25 +2,27 @@ import { Bot, session } from "grammy";
 import dotenv from "dotenv";
 import { useFluent } from "@grammyjs/fluent";
 import fluent from "./locales/fluent";
-import { MyContext } from "./context";
+import { MyContext, SessionData } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
 import { createUser, getUser, getUserIdFromUID } from "./utils/models/user";
 import { joinEnsemble } from "./utils/models/membership";
 import { createEnsemble, getEnsembleName } from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
+import { Router } from "@grammyjs/router";
+import { createEnsembleHandler } from "./utils/handlers";
 
 dotenv.config();
 
-interface SessionData {}
 function createInitialSessionData(): SessionData {
-  return {};
+  return { step: "idle" };
 }
 
 const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
 bot.use(session({ initial: createInitialSessionData }));
 bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
+bot.use(startMenu);
 
 bot.api.setMyCommands([
   { command: "start", description: "Start the bot" },
@@ -54,7 +56,9 @@ bot.command("join", async (ctx) => {
   ctx.reply(ctx.t("join_command_answer"));
 });
 
-bot.command("create", (ctx) => {});
+bot.command("create", async (ctx, next) => {
+  await createEnsembleHandler(ctx, next);
+});
 
 bot.on("message:entities:bot_command", (ctx) => {
   const commandText = getCommandFromMessage(ctx.msg)!;
@@ -64,4 +68,23 @@ bot.on("message:entities:bot_command", (ctx) => {
   console.log("Command object:", command);
 });
 
+const router = new Router<MyContext>((ctx) => ctx.session.step);
+
+router.route("create_ensemble_name", async (ctx) => {
+  const ensembleName = ctx.msg?.text;
+  if (!ensembleName) return;
+  const userId = await getUserIdFromUID({ userUid: ctx.from!.id });
+  if (!userId) return;
+  const ensemble = await createEnsemble({
+    userId,
+    name: ensembleName,
+    joinCodeEnabled: true,
+  });
+  await ctx.reply(ctx.templates.ensembleDetailTemplate({ ensemble }), {
+    parse_mode: "HTML",
+  });
+  ctx.session.step = "idle";
+});
+
+bot.use(router);
 bot.start();
