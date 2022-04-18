@@ -6,10 +6,13 @@ export default function CreateEnsemble() {
   const [name, setName] = useState("");
   useEffect(() => {
     WebApp.MainButton.setParams({ text: "Crear agrupación", is_visible: true });
+  }, []);
+
+  useEffect(() => {
     WebApp.MainButton.onClick(() => {
       WebApp.sendData(JSON.stringify({ name }));
     });
-  }, []);
+  }, [name]);
 
   const handleNameChange = (event) => setName(event.target.value);
 
