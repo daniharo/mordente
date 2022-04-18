@@ -9,9 +9,9 @@ export default function CreateEnsemble() {
   }, []);
 
   useEffect(() => {
-    WebApp.MainButton.onClick(() => {
-      WebApp.sendData(JSON.stringify({ name }));
-    });
+    const handler = () => WebApp.sendData(JSON.stringify({ name }));
+    WebApp.MainButton.onClick(handler);
+    return () => void WebApp.MainButton.offClick(handler);
   }, [name]);
 
   const handleNameChange = (event) => setName(event.target.value);
