@@ -18,6 +18,7 @@ import {
   createEnsembleHandler,
   printEnsembleHandler,
 } from "./handlers/ensemble";
+import { ensembleMenu } from "./menus/ensembleMenu";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ bot.use(session({ initial: createInitialSessionData }));
 bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
 bot.use(startMenu);
+bot.use(ensembleMenu);
 
 bot.api.setMyCommands([
   { command: "start", description: "Start the bot" },

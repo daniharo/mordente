@@ -1,9 +1,11 @@
 import { Context, SessionFlavor } from "grammy";
 import { FluentContextFlavor } from "@grammyjs/fluent";
 import * as templates from "../utils/templates";
+import { Ensemble } from "@prisma/client";
 
 export interface SessionData {
   step: "idle" | "create_ensemble_name";
+  ensembleId?: Ensemble["id"];
 }
 
 type Templates = {
