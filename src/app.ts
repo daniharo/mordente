@@ -7,10 +7,17 @@ import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
 import { createUser, getUser, getUserIdFromUID } from "./utils/models/user";
 import { joinEnsemble } from "./utils/models/membership";
-import { createEnsemble, getEnsembleName } from "./utils/models/ensemble";
+import {
+  createEnsemble,
+  getEnsemble,
+  getEnsembleName,
+} from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 import { Router } from "@grammyjs/router";
-import { createEnsembleHandler } from "./handlers/ensemble";
+import {
+  createEnsembleHandler,
+  printEnsembleHandler,
+} from "./handlers/ensemble";
 
 dotenv.config();
 
@@ -65,17 +72,29 @@ bot.command("cancel", async (ctx) => {
   await ctx.reply(ctx.t("operation_cancelled"));
 });
 
-bot.on("message:entities:bot_command", (ctx) => {
+bot.on("message:entities:bot_command", async (ctx, next) => {
   const commandText = getCommandFromMessage(ctx.msg)!;
   const command = analizeCommand(commandText);
 
-  console.log(`Command received: ${commandText}`);
-  console.log("Command object:", command);
+  if (!command?.id) {
+    return;
+  }
+
+  switch (command?.type) {
+    case "ensemble":
+      const ensemble = await getEnsemble({ ensembleId: command?.id });
+      if (!ensemble) {
+        ctx.reply("Agrupación no encontrada");
+        break;
+      }
+      printEnsembleHandler(ensemble)(ctx, next);
+      break;
+  }
 });
 
 const router = new Router<MyContext>((ctx) => ctx.session.step);
 
-router.route("create_ensemble_name", async (ctx) => {
+router.route("create_ensemble_name", async (ctx, next) => {
   const ensembleName = ctx.msg?.text;
   if (!ensembleName) return;
   const userId = await getUserIdFromUID({ userUid: ctx.from!.id });
@@ -85,9 +104,7 @@ router.route("create_ensemble_name", async (ctx) => {
     name: ensembleName,
     joinCodeEnabled: true,
   });
-  await ctx.reply(ctx.templates.ensembleDetailTemplate({ ensemble }), {
-    parse_mode: "HTML",
-  });
+  await printEnsembleHandler(ensemble)(ctx, next);
   ctx.session.step = "idle";
 });
 
