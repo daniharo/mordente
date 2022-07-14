@@ -47,20 +47,20 @@
   resolved "https://registry.yarnpkg.com/@grammyjs/fluent/-/fluent-1.0.3.tgz#e9882503e75db6135aa3cf585f51c45913288ef3"
   integrity sha512-vM/58mhX/wlZWeCL5I/0449EnJM3KB1o+HkD2dZ6eBrbWxQyVxbLffx0ur3BxOtb7BFsUHb7PctxhI0/JN/K2w==
 
-"@grammyjs/menu@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@grammyjs/menu/-/menu-1.0.4.tgz#7667642e462d374e55ea8b623cb3c39f0ace6aec"
-  integrity sha512-olBm2KtX54xiYn9IPgAITCxubgR7+4SC0FvvXfrLzXToBNX/06dAIoC7Gzp60UBXPTKsCfLzTwDLisa1aq4pQg==
+"@grammyjs/menu@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@grammyjs/menu/-/menu-1.1.0.tgz#3605f1181c1735e0941bbe93692d00112f2dc005"
+  integrity sha512-2Qdw7qyMzhabI2GTvP/Pfe05A/lgbFVcnxVkZZU0WCBMuc1x9yf0KmBwC/QEz26sPAfoWA//fUZpujmAiQBhxQ==
 
 "@grammyjs/router@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@grammyjs/router/-/router-1.1.1.tgz#7c68c5a6d495a9046be164bea486cff2e81142ff"
   integrity sha512-g7JVhFiIG3xPsYxW8SGE1N4hUH2FIvAqmQOlOQpPVBYC7fyxdk6bxAEs5DJazt953uwNaLtr2mag3GwKX3jBtw==
 
-"@grammyjs/types@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@grammyjs/types/-/types-2.6.0.tgz#8cfdfb56a87fba3c418dc21ceaa7a03d7f918d73"
-  integrity sha512-eWckBf25l6xwSS2YO6Ioyf2BDEO7tyNZhgRLl5PzsdvqlHQR+XYTdKwhevsqLG4Y+zmF6hEXnuNTYu+HF8W8Sg==
+"@grammyjs/types@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@grammyjs/types/-/types-2.7.0.tgz#7887ea949a65b9c544d36044bbd1d8649cfc9c98"
+  integrity sha512-XgncCsNRwly8J+2d50dV2E4jAawtNxCfKaFjV+ynXC/vmyVFO6hsZYtXFP1CGDUD/QmSG2agP9dYWxsgRjZuHA==
 
 "@moebius/fluent@^1.1.0":
   version "1.1.0"
@@ -455,6 +455,13 @@ debug@^4.3.3:
   dependencies:
     ms "2.1.2"
 
+debug@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
+  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+  dependencies:
+    ms "2.1.2"
+
 decompress-response@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
@@ -622,15 +629,15 @@ graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
 
-grammy@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/grammy/-/grammy-1.7.1.tgz#6c408bc2c9758f5ea2966b089b3ea8b14462ce88"
-  integrity sha512-7a4mFIGpFZgjk1G+CbFudOX8y8J5HzHkP19eYuEcv1Dif5IITYVDoQxa5GTORL6dsmmQ/sdZQ3QXuT1DMq6gbg==
+grammy@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/grammy/-/grammy-1.8.0.tgz#ac10fa0beb6f157bd81933d55c068eb5f9b5b99c"
+  integrity sha512-CG+Eq60crEjX8aqm/FeBadgfDwFaDoc3UaUwiPrxEX94D/1rRCeaj2JtaLBcDLXe9UQLENfWEEErMbkfiMR/Rg==
   dependencies:
-    "@grammyjs/types" "^2.6.0"
+    "@grammyjs/types" "^2.7.0"
     abort-controller "^3.0.0"
-    debug "^4.3.3"
-    node-fetch "^2.6.5"
+    debug "^4.3.4"
+    node-fetch "^2.6.7"
 
 has-flag@^3.0.0:
   version "3.0.0"
@@ -977,10 +984,10 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-node-fetch@^2.6.5:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.6.tgz#1751a7c01834e8e1697758732e9efb6eeadfaf89"
-  integrity sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==
+node-fetch@^2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 

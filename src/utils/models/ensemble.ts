@@ -61,3 +61,27 @@ export const getEnsembleName = async ({
   });
   return ensemble?.name;
 };
+
+export const getEnsemble = async ({
+  ensembleId,
+}: {
+  ensembleId: Ensemble["id"];
+}) => {
+  return prisma.ensemble.findUnique({
+    where: { id: ensembleId },
+  });
+};
+
+export const userHasAccessToEnsemble = async ({
+  userId,
+  ensembleId,
+}: {
+  userId: User["id"];
+  ensembleId: Ensemble["id"];
+}) => {
+  const membership = await prisma.membership.findUnique({
+    where: { userId_ensembleId: { userId, ensembleId } },
+    select: { id: true },
+  });
+  return membership !== null;
+};

@@ -10,7 +10,7 @@ import { joinEnsemble } from "./utils/models/membership";
 import { createEnsemble, getEnsembleName } from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 import { Router } from "@grammyjs/router";
-import { createEnsembleHandler } from "./utils/handlers";
+import { createEnsembleHandler } from "./handlers/ensemble";
 
 dotenv.config();
 

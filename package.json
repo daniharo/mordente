@@ -12,16 +12,16 @@
   },
   "dependencies": {
     "@grammyjs/fluent": "^1.0.3",
-    "@grammyjs/menu": "^1.0.4",
+    "@grammyjs/menu": "^1.1.0",
     "@grammyjs/router": "^1.1.1",
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^3.11.1",
     "dotenv": "^16.0.0",
-    "grammy": "^1.7.1",
+    "grammy": "^1.8.0",
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@grammyjs/types": "^2.6.0",
+    "@grammyjs/types": "^2.7.0",
     "@types/node": "^16.11.26",
     "@types/pug": "^2.0.6",
     "husky": "^7.0.4",
