@@ -1,5 +1,5 @@
 import { Admin, Ensemble, Membership, User } from "@prisma/client";
-import prisma from "../../prisma/PrismaClient.js";
+import prisma from "../../prisma/PrismaClient";
 import { getUserIdFromUID } from "./user";
 
 export const telegramUserIsAdmin = async ({
