@@ -47,9 +47,7 @@ bot.command("start", async (ctx) => {
 });
 
 bot.command("join", async (ctx) => {
-  await ctx.reply(
-    "Para unirte a una agrupación, tienes que acceder al enlace que te hayan proporcionado."
-  );
+  await ctx.reply(ctx.t("join_how"));
 });
 
 bot.command("create", async (ctx) => {
