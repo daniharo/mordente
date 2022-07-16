@@ -2,13 +2,17 @@ import { Ensemble, User } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient";
 import { getUserIdFromUID } from "./user";
 
-export const joinEnsemble = ({
+export const joinEnsemble = async ({
   userId,
   joinCode,
 }: {
   userId: User["id"];
   joinCode: Ensemble["joinCode"];
 }) => {
+  const ensemble = await prisma.ensemble.findUnique({ where: { joinCode } });
+  if (!ensemble || !ensemble.joinCodeEnabled) {
+    return null;
+  }
   return prisma.ensemble.update({
     where: { joinCode },
     data: { memberships: { create: { userId } } },
