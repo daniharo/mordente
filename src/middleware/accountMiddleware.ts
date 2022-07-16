@@ -20,10 +20,18 @@ export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
         lastName: ctx.from?.last_name,
       });
     }
-    if (ctx.from.username && user.username !== ctx.from.username) {
+    if (
+      (ctx.from.username && user.username !== ctx.from.username) ||
+      (ctx.from.first_name && user.firstName !== ctx.from.first_name) ||
+      (ctx.from.last_name && user.lastName !== ctx.from.last_name)
+    ) {
       user = await updateUser({
         uid: user.uid,
-        data: { username: ctx.from.username },
+        data: {
+          username: ctx.from.username,
+          firstName: ctx.from.first_name,
+          lastName: ctx.from.last_name,
+        },
       });
     }
     ctx.session.userId = user.id;
