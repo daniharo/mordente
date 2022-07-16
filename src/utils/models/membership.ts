@@ -48,3 +48,12 @@ export const userIsMember = async ({
   });
   return !!membership;
 };
+
+export const getMembers = async (ensembleId: Ensemble["id"]) => {
+  return prisma.membership.findMany({
+    where: { ensembleId },
+    include: {
+      user: true,
+    },
+  });
+};

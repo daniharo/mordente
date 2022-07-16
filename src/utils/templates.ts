@@ -1,6 +1,6 @@
 import pug from "pug";
 import { TranslateFunction } from "@grammyjs/fluent";
-import { Ensemble } from "@prisma/client";
+import { Ensemble, Membership } from "@prisma/client";
 
 type DefaultTemplateParameter = Parameters<
   ReturnType<typeof pug.compileFile>
@@ -21,4 +21,12 @@ interface EnsembleDetailProps {
 }
 export const ensembleDetailTemplate = compileFile<EnsembleDetailProps>(
   __dirname + "/../templates/ensemble-detail.pug"
+);
+
+interface EnsembleMembersProps {
+  ensembleName: string;
+  members: Membership[];
+}
+export const ensembleMembersTemplate = compileFile<EnsembleMembersProps>(
+  __dirname + "/../templates/ensemble-members.pug"
 );
