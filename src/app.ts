@@ -5,7 +5,6 @@ import fluent from "./locales/fluent";
 import { MyContext, SessionData } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
-import { joinEnsemble } from "./utils/models/membership";
 import { createEnsemble, getEnsemble } from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 import { Router } from "@grammyjs/router";
@@ -15,6 +14,7 @@ import {
 } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/accountMiddleware";
+import { joinEnsembleHandler } from "./handlers/membership";
 
 dotenv.config();
 
@@ -40,17 +40,20 @@ bot.api.setMyCommands([
 bot.command("start", async (ctx) => {
   const joinCode = ctx.match;
   if (joinCode) {
-    const ensemble = await joinEnsemble({ userId: ctx.userId, joinCode });
-    await ctx.reply(ctx.t("join_success", { ensembleName: ensemble.name }));
+    await joinEnsembleHandler(joinCode)(ctx);
     return;
   }
   await ctx.reply(ctx.t("start_command_answer"), { reply_markup: startMenu });
 });
 
-bot.command("join", async (ctx) => {});
+bot.command("join", async (ctx) => {
+  await ctx.reply(
+    "Para unirte a una agrupación, tienes que acceder al enlace que te hayan proporcionado."
+  );
+});
 
-bot.command("create", async (ctx, next) => {
-  await createEnsembleHandler(ctx, next);
+bot.command("create", async (ctx) => {
+  await createEnsembleHandler(ctx);
 });
 
 bot.command("cancel", async (ctx) => {
@@ -58,7 +61,7 @@ bot.command("cancel", async (ctx) => {
   await ctx.reply(ctx.t("operation_cancelled"));
 });
 
-bot.on("message:entities:bot_command", async (ctx, next) => {
+bot.on("message:entities:bot_command", async (ctx) => {
   const commandText = getCommandFromMessage(ctx.msg)!;
   const command = analizeCommand(commandText);
 
@@ -70,17 +73,17 @@ bot.on("message:entities:bot_command", async (ctx, next) => {
     case "ensemble":
       const ensemble = await getEnsemble({ ensembleId: command?.id });
       if (!ensemble) {
-        ctx.reply("Agrupación no encontrada");
+        await ctx.reply("Agrupación no encontrada");
         break;
       }
-      printEnsembleHandler(ensemble)(ctx, next);
+      await printEnsembleHandler(ensemble)(ctx);
       break;
   }
 });
 
 const router = new Router<MyContext>((ctx) => ctx.session.step);
 
-router.route("create_ensemble_name", async (ctx, next) => {
+router.route("create_ensemble_name", async (ctx) => {
   const ensembleName = ctx.msg?.text;
   if (!ensembleName) return;
   const ensemble = await createEnsemble({
@@ -88,7 +91,7 @@ router.route("create_ensemble_name", async (ctx, next) => {
     name: ensembleName,
     joinCodeEnabled: true,
   });
-  await printEnsembleHandler(ensemble)(ctx, next);
+  await printEnsembleHandler(ensemble)(ctx);
   ctx.session.step = "idle";
 });
 
