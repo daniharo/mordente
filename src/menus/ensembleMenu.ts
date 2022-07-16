@@ -9,11 +9,11 @@ export const ensembleMenu = new Menu<MyContext>("ensemble")
       text: "Eliminar",
       payload: (ctx) => ctx.session.ensembleId?.toString() ?? "",
     },
-    async (ctx, next) => {
+    async (ctx) => {
       if (ctx.match) {
         const ensemble = await getEnsemble({ ensembleId: +ctx.match });
         if (ensemble) {
-          await deleteEnsembleHandler(ensemble)(ctx, next);
+          await deleteEnsembleHandler(ensemble)(ctx);
         }
       }
     }
