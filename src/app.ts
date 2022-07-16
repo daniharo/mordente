@@ -7,11 +7,7 @@ import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
 import { createUser, getUser, getUserIdFromUID } from "./utils/models/user";
 import { joinEnsemble } from "./utils/models/membership";
-import {
-  createEnsemble,
-  getEnsemble,
-  getEnsembleName,
-} from "./utils/models/ensemble";
+import { createEnsemble, getEnsemble } from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 import { Router } from "@grammyjs/router";
 import {
@@ -51,19 +47,16 @@ bot.command("start", async (ctx) => {
       lastName: ctx.from?.last_name,
     });
   }
-  const ensembleId = Number(ctx.match);
-  if (Number.isInteger(ensembleId) && ensembleId > 0) {
-    await joinEnsemble({ userId: user.id, ensembleId });
-    const ensembleName = await getEnsembleName({ ensembleId });
-    await ctx.reply(ctx.t("join_success", { ensembleName: ensembleName! }));
+  const joinCode = ctx.match;
+  if (joinCode) {
+    const ensemble = await joinEnsemble({ userId: user.id, joinCode });
+    await ctx.reply(ctx.t("join_success", { ensembleName: ensemble.name }));
     return;
   }
   await ctx.reply(ctx.t("start_command_answer"), { reply_markup: startMenu });
 });
 
-bot.command("join", async (ctx) => {
-  await ctx.reply(ctx.t("join_command_answer"));
-});
+bot.command("join", async (ctx) => {});
 
 bot.command("create", async (ctx, next) => {
   await createEnsembleHandler(ctx, next);

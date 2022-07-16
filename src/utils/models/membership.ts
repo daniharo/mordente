@@ -4,16 +4,14 @@ import { getUserIdFromUID } from "./user";
 
 export const joinEnsemble = ({
   userId,
-  ensembleId,
+  joinCode,
 }: {
   userId: User["id"];
-  ensembleId: Ensemble["id"];
+  joinCode: Ensemble["joinCode"];
 }) => {
-  return prisma.membership.create({
-    data: {
-      userId,
-      ensembleId,
-    },
+  return prisma.ensemble.update({
+    where: { joinCode },
+    data: { memberships: { create: { userId } } },
   });
 };
 
