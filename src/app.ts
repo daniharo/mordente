@@ -15,17 +15,19 @@ import {
   printEnsembleHandler,
 } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
+import { useAccount } from "./middleware/accountMiddleware";
 
 dotenv.config();
 
 function createInitialSessionData(): SessionData {
-  return { step: "idle" };
+  return { step: "idle", userId: undefined };
 }
 
 const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
 bot.use(session({ initial: createInitialSessionData }));
 bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
+bot.use(useAccount);
 bot.use(startMenu);
 bot.use(ensembleMenu);
 
