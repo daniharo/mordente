@@ -5,7 +5,6 @@ import fluent from "./locales/fluent";
 import { MyContext, SessionData } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
-import { createUser, getUser, getUserIdFromUID } from "./utils/models/user";
 import { joinEnsemble } from "./utils/models/membership";
 import { createEnsemble, getEnsemble } from "./utils/models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
@@ -39,19 +38,9 @@ bot.api.setMyCommands([
 ]);
 
 bot.command("start", async (ctx) => {
-  const fromId = ctx.from!.id;
-  let user = await getUser({ userUid: fromId });
-  if (!user) {
-    user = await createUser({
-      uid: fromId,
-      username: ctx.from?.username,
-      firstName: ctx.from!.first_name,
-      lastName: ctx.from?.last_name,
-    });
-  }
   const joinCode = ctx.match;
   if (joinCode) {
-    const ensemble = await joinEnsemble({ userId: user.id, joinCode });
+    const ensemble = await joinEnsemble({ userId: ctx.userId, joinCode });
     await ctx.reply(ctx.t("join_success", { ensembleName: ensemble.name }));
     return;
   }
@@ -94,10 +83,8 @@ const router = new Router<MyContext>((ctx) => ctx.session.step);
 router.route("create_ensemble_name", async (ctx, next) => {
   const ensembleName = ctx.msg?.text;
   if (!ensembleName) return;
-  const userId = await getUserIdFromUID({ userUid: ctx.from!.id });
-  if (!userId) return;
   const ensemble = await createEnsemble({
-    userId,
+    userId: ctx.userId,
     name: ensembleName,
     joinCodeEnabled: true,
   });

@@ -14,18 +14,18 @@ export const telegramUserIsAdmin = async ({
   return userId ? isAdmin({ userId, ensembleId }) : false;
 };
 
-export const isAdmin = ({
+export const isAdmin = async ({
   userId,
   ensembleId,
 }: {
   userId: Membership["userId"];
   ensembleId: Membership["ensembleId"];
 }) =>
-  prisma.membership
+  (await prisma.membership
     .findUnique({
       where: { userId_ensembleId: { userId, ensembleId } },
     })
-    .admin() !== null;
+    .admin()) !== null;
 
 export const makeAdmin = async ({
   userId,

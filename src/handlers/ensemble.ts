@@ -3,8 +3,8 @@ import { MyContext } from "../context";
 import { Ensemble } from "@prisma/client";
 import { ensembleMenu } from "../menus/ensembleMenu";
 import { deleteEnsemble } from "../utils/models/ensemble";
-import { telegramUserIsMember } from "../utils/models/membership";
-import { telegramUserIsAdmin } from "../utils/models/admin";
+import { userIsMember } from "../utils/models/membership";
+import { isAdmin } from "../utils/models/admin";
 
 export const createEnsembleHandler: MiddlewareFn<MyContext> = async (ctx) => {
   await ctx.reply(ctx.t("create_command_answer"), {
@@ -17,12 +17,12 @@ export const printEnsembleHandler: (
   ensemble: Ensemble
 ) => MiddlewareFn<MyContext> = (ensemble) => async (ctx) => {
   if (
-    !(await telegramUserIsMember({
-      telegramUserId: ctx.from?.id,
+    !(await userIsMember({
+      userId: ctx.userId,
       ensembleId: ensemble.id,
     }))
   ) {
-    ctx.reply("No eres miembro de esta agrupación.");
+    await ctx.reply("No eres miembro de esta agrupación.");
     return;
   }
   ctx.session.ensembleId = ensemble.id;
@@ -36,12 +36,12 @@ export const deleteEnsembleHandler: (
   ensemble: Ensemble
 ) => MiddlewareFn<MyContext> = (ensemble) => async (ctx) => {
   if (
-    !(await telegramUserIsAdmin({
-      telegramUserId: ctx.from?.id,
+    !(await isAdmin({
+      userId: ctx.userId,
       ensembleId: ensemble.id,
     }))
   ) {
-    ctx.reply("No eres administrador de esta agrupación.");
+    await ctx.reply("No eres administrador de esta agrupación.");
     return;
   }
   await deleteEnsemble({ ensembleId: ensemble.id });
