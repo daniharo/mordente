@@ -1,11 +1,15 @@
 import { Context, MiddlewareFn, SessionFlavor } from "grammy";
-import { createUser, getUser } from "../utils/models/user";
+import { createUser, getUser, updateUser } from "../utils/models/user";
 import { User } from "@prisma/client";
 
 export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
   ctx,
   next
 ) => {
+  if (ctx.from?.id === undefined) {
+    await next();
+    return;
+  }
   if (!ctx.session.userId) {
     let user = await getUser({ userUid: ctx.from!.id });
     if (!user) {
@@ -14,6 +18,12 @@ export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
         username: ctx.from?.username,
         firstName: ctx.from!.first_name,
         lastName: ctx.from?.last_name,
+      });
+    }
+    if (ctx.from.username && user.username !== ctx.from.username) {
+      user = await updateUser({
+        uid: user.uid,
+        data: { username: ctx.from.username },
       });
     }
     ctx.session.userId = user.id;
