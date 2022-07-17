@@ -5,6 +5,7 @@ import {
   getCurrentEventsForEnsemble,
   getFutureEventsForEnsemble,
 } from "../utils/models/event";
+import { eventListMenu } from "../menus/eventListMenu";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
@@ -16,6 +17,7 @@ export const listEventsHandler =
     const currentEvents = await getCurrentEventsForEnsemble(ensembleId);
     const futureEvents = await getFutureEventsForEnsemble(ensembleId);
     await ctx.reply(
-      ctx.templates.eventsSummaryTemplate({ currentEvents, futureEvents })
+      ctx.templates.eventsSummaryTemplate({ currentEvents, futureEvents }),
+      { reply_markup: eventListMenu }
     );
   };
