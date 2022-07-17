@@ -20,12 +20,13 @@ export const isAdmin = async ({
 }: {
   userId: Membership["userId"];
   ensembleId: Membership["ensembleId"];
-}) =>
-  (await prisma.membership
-    .findUnique({
-      where: { userId_ensembleId: { userId, ensembleId } },
-    })
-    .admin()) !== null;
+}) => {
+  const membership = await prisma.membership.findUnique({
+    where: { userId_ensembleId: { userId, ensembleId } },
+    select: { admin: true },
+  });
+  return !!membership?.admin;
+};
 
 export const makeAdmin = async ({
   userId,
