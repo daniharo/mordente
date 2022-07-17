@@ -104,7 +104,8 @@ export const ensembleMenu = new Menu<MyContext>("ensemble")
       if (!ensembleName) return;
       const members = await getMembers(ensembleId);
       await ctx.reply(
-        ctx.templates.ensembleMembersTemplate({ members, ensembleName })
+        ctx.templates.ensembleMembersTemplate({ members, ensembleName }),
+        { parse_mode: "HTML" }
       );
     }
   );

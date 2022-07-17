@@ -3,6 +3,9 @@ if members.length === 0
 else
     | Miembros en #{ensembleName}:
     |
+    |
     each val, index in members
-      | #{index + 1}. #{val.user.firstName} #{val.user.lastName} Details: /membership_#{val.id}
+      | #{index + 1}. 
+      a(href=`tg://${val.user.username}`) #{val.user.firstName} #{val.user.lastName}
+      |  Detalles: /membership_#{val.id}
       |
