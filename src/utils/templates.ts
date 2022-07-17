@@ -1,6 +1,6 @@
 import pug from "pug";
 import { TranslateFunction } from "@grammyjs/fluent";
-import { Admin, Ensemble, Membership, User } from "@prisma/client";
+import { Admin, Ensemble, Membership, User, Event } from "@prisma/client";
 
 type DefaultTemplateParameter = Parameters<
   ReturnType<typeof pug.compileFile>
@@ -43,4 +43,12 @@ interface MyMembershipsProps {
 }
 export const myMembershipsTemplate = compileFile<MyMembershipsProps>(
   __dirname + "/../templates/my-memberships.pug"
+);
+
+interface EventsSummaryProps {
+  currentEvents: Event[];
+  futureEvents: Event[];
+}
+export const eventsSummaryTemplate = compileFile<EventsSummaryProps>(
+  __dirname + "/../templates/events-summary.pug"
 );

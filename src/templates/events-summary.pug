@@ -1,0 +1,12 @@
+if currentEvents.length > 0
+    | Eventos en transcurso:
+    |
+    |
+    each val, index in members
+      | #{index + 1}. 
+      b= val.name
+      | .Detalles: /event_#{val.id}
+      |
+      
+if currentEvents.length === 0 && futureEvents.length === 0
+  | Aún no hay ningún evento.

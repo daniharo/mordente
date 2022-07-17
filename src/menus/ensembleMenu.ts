@@ -15,6 +15,7 @@ import { isAdmin } from "../utils/models/admin";
 import { getMembers, getMyMembershipId } from "../utils/models/membership";
 import { printMembershipHandler } from "../handlers/membership";
 import { membershipMenu } from "./membershipMenu";
+import { listEventsHandler } from "../handlers/event";
 
 export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
   async (ctx, range) => {
@@ -74,6 +75,9 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
         if (!myMembershipId) return;
         await printMembershipHandler(myMembershipId)(ctx);
       });
+    range.text("Eventos", async (ctx) => {
+      await listEventsHandler(ensembleId)(ctx);
+    });
   }
 );
 
