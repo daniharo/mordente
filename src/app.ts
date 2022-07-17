@@ -36,10 +36,11 @@ bot.use(ensembleMenu);
 bot.use(membershipMenu);
 
 bot.api.setMyCommands([
-  { command: "start", description: "Start the bot" },
-  { command: "list", description: "List words" },
-  { command: "add", description: "Add a word" },
-  { command: "delete", description: "Delete a word" },
+  { command: "start", description: "Iniciar el bot" },
+  { command: "my_list", description: "Ver mis agrupaciones" },
+  { command: "create", description: "Crear una agrupación" },
+  { command: "join", description: "Unirme a una agrupación" },
+  { command: "cancel", description: "Cancelar operación" },
 ]);
 
 bot.command("start", async (ctx) => {
