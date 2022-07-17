@@ -1,0 +1,11 @@
+if memberships.length === 0
+    | No participas en ninguna agrupación.
+else
+    | Agrupaciones a las que perteneces:
+    |
+    |
+    each val, index in memberships
+      | #{index + 1}. 
+      b= val.ensemble.name
+      | . Detalles de la agrupación: /ensemble_#{val.ensemble.id}. Detalles de la inscripción: /membership_#{val.id}
+      |

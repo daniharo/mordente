@@ -1,6 +1,6 @@
 import pug from "pug";
 import { TranslateFunction } from "@grammyjs/fluent";
-import { Ensemble, Membership, User } from "@prisma/client";
+import { Admin, Ensemble, Membership, User } from "@prisma/client";
 
 type DefaultTemplateParameter = Parameters<
   ReturnType<typeof pug.compileFile>
@@ -36,4 +36,11 @@ interface MembershipDetailProps {
 }
 export const membershipDetailTemplate = compileFile<MembershipDetailProps>(
   __dirname + "/../templates/membership-detail.pug"
+);
+
+interface MyMembershipsProps {
+  memberships: (Membership & { admin: Admin | null; ensemble: Ensemble })[];
+}
+export const myMembershipsTemplate = compileFile<MyMembershipsProps>(
+  __dirname + "/../templates/my-memberships.pug"
 );

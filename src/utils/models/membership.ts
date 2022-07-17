@@ -68,3 +68,9 @@ export const getMembership = async (membershipId: Membership["id"]) => {
 export const deleteMembership = async (membershipId: Membership["id"]) => {
   return prisma.membership.delete({ where: { id: membershipId } });
 };
+
+export const getMembershipsForUser = (userId: User["id"]) =>
+  prisma.membership.findMany({
+    where: { userId },
+    include: { ensemble: true, admin: true },
+  });

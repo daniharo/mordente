@@ -19,6 +19,7 @@ import {
   printMembershipHandler,
 } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
+import { getMembershipsForUser } from "./utils/models/membership";
 
 dotenv.config();
 
@@ -63,6 +64,16 @@ bot.command("create", async (ctx) => {
 bot.command("cancel", async (ctx) => {
   ctx.session.step = "idle";
   await ctx.reply(ctx.t("operation_cancelled"));
+});
+
+bot.command("my_list", async (ctx) => {
+  const myMemberships = await getMembershipsForUser(ctx.userId);
+  await ctx.reply(
+    ctx.templates.myMembershipsTemplate({ memberships: myMemberships }),
+    {
+      parse_mode: "HTML",
+    }
+  );
 });
 
 bot.on("message:entities:bot_command", async (ctx) => {
