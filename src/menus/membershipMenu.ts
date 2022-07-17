@@ -7,6 +7,7 @@ import { deleteMembershipHandler } from "../handlers/membership";
 export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(
   async (ctx, range) => {
     const { membershipId } = ctx.session;
+    console.log({ membershipId });
     if (!membershipId) {
       return;
     }
@@ -16,11 +17,15 @@ export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(
       userId: ctx.userId,
       ensembleId: membership.ensembleId,
     });
-    if (admin || membership.userId === ctx.userId) {
+    const itsMe = membership.userId === ctx.userId;
+    if (admin || itsMe) {
       range
-        .text("Eliminar", async (ctx) => {
-          await deleteMembershipHandler(membershipId)(ctx);
-        })
+        .text(
+          itsMe ? "Eliminarme de la agrupación" : "Eliminar de la agrupación",
+          async (ctx) => {
+            await deleteMembershipHandler(membershipId)(ctx);
+          }
+        )
         .row();
     }
   }

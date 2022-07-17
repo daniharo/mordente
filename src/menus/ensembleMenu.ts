@@ -12,7 +12,9 @@ import {
   printJoinCodeHandler,
 } from "../handlers/ensemble";
 import { isAdmin } from "../utils/models/admin";
-import { getMembers } from "../utils/models/membership";
+import { getMembers, getMyMembershipId } from "../utils/models/membership";
+import { printMembershipHandler } from "../handlers/membership";
+import { membershipMenu } from "./membershipMenu";
 
 export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
   async (ctx, range) => {
@@ -56,14 +58,23 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
         })
         .row();
     }
-    range.text("Miembros", async (ctx) => {
-      const ensembleName = await getEnsembleName({ ensembleId });
-      if (!ensembleName) return;
-      const members = await getMembers(ensembleId);
-      await ctx.reply(
-        ctx.templates.ensembleMembersTemplate({ members, ensembleName }),
-        { parse_mode: "HTML" }
-      );
-    });
+    range
+      .text("Miembros", async (ctx) => {
+        const ensembleName = await getEnsembleName({ ensembleId });
+        if (!ensembleName) return;
+        const members = await getMembers(ensembleId);
+        await ctx.reply(
+          ctx.templates.ensembleMembersTemplate({ members, ensembleName }),
+          { parse_mode: "HTML" }
+        );
+      })
+      .row()
+      .text("Mi inscripción", async (ctx) => {
+        const myMembershipId = await getMyMembershipId(ctx.userId, ensembleId);
+        if (!myMembershipId) return;
+        await printMembershipHandler(myMembershipId)(ctx);
+      });
   }
 );
+
+ensembleMenu.register(membershipMenu);

@@ -61,3 +61,14 @@ export const getMembershipsForUser = (userId: User["id"]) =>
     where: { userId },
     include: { ensemble: true, admin: true },
   });
+
+export const getMyMembershipId = async (
+  userId: User["id"],
+  ensembleId: Ensemble["id"]
+) => {
+  const membership = await prisma.membership.findUnique({
+    where: { userId_ensembleId: { userId, ensembleId } },
+    select: { id: true },
+  });
+  return membership?.id;
+};
