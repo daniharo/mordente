@@ -78,11 +78,12 @@ export const disableJoinCode = async (ensembleId: Ensemble["id"]) => {
 };
 
 export const enableAndGetJoinCode = async (ensembleId: Ensemble["id"]) => {
-  return prisma.ensemble.update({
+  const ensemble = await prisma.ensemble.update({
     where: { id: ensembleId },
     data: { joinCodeEnabled: true },
     select: { joinCode: true },
   });
+  return ensemble.joinCode;
 };
 
 export const getEnsemble = async ({

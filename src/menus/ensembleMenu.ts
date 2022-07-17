@@ -7,7 +7,10 @@ import {
   getEnsembleName,
 } from "../utils/models/ensemble";
 import { MyContext } from "../context";
-import { deleteEnsembleHandler } from "../handlers/ensemble";
+import {
+  deleteEnsembleHandler,
+  printJoinCodeHandler,
+} from "../handlers/ensemble";
 import { isAdmin } from "../utils/models/admin";
 import { getMembers } from "../utils/models/membership";
 
@@ -29,10 +32,7 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
           .text("Invitar", async (ctx) => {
             const joinCode = await getEnsembleJoinCode(ensembleId);
             if (!joinCode) return;
-            await ctx.reply(
-              "Proporciona el siguiente enlace de invitación a los usuarios que quieras que se unan ⬇️"
-            );
-            await ctx.reply(getInvitationLink(ctx.me.username, joinCode));
+            await printJoinCodeHandler(joinCode)(ctx);
           })
           .text("Deshabilitar invitación", async (ctx) => {
             await disableJoinCode(ensembleId);
@@ -42,11 +42,8 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
           });
       } else {
         range.text("Habilitar enlace de invitación", async (ctx) => {
-          const ensemble = await enableAndGetJoinCode(ensembleId);
-          await ctx.reply("Código de invitación habilitado.");
-          await ctx.reply(
-            getInvitationLink(ctx.me.username, ensemble.joinCode)
-          );
+          const joinCode = await enableAndGetJoinCode(ensembleId);
+          await printJoinCodeHandler(joinCode)(ctx);
         });
       }
       range
@@ -70,6 +67,3 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
     });
   }
 );
-
-const getInvitationLink = (botUserName: string, joinCode: string) =>
-  `https://telegram.me/${botUserName}?start=${joinCode}`;

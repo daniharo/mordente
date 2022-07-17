@@ -44,3 +44,12 @@ export const deleteEnsembleHandler =
     await deleteEnsemble({ ensembleId: ensemble.id });
     await ctx.reply(`La agrupación "${ensemble.name}" ha sido eliminada.`);
   };
+
+export const printJoinCodeHandler =
+  (joinCode: string) => async (ctx: MyContext) => {
+    await ctx.reply("Código de invitación habilitado.");
+    await ctx.reply(getInvitationLink(ctx.me.username, joinCode));
+  };
+
+const getInvitationLink = (botUserName: string, joinCode: string) =>
+  `https://telegram.me/${botUserName}?start=${joinCode}`;
