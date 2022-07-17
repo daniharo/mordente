@@ -62,6 +62,29 @@ export const getEnsembleName = async ({
   return ensemble?.name;
 };
 
+export const getEnsembleJoinCode = async (ensembleId: Ensemble["id"]) => {
+  const ensemble = await prisma.ensemble.findUnique({
+    where: { id: ensembleId },
+    select: { joinCode: true },
+  });
+  return ensemble?.joinCode;
+};
+
+export const disableJoinCode = async (ensembleId: Ensemble["id"]) => {
+  return prisma.ensemble.update({
+    where: { id: ensembleId },
+    data: { joinCodeEnabled: false },
+  });
+};
+
+export const enableAndGetJoinCode = async (ensembleId: Ensemble["id"]) => {
+  return prisma.ensemble.update({
+    where: { id: ensembleId },
+    data: { joinCodeEnabled: true },
+    select: { joinCode: true },
+  });
+};
+
 export const getEnsemble = async ({
   ensembleId,
 }: {
