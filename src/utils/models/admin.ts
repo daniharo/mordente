@@ -1,18 +1,5 @@
-import { Admin, Ensemble, Membership, User } from "@prisma/client";
+import { Admin, Membership } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient";
-import { getUserIdFromUID } from "./user";
-
-export const telegramUserIsAdmin = async ({
-  telegramUserId,
-  ensembleId,
-}: {
-  telegramUserId?: User["uid"];
-  ensembleId: Ensemble["id"];
-}) => {
-  if (!telegramUserId) return false;
-  const userId = await getUserIdFromUID({ userUid: telegramUserId });
-  return userId ? isAdmin({ userId, ensembleId }) : false;
-};
 
 export const isAdmin = async ({
   userId,
