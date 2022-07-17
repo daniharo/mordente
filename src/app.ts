@@ -14,7 +14,11 @@ import {
 } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/accountMiddleware";
-import { joinEnsembleHandler } from "./handlers/membership";
+import {
+  joinEnsembleHandler,
+  printMembershipHandler,
+} from "./handlers/membership";
+import { membershipMenu } from "./menus/membershipMenu";
 
 dotenv.config();
 
@@ -29,6 +33,7 @@ bot.use(useTemplates);
 bot.use(useAccount);
 bot.use(startMenu);
 bot.use(ensembleMenu);
+bot.use(membershipMenu);
 
 bot.api.setMyCommands([
   { command: "start", description: "Start the bot" },
@@ -75,6 +80,13 @@ bot.on("message:entities:bot_command", async (ctx) => {
         break;
       }
       await printEnsembleHandler(ensemble)(ctx);
+      break;
+    case "membership":
+      if (!command.id) {
+        await ctx.reply("Comando no válido.");
+        return;
+      }
+      await printMembershipHandler(command.id)(ctx);
       break;
   }
 });

@@ -1,4 +1,4 @@
-import { Ensemble, User } from "@prisma/client";
+import { Ensemble, Membership, User } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient";
 import { getUserIdFromUID } from "./user";
 
@@ -56,4 +56,15 @@ export const getMembers = async (ensembleId: Ensemble["id"]) => {
       user: true,
     },
   });
+};
+
+export const getMembership = async (membershipId: Membership["id"]) => {
+  return prisma.membership.findUnique({
+    where: { id: membershipId },
+    include: { user: true, ensemble: true },
+  });
+};
+
+export const deleteMembership = async (membershipId: Membership["id"]) => {
+  return prisma.membership.delete({ where: { id: membershipId } });
 };
