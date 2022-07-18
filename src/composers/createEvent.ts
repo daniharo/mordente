@@ -42,36 +42,34 @@ name.on("message:text", async (ctx) => {
 name.use(notTextMiddleware);
 
 const description = router.route(CREATE_EVENT_STEPS.DESCRIPTION);
-description.on(["callback_query:data", "message:text"], async (ctx) => {
-  if (
-    ctx.callbackQuery &&
-    ctx.callbackQuery.data !== `skip_${CREATE_EVENT_STEPS.DESCRIPTION}`
-  ) {
-    return;
+description.on(["callback_query:data", "message:text"]).filter(
+  (ctx) =>
+    !ctx.callbackQuery ||
+    ctx.callbackQuery.data === `skip_${CREATE_EVENT_STEPS.DESCRIPTION}`,
+  async (ctx) => {
+    ctx.session.createEvent.description = ctx.msg?.text;
+    ctx.session.step = CREATE_EVENT_STEPS.DESCRIPTION;
+    await ctx.reply("Ahora dime el tipo del evento (ensayo, concierto...)", {
+      reply_markup: getSkipMenu(CREATE_EVENT_STEPS.TYPE),
+    });
   }
-  ctx.session.createEvent.description = ctx.msg?.text;
-  ctx.session.step = CREATE_EVENT_STEPS.DESCRIPTION;
-  await ctx.reply("Ahora dime el tipo del evento (ensayo, concierto...)", {
-    reply_markup: getSkipMenu(CREATE_EVENT_STEPS.TYPE),
-  });
-});
+);
 description.use(notTextMiddleware);
 
 const type = router.route(CREATE_EVENT_STEPS.TYPE);
-type.on(["callback_query:data", "message:text"], async (ctx) => {
-  if (
-    ctx.callbackQuery &&
-    ctx.callbackQuery.data !== `skip_${CREATE_EVENT_STEPS.TYPE}`
-  ) {
-    return;
+type.on(["callback_query:data", "message:text"]).filter(
+  (ctx) =>
+    !ctx.callbackQuery ||
+    ctx.callbackQuery.data === `skip_${CREATE_EVENT_STEPS.TYPE}`,
+  async (ctx) => {
+    ctx.session.createEvent.eventType = ctx.msg?.text;
+    ctx.session.step = CREATE_EVENT_STEPS.PUBLISH;
+    await ctx.reply(
+      "Datos guardados. ¿Quieres publicar ya el evento? Si seleccionas que no, se guardará como plantilla.",
+      { reply_markup: publishEventMenu }
+    );
   }
-  ctx.session.createEvent.eventType = ctx.msg?.text;
-  ctx.session.step = CREATE_EVENT_STEPS.PUBLISH;
-  await ctx.reply(
-    "Datos guardados. ¿Quieres publicar ya el evento? Si seleccionas que no, se guardará como plantilla.",
-    { reply_markup: publishEventMenu }
-  );
-});
+);
 type.use(notTextMiddleware);
 
 const getSkipMenu = (step: string) =>
