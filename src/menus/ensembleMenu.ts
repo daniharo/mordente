@@ -16,7 +16,6 @@ import { getMembers, getMyMembershipId } from "../utils/models/membership";
 import { printMembershipHandler } from "../handlers/membership";
 import { membershipMenu } from "./membershipMenu";
 import { listEventsHandler } from "../handlers/event";
-import { eventListMenu } from "./eventListMenu";
 
 export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
   async (ctx, range) => {
@@ -83,4 +82,3 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
 );
 
 ensembleMenu.register(membershipMenu);
-ensembleMenu.register(eventListMenu);

@@ -1,17 +1,8 @@
 import { Context, SessionFlavor } from "grammy";
 import { FluentContextFlavor } from "@grammyjs/fluent";
 import * as templates from "../utils/templates";
-import { Ensemble, Membership } from "@prisma/client";
-import {
-  AccountContextFlavor,
-  AccountSessionData,
-} from "../middleware/accountMiddleware";
-
-export interface SessionData extends AccountSessionData {
-  step: "idle" | "create_ensemble_name";
-  ensembleId?: Ensemble["id"];
-  membershipId?: Membership["id"];
-}
+import { AccountContextFlavor } from "../middleware/accountMiddleware";
+import { SessionData } from "./SessionData";
 
 type Templates = {
   [p in keyof typeof templates]: (

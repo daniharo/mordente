@@ -1,4 +1,4 @@
-import { Ensemble } from "@prisma/client";
+import { Ensemble, Prisma } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient";
 
 export const getAllEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
@@ -30,3 +30,6 @@ export const getPastEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
       endDate: { lt: new Date() },
     },
   });
+
+export const createEvent = (eventData: Prisma.EventCreateInput) =>
+  prisma.event.create({ data: eventData });
