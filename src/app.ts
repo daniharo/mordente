@@ -2,7 +2,7 @@ import { Bot, session } from "grammy";
 import dotenv from "dotenv";
 import { useFluent } from "@grammyjs/fluent";
 import fluent from "./locales/fluent";
-import { MyContext, SessionData } from "./context";
+import { MyContext } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
 import { createEnsemble, getEnsemble } from "./utils/models/ensemble";
@@ -20,12 +20,9 @@ import {
 } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
 import { getMembershipsForUser } from "./utils/models/membership";
+import { createInitialSessionData } from "./context/SessionData";
 
 dotenv.config();
-
-function createInitialSessionData(): SessionData {
-  return { step: "idle", userId: undefined };
-}
 
 const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
 bot.use(session({ initial: createInitialSessionData }));
