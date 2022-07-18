@@ -6,15 +6,18 @@ type MenuMiddleware = Parameters<Menu<MyContext>["text"]>[1];
 
 const publishMiddleware: (publish: boolean) => MenuMiddleware =
   (publish: boolean) => async (ctx) => {
-    const { name } = ctx.session.createEvent;
+    const { name, description, eventType } = ctx.session.createEvent;
     if (!name) {
       return;
     }
     await createEvent({
       name,
+      description,
+      eventType,
       status: publish ? "PUBLISHED" : "DRAFT",
       ensemble: { connect: { id: ctx.session.ensembleId } },
     });
+    await ctx.menu.close();
   };
 
 export const publishEventMenu = new Menu<MyContext>("publishEventMenu")

@@ -48,7 +48,7 @@ description.on(["callback_query:data", "message:text"]).filter(
     ctx.callbackQuery.data === `skip_${CREATE_EVENT_STEPS.DESCRIPTION}`,
   async (ctx) => {
     ctx.session.createEvent.description = ctx.msg?.text;
-    ctx.session.step = CREATE_EVENT_STEPS.DESCRIPTION;
+    ctx.session.step = CREATE_EVENT_STEPS.TYPE;
     await ctx.reply("Ahora dime el tipo del evento (ensayo, concierto...)", {
       reply_markup: getSkipMenu(CREATE_EVENT_STEPS.TYPE),
     });
