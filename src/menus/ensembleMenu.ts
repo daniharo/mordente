@@ -30,23 +30,25 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
     if (admin) {
       const ensemble = await getEnsemble({ ensembleId });
       if (!ensemble) return;
+      range.text("Invitar", async (ctx) => {
+        const obtainCode = ensemble.joinCodeEnabled
+          ? getEnsembleJoinCode
+          : enableAndGetJoinCode;
+        const joinCode = await obtainCode(ensembleId);
+        if (!joinCode) return;
+        if (!ensemble.joinCodeEnabled) {
+          ctx.menu.update();
+          await ctx.reply("Código de invitación habilitado.");
+        }
+        await printJoinCodeHandler(joinCode)(ctx);
+      });
       if (ensemble.joinCodeEnabled) {
-        range
-          .text("Invitar", async (ctx) => {
-            const joinCode = await getEnsembleJoinCode(ensembleId);
-            if (!joinCode) return;
-            await printJoinCodeHandler(joinCode)(ctx);
-          })
-          .text("Deshabilitar invitación", async (ctx) => {
-            await disableJoinCode(ensembleId);
-            await ctx.reply(
-              "El código de invitación se ha deshabilitado con éxito."
-            );
-          });
-      } else {
-        range.text("Habilitar enlace de invitación", async (ctx) => {
-          const joinCode = await enableAndGetJoinCode(ensembleId);
-          await printJoinCodeHandler(joinCode)(ctx);
+        range.text("Deshabilitar invitación", async (ctx) => {
+          await disableJoinCode(ensembleId);
+          ctx.menu.update();
+          await ctx.reply(
+            "El código de invitación se ha deshabilitado con éxito."
+          );
         });
       }
       range
