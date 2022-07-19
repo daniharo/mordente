@@ -1,7 +1,8 @@
 import { InlineKeyboard } from "grammy";
 import { InlineKeyboardButton } from "@grammyjs/types";
 
-interface Options {
+export interface CalendarOptions {
+  startDate: Date;
   startWeekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   weekDayNames: readonly [
     string,
@@ -33,7 +34,7 @@ interface Options {
   shortcutButtons: InlineKeyboardButton[];
 }
 
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS: Omit<CalendarOptions, "startDate"> = {
   startWeekDay: 1,
   weekDayNames: ["D", "L", "M", "X", "J", "V", "S"],
   monthNames: [
@@ -56,9 +57,12 @@ const DEFAULT_OPTIONS: Options = {
 };
 
 export class CalendarHelper {
-  #options: Options;
-  constructor(options: Partial<Options>) {
-    this.#options = Object.assign({ ...DEFAULT_OPTIONS }, options);
+  #options: CalendarOptions;
+  constructor(options: Partial<CalendarOptions>) {
+    this.#options = Object.assign(
+      { ...DEFAULT_OPTIONS, startDate: new Date() },
+      options
+    );
   }
 
   #addHeader(keyboard: InlineKeyboard, date: Date) {
@@ -152,7 +156,8 @@ export class CalendarHelper {
 
   #addShortcutButtons(keyboard: InlineKeyboard) {
     if (this.#options.shortcutButtons.length > 0) {
-      keyboard.row(...this.#options.shortcutButtons);
+      keyboard.add(...this.#options.shortcutButtons);
+      keyboard.row();
     }
   }
 
