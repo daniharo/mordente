@@ -7,7 +7,6 @@ import { deleteMembershipHandler } from "../handlers/membership";
 export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(
   async (ctx, range) => {
     const { membershipId } = ctx.session;
-    console.log({ membershipId });
     if (!membershipId) {
       return;
     }
