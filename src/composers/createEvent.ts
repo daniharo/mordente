@@ -78,7 +78,9 @@ description.on(["callback_query:data", "message:text"]).filter(
     ctx.callbackQuery.data ===
       getSkipCallbackQueryData(CREATE_EVENT_STEPS.DESCRIPTION),
   async (ctx) => {
-    ctx.session.createEvent.description = ctx.msg?.text;
+    ctx.session.createEvent.description = ctx.callbackQuery
+      ? undefined
+      : ctx.msg?.text;
     ctx.session.step = CREATE_EVENT_STEPS.START_DATE;
     ctx.session.calendarOptions = {
       shortcutButtons: getSkipMenu(CREATE_EVENT_STEPS.START_DATE)
@@ -145,7 +147,9 @@ type.on(["callback_query:data", "message:text"]).filter(
     ctx.callbackQuery.data ===
       getSkipCallbackQueryData(CREATE_EVENT_STEPS.TYPE),
   async (ctx) => {
-    ctx.session.createEvent.eventType = ctx.msg?.text;
+    ctx.session.createEvent.eventType = ctx.callbackQuery
+      ? undefined
+      : ctx.msg?.text;
     ctx.session.step = CREATE_EVENT_STEPS.PUBLISH;
     await ctx.reply(
       "Datos guardados. ¿Quieres publicar ya el evento? Si seleccionas que no, se guardará como plantilla.",
