@@ -7,7 +7,7 @@ import {
 import { Router } from "@grammyjs/router";
 import { MyContext } from "../context";
 import { publishEventMenu } from "../menus/publishEventMenu";
-import { CalendarHelper } from "../calendar/CalendarHelper";
+import { calendarMenu } from "../menus/calendarMenu";
 import { isAdmin } from "../utils/models/admin";
 
 export const CREATE_EVENT_STEPS = {
@@ -80,11 +80,12 @@ description.on(["callback_query:data", "message:text"]).filter(
   async (ctx) => {
     ctx.session.createEvent.description = ctx.msg?.text;
     ctx.session.step = CREATE_EVENT_STEPS.START_DATE;
+    ctx.session.calendarOptions = {
+      shortcutButtons: getSkipMenu(CREATE_EVENT_STEPS.START_DATE)
+        .inline_keyboard[0],
+    };
     await ctx.reply("Ahora dime la fecha de inicio", {
-      reply_markup: new CalendarHelper({
-        shortcutButtons: getSkipMenu(CREATE_EVENT_STEPS.START_DATE)
-          .inline_keyboard[0],
-      }).getCalendarMarkup(new Date()),
+      reply_markup: calendarMenu,
     });
   }
 );
