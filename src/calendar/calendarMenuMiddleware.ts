@@ -44,5 +44,5 @@ useCalendar.callbackQuery(/calendar-telegram-ignore-[\d\w-]+/, async (ctx) => {
 });
 
 export type CalendarContext = {
-  calendarSelectedDate: Date;
+  calendarSelectedDate?: Date;
 };
