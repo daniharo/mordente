@@ -1,6 +1,7 @@
 import { Menu } from "@grammyjs/menu";
 import { MyContext } from "../context";
 import { createEvent } from "../utils/models/event";
+import { printEventHandler } from "../handlers/event";
 
 type MenuMiddleware = Parameters<Menu<MyContext>["text"]>[1];
 
@@ -11,7 +12,7 @@ const publishMiddleware: (publish: boolean) => MenuMiddleware =
     if (!name) {
       return;
     }
-    await createEvent({
+    const event = await createEvent({
       name,
       description,
       eventType,
@@ -21,6 +22,7 @@ const publishMiddleware: (publish: boolean) => MenuMiddleware =
       ensemble: { connect: { id: ctx.session.ensembleId } },
     });
     ctx.menu.close();
+    await printEventHandler(event.id);
   };
 
 export const publishEventMenu = new Menu<MyContext>("publishEventMenu")

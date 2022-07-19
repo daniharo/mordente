@@ -1,8 +1,9 @@
-import { Ensemble } from "@prisma/client";
+import { Ensemble, Event } from "@prisma/client";
 import { MyContext } from "../context";
 import { userIsMember } from "../utils/models/membership";
 import {
   getCurrentEventsForEnsemble,
+  getEvent,
   getFutureEventsForEnsemble,
 } from "../utils/models/event";
 import { InlineKeyboard } from "grammy";
@@ -25,4 +26,24 @@ export const listEventsHandler =
       ctx.templates.eventsSummaryTemplate({ currentEvents, futureEvents }),
       { reply_markup: menu }
     );
+  };
+
+export const printEventHandler =
+  (eventId: Event["id"]) => async (ctx: MyContext) => {
+    const event = await getEvent(eventId);
+    if (!event) {
+      await ctx.reply("No se ha encontrado el evento.");
+      return;
+    }
+    const isMember = await userIsMember({
+      userId: ctx.userId,
+      ensembleId: event.ensembleId,
+    });
+    if (!isMember) {
+      await ctx.reply("No participas en la agrupación.");
+      return;
+    }
+    await ctx.reply(ctx.templates.eventDetailTemplate({ event }), {
+      parse_mode: "HTML",
+    });
   };

@@ -23,6 +23,7 @@ import { getMembershipsForUser } from "./utils/models/membership";
 import { createInitialSessionData } from "./context/SessionData";
 import { useCreateEvent } from "./composers/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
+import { printEventHandler } from "./handlers/event";
 
 dotenv.config();
 
@@ -100,6 +101,13 @@ bot.on("message:entities:bot_command", async (ctx) => {
         return;
       }
       await printMembershipHandler(command.id)(ctx);
+      break;
+    case "event":
+      if (!command.id) {
+        await ctx.reply("Comando no válido.");
+        return;
+      }
+      await printEventHandler(command.id)(ctx);
       break;
   }
 });

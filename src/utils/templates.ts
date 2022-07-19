@@ -52,3 +52,10 @@ interface EventsSummaryProps {
 export const eventsSummaryTemplate = compileFile<EventsSummaryProps>(
   __dirname + "/../templates/events-summary.pug"
 );
+
+interface EventDetailProps {
+  event: Event;
+}
+export const eventDetailTemplate = compileFile<EventDetailProps>(
+  __dirname + "/../templates/event-detail.pug"
+);

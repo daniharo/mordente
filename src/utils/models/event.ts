@@ -1,4 +1,4 @@
-import { Ensemble, Prisma } from "@prisma/client";
+import { Ensemble, Event, Prisma } from "@prisma/client";
 import prisma from "../../prisma/PrismaClient";
 
 export const getAllEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
@@ -33,3 +33,10 @@ export const getPastEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
 
 export const createEvent = (eventData: Prisma.EventCreateInput) =>
   prisma.event.create({ data: eventData });
+
+export const getEvent = (eventId: Event["id"]) =>
+  prisma.event.findUnique({
+    where: {
+      id: eventId,
+    },
+  });
