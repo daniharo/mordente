@@ -22,6 +22,7 @@ import { membershipMenu } from "./menus/membershipMenu";
 import { getMembershipsForUser } from "./utils/models/membership";
 import { createInitialSessionData } from "./context/SessionData";
 import { useCreateEvent } from "./composers/createEvent";
+import { useCalendar } from "./calendar/calendarMenuMiddleware";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
 bot.use(useAccount);
 bot.use(startMenu);
+bot.use(useCalendar);
 bot.use(ensembleMenu);
 bot.use(membershipMenu);
 bot.use(useCreateEvent);
