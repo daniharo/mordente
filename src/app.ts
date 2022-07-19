@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { useFluent } from "@grammyjs/fluent";
 import fluent from "./locales/fluent";
 import { MyContext } from "./context";
-import { useTemplates } from "./middleware/templates";
+import { useTemplates } from "./middleware/useTemplates";
 import { startMenu } from "./menus/startMenu";
 import { createEnsemble } from "./models/ensemble";
 import { Router } from "@grammyjs/router";
@@ -12,14 +12,14 @@ import {
   printEnsembleHandler,
 } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
-import { useAccount } from "./middleware/accountMiddleware";
+import { useAccount } from "./middleware/useAccount";
 import { joinEnsembleHandler } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
 import { getMembershipsForUser } from "./models/membership";
 import { createInitialSessionData } from "./context/SessionData";
 import { useCreateEvent } from "./composers/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
-import { useMordenteCommand } from "./middleware/command/useMordenteCommand";
+import { useMordenteCommand } from "./middleware/useMordenteCommand";
 
 dotenv.config();
 

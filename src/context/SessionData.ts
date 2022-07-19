@@ -1,4 +1,4 @@
-import { AccountSessionData } from "../middleware/accountMiddleware";
+import { AccountSessionData } from "../middleware/useAccount";
 import { Ensemble, Membership } from "@prisma/client";
 import { CREATE_EVENT_STEPS } from "../composers/createEvent";
 import { ValueOf } from "../utilityTypes";

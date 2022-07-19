@@ -1,7 +1,7 @@
 import { Context, SessionFlavor } from "grammy";
 import { FluentContextFlavor } from "@grammyjs/fluent";
 import * as templates from "../utils/templates";
-import { AccountContextFlavor } from "../middleware/accountMiddleware";
+import { AccountContextFlavor } from "../middleware/useAccount";
 import { SessionData } from "./SessionData";
 import { CalendarContext } from "../calendar/calendarMenuMiddleware";
 
