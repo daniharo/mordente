@@ -6,6 +6,7 @@ import {
   getFutureEventsForEnsemble,
 } from "../utils/models/event";
 import { InlineKeyboard } from "grammy";
+import { isAdmin } from "../utils/models/admin";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
@@ -16,10 +17,10 @@ export const listEventsHandler =
     }
     const currentEvents = await getCurrentEventsForEnsemble(ensembleId);
     const futureEvents = await getFutureEventsForEnsemble(ensembleId);
-    const menu = new InlineKeyboard().text(
-      "Crear evento",
-      `create_event_${ensembleId}`
-    );
+    const userIsAdmin = await isAdmin({ userId: ctx.userId, ensembleId });
+    const menu = userIsAdmin
+      ? new InlineKeyboard().text("Crear evento", `create_event_${ensembleId}`)
+      : undefined;
     await ctx.reply(
       ctx.templates.eventsSummaryTemplate({ currentEvents, futureEvents }),
       { reply_markup: menu }

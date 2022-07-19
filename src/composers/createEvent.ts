@@ -34,11 +34,18 @@ export const useCreateEvent = new Composer<MyContext>();
 useCreateEvent.use(publishEventMenu);
 useCreateEvent.callbackQuery(/create_event_(\d+)/, async (ctx) => {
   const match = ctx?.match?.[1];
-  if (match) {
-    ctx.session.ensembleId = +match;
-    ctx.session.step = CREATE_EVENT_STEPS.NAME;
-    await ctx.reply("Por favor, dime el nombre del evento");
+  if (!match) return;
+  const ensembleId = +match;
+  const userIsAdmin = await isAdmin({ userId: ctx.userId, ensembleId });
+  if (!userIsAdmin) {
+    await ctx.reply(
+      "No tienes permisos para crear eventos en esta agrupación."
+    );
+    return;
   }
+  ctx.session.ensembleId = ensembleId;
+  ctx.session.step = CREATE_EVENT_STEPS.NAME;
+  await ctx.reply("Por favor, dime el nombre del evento");
 });
 
 const router = new Router<MyContext>((ctx) => ctx.session.step);
