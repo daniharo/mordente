@@ -910,9 +910,12 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@grammyjs/web-app@https://github.com/grammyjs/web-app":
-  version "0.0.1"
-  resolved "https://github.com/grammyjs/web-app#716d99ac95cbe73e650646bafd63fec36a202b9f"
+"@grammyjs/web-app@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@grammyjs/web-app/-/web-app-1.0.0.tgz#87e596bd2b60c1f09a9293742c57b9308b222ea6"
+  integrity sha512-osz/FkQNMUQnQASij0Ki4FqNXs9/gtDoafoacpLW3D5qVdfoWHYG7N82hwlhDM31iXQAdfRLlQN+GeNtMQr/7w==
+  dependencies:
+    "@types/telegram-web-app" "^1.0.0"
 
 "@jridgewell/resolve-uri@^3.0.3":
   version "3.0.5"
@@ -1014,6 +1017,11 @@
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
+
+"@types/telegram-web-app@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/telegram-web-app/-/telegram-web-app-1.0.1.tgz#cfb90a2f86455e97e1d323b9f392a26260c6a541"
+  integrity sha512-MnfPb//QMuFhArAqu8OeZBnO+LVqmlNGuhxaosYQZibmU9NadX+Muecup8WVcDZDTsSDlStAF0THUvKGVxiT/A==
 
 "@types/warning@^3.0.0":
   version "3.0.0"

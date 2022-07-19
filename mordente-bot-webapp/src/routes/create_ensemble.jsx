@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import WebApp from "@grammyjs/web-app/web-app";
+import { WebApp } from "@grammyjs/web-app";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 export default function CreateEnsemble() {

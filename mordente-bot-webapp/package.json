@@ -11,7 +11,7 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@grammyjs/web-app": "https://github.com/grammyjs/web-app",
+    "@grammyjs/web-app": "^1.0.0",
     "framer-motion": "^6.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
