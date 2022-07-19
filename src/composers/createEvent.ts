@@ -7,10 +7,14 @@ import {
 import { Router } from "@grammyjs/router";
 import { MyContext } from "../context";
 import { publishEventMenu } from "../menus/publishEventMenu";
+import { CalendarHelper } from "../calendar/CalendarHelper";
+import { isAdmin } from "../utils/models/admin";
 
 export const CREATE_EVENT_STEPS = {
   NAME: "create_event_name",
   DESCRIPTION: "create_event_description",
+  START_DATE: "create_event_start_date",
+  END_DATE: "create_event_end_date",
   TYPE: "create_event_type",
   PUBLISH: "create_event_publish",
 } as const;
@@ -68,13 +72,35 @@ description.on(["callback_query:data", "message:text"]).filter(
       getSkipCallbackQueryData(CREATE_EVENT_STEPS.DESCRIPTION),
   async (ctx) => {
     ctx.session.createEvent.description = ctx.msg?.text;
+    ctx.session.step = CREATE_EVENT_STEPS.START_DATE;
+    await ctx.reply("Ahora dime la fecha de inicio", {
+      reply_markup: new CalendarHelper({
+        shortcutButtons: getSkipMenu(CREATE_EVENT_STEPS.START_DATE)
+          .inline_keyboard[0],
+      }).getCalendarMarkup(new Date()),
+    });
+  }
+);
+description.use(notTextMiddleware);
+
+const startDate = router.route(CREATE_EVENT_STEPS.START_DATE);
+startDate.callbackQuery(
+  getSkipCallbackQueryData(CREATE_EVENT_STEPS.START_DATE),
+  skipCallbackQueryMiddleware
+);
+startDate.on("callback_query:data").filter(
+  (ctx) =>
+    !!ctx.calendarSelectedDate ||
+    ctx.callbackQuery.data ===
+      getSkipCallbackQueryData(CREATE_EVENT_STEPS.START_DATE),
+  async (ctx) => {
+    ctx.session.createEvent.startDate = ctx.calendarSelectedDate;
     ctx.session.step = CREATE_EVENT_STEPS.TYPE;
     await ctx.reply("Ahora dime el tipo del evento (ensayo, concierto...)", {
       reply_markup: getSkipMenu(CREATE_EVENT_STEPS.TYPE),
     });
   }
 );
-description.use(notTextMiddleware);
 
 const type = router.route(CREATE_EVENT_STEPS.TYPE);
 type.callbackQuery(
