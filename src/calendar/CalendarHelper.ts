@@ -30,6 +30,7 @@ interface Options {
   maxDate?: Date;
   hideIgnoredWeeks: boolean;
   ignoreWeekDays: readonly number[];
+  shortcutButtons: InlineKeyboardButton[];
 }
 
 const DEFAULT_OPTIONS: Options = {
@@ -51,6 +52,7 @@ const DEFAULT_OPTIONS: Options = {
   ],
   ignoreWeekDays: [],
   hideIgnoredWeeks: false,
+  shortcutButtons: [],
 };
 
 export class CalendarHelper {
@@ -148,6 +150,12 @@ export class CalendarHelper {
     }
   }
 
+  #addShortcutButtons(keyboard: InlineKeyboard) {
+    if (this.#options.shortcutButtons.length > 0) {
+      keyboard.row(...this.#options.shortcutButtons);
+    }
+  }
+
   getCalendarMarkup(inputDate: Date) {
     let date = inputDate;
     // I use a math clamp to check if the input date is in range
@@ -159,10 +167,7 @@ export class CalendarHelper {
     }
     const page = new InlineKeyboard();
 
-    // const shortcutButtons = this.#options.shortcutButtons;
-    // if (shortcutButtons && shortcutButtons.length > 0) {
-    //   this.addShortcutButtons(page);
-    // }
+    this.#addShortcutButtons(page);
     this.#addHeader(page, date);
     this.#addDays(page, date);
 
