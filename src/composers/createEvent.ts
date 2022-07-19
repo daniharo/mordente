@@ -1,4 +1,9 @@
-import { Composer, InlineKeyboard, Middleware } from "grammy";
+import {
+  CallbackQueryMiddleware,
+  Composer,
+  InlineKeyboard,
+  Middleware,
+} from "grammy";
 import { Router } from "@grammyjs/router";
 import { MyContext } from "../context";
 import { publishEventMenu } from "../menus/publishEventMenu";
@@ -10,11 +15,21 @@ export const CREATE_EVENT_STEPS = {
   PUBLISH: "create_event_publish",
 } as const;
 
+const getSkipCallbackQueryData = (step: string) => `skip_${step}`;
+const skipCallbackQueryMiddleware: CallbackQueryMiddleware<MyContext> = async (
+  ctx,
+  next
+) => {
+  await ctx.answerCallbackQuery();
+  await ctx.editMessageReplyMarkup();
+  await next();
+};
+
 export const useCreateEvent = new Composer<MyContext>();
 
 useCreateEvent.use(publishEventMenu);
-useCreateEvent.on("callback_query:data", async (ctx) => {
-  const match = /create_event_(\d+)/.exec(ctx.callbackQuery.data)?.[1];
+useCreateEvent.callbackQuery(/create_event_(\d+)/, async (ctx) => {
+  const match = ctx?.match?.[1];
   if (match) {
     ctx.session.ensembleId = +match;
     ctx.session.step = CREATE_EVENT_STEPS.NAME;
@@ -42,10 +57,15 @@ name.on("message:text", async (ctx) => {
 name.use(notTextMiddleware);
 
 const description = router.route(CREATE_EVENT_STEPS.DESCRIPTION);
+description.callbackQuery(
+  getSkipCallbackQueryData(CREATE_EVENT_STEPS.DESCRIPTION),
+  skipCallbackQueryMiddleware
+);
 description.on(["callback_query:data", "message:text"]).filter(
   (ctx) =>
     !ctx.callbackQuery ||
-    ctx.callbackQuery.data === `skip_${CREATE_EVENT_STEPS.DESCRIPTION}`,
+    ctx.callbackQuery.data ===
+      getSkipCallbackQueryData(CREATE_EVENT_STEPS.DESCRIPTION),
   async (ctx) => {
     ctx.session.createEvent.description = ctx.msg?.text;
     ctx.session.step = CREATE_EVENT_STEPS.TYPE;
@@ -57,10 +77,15 @@ description.on(["callback_query:data", "message:text"]).filter(
 description.use(notTextMiddleware);
 
 const type = router.route(CREATE_EVENT_STEPS.TYPE);
+type.callbackQuery(
+  getSkipCallbackQueryData(CREATE_EVENT_STEPS.TYPE),
+  skipCallbackQueryMiddleware
+);
 type.on(["callback_query:data", "message:text"]).filter(
   (ctx) =>
     !ctx.callbackQuery ||
-    ctx.callbackQuery.data === `skip_${CREATE_EVENT_STEPS.TYPE}`,
+    ctx.callbackQuery.data ===
+      getSkipCallbackQueryData(CREATE_EVENT_STEPS.TYPE),
   async (ctx) => {
     ctx.session.createEvent.eventType = ctx.msg?.text;
     ctx.session.step = CREATE_EVENT_STEPS.PUBLISH;
@@ -73,4 +98,4 @@ type.on(["callback_query:data", "message:text"]).filter(
 type.use(notTextMiddleware);
 
 const getSkipMenu = (step: string) =>
-  new InlineKeyboard().text("Saltar", `skip_${step}`);
+  new InlineKeyboard().text("Saltar", getSkipCallbackQueryData(step));
