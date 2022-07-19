@@ -6,9 +6,7 @@ import { userIsMember } from "../utils/models/membership";
 import { isAdmin } from "../utils/models/admin";
 
 export const createEnsembleHandler = async (ctx: MyContext) => {
-  await ctx.reply(ctx.t("create_command_answer"), {
-    reply_markup: { force_reply: true },
-  });
+  await ctx.reply(ctx.t("create_command_answer"));
   ctx.session.step = "create_ensemble_name";
 };
 
