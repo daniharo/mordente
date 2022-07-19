@@ -5,8 +5,7 @@ import fluent from "./locales/fluent";
 import { MyContext } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
-import { createEnsemble, getEnsemble } from "./models/ensemble";
-import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
+import { createEnsemble } from "./models/ensemble";
 import { Router } from "@grammyjs/router";
 import {
   createEnsembleHandler,
@@ -14,16 +13,13 @@ import {
 } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/accountMiddleware";
-import {
-  joinEnsembleHandler,
-  printMembershipHandler,
-} from "./handlers/membership";
+import { joinEnsembleHandler } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
 import { getMembershipsForUser } from "./models/membership";
 import { createInitialSessionData } from "./context/SessionData";
 import { useCreateEvent } from "./composers/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
-import { printEventHandler } from "./handlers/event";
+import { useMordenteCommand } from "./middleware/command/useMordenteCommand";
 
 dotenv.config();
 
@@ -78,39 +74,7 @@ bot.command("my_list", async (ctx) => {
   );
 });
 
-bot.on("message:entities:bot_command", async (ctx) => {
-  const commandText = getCommandFromMessage(ctx.msg)!;
-  const command = analizeCommand(commandText);
-
-  if (!command?.id) {
-    return;
-  }
-
-  switch (command?.type) {
-    case "ensemble":
-      const ensemble = await getEnsemble({ ensembleId: command?.id });
-      if (!ensemble) {
-        await ctx.reply("Agrupación no encontrada");
-        break;
-      }
-      await printEnsembleHandler(ensemble)(ctx);
-      break;
-    case "membership":
-      if (!command.id) {
-        await ctx.reply("Comando no válido.");
-        return;
-      }
-      await printMembershipHandler(command.id)(ctx);
-      break;
-    case "event":
-      if (!command.id) {
-        await ctx.reply("Comando no válido.");
-        return;
-      }
-      await printEventHandler(command.id)(ctx);
-      break;
-  }
-});
+bot.use(useMordenteCommand);
 
 const router = new Router<MyContext>((ctx) => ctx.session.step);
 
