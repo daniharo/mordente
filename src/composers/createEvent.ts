@@ -103,6 +103,30 @@ startDate.on("callback_query:data").filter(
       getSkipCallbackQueryData(CREATE_EVENT_STEPS.START_DATE),
   async (ctx) => {
     ctx.session.createEvent.startDate = ctx.calendarSelectedDate;
+    ctx.session.step = CREATE_EVENT_STEPS.END_DATE;
+    ctx.session.calendarOptions = {
+      minDate: ctx.calendarSelectedDate,
+      shortcutButtons: getSkipMenu(CREATE_EVENT_STEPS.END_DATE)
+        .inline_keyboard[0],
+    };
+    await ctx.reply("Ahora dime la fecha de fin del evento", {
+      reply_markup: calendarMenu,
+    });
+  }
+);
+
+const endDate = router.route(CREATE_EVENT_STEPS.END_DATE);
+endDate.callbackQuery(
+  getSkipCallbackQueryData(CREATE_EVENT_STEPS.END_DATE),
+  skipCallbackQueryMiddleware
+);
+endDate.on("callback_query:data").filter(
+  (ctx) =>
+    !!ctx.calendarSelectedDate ||
+    ctx.callbackQuery.data ===
+      getSkipCallbackQueryData(CREATE_EVENT_STEPS.END_DATE),
+  async (ctx) => {
+    ctx.session.createEvent.endDate = ctx.calendarSelectedDate;
     ctx.session.step = CREATE_EVENT_STEPS.TYPE;
     await ctx.reply("Ahora dime el tipo del evento (ensayo, concierto...)", {
       reply_markup: getSkipMenu(CREATE_EVENT_STEPS.TYPE),

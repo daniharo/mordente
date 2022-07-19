@@ -6,7 +6,8 @@ type MenuMiddleware = Parameters<Menu<MyContext>["text"]>[1];
 
 const publishMiddleware: (publish: boolean) => MenuMiddleware =
   (publish: boolean) => async (ctx) => {
-    const { name, description, eventType, startDate } = ctx.session.createEvent;
+    const { name, description, eventType, startDate, endDate } =
+      ctx.session.createEvent;
     if (!name) {
       return;
     }
@@ -15,6 +16,7 @@ const publishMiddleware: (publish: boolean) => MenuMiddleware =
       description,
       eventType,
       startDate,
+      endDate,
       status: publish ? "PUBLISHED" : "DRAFT",
       ensemble: { connect: { id: ctx.session.ensembleId } },
     });
