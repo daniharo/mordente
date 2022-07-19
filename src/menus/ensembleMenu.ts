@@ -5,14 +5,14 @@ import {
   getEnsemble,
   getEnsembleJoinCode,
   getEnsembleName,
-} from "../utils/models/ensemble";
+} from "../models/ensemble";
 import { MyContext } from "../context";
 import {
   deleteEnsembleHandler,
   printJoinCodeHandler,
 } from "../handlers/ensemble";
-import { isAdmin } from "../utils/models/admin";
-import { getMembers, getMyMembershipId } from "../utils/models/membership";
+import { isAdmin } from "../models/admin";
+import { getMembers, getMyMembershipId } from "../models/membership";
 import { printMembershipHandler } from "../handlers/membership";
 import { membershipMenu } from "./membershipMenu";
 import { listEventsHandler } from "../handlers/event";

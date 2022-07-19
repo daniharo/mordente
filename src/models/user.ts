@@ -1,5 +1,5 @@
 import { Prisma, User } from "@prisma/client";
-import prisma from "../../prisma/PrismaClient";
+import prisma from "../prisma/PrismaClient";
 
 export const createUser = (user: Prisma.UserCreateInput) => {
   return prisma.user.create({

@@ -1,5 +1,5 @@
 import { User, Ensemble, Prisma } from "@prisma/client";
-import prisma from "../../prisma/PrismaClient";
+import prisma from "../prisma/PrismaClient";
 
 export const createEnsemble = async ({
   userId,

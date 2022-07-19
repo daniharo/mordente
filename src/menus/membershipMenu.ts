@@ -1,7 +1,7 @@
 import { Menu } from "@grammyjs/menu";
 import { MyContext } from "../context";
-import { isAdmin } from "../utils/models/admin";
-import { getMembership } from "../utils/models/membership";
+import { isAdmin } from "../models/admin";
+import { getMembership } from "../models/membership";
 import { deleteMembershipHandler } from "../handlers/membership";
 
 export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(

@@ -4,11 +4,11 @@ import {
   getMembership,
   joinEnsemble,
   userIsMember,
-} from "../utils/models/membership";
+} from "../models/membership";
 import { printEnsembleHandler } from "./ensemble";
 import { Membership } from "@prisma/client";
 import { membershipMenu } from "../menus/membershipMenu";
-import { isAdmin } from "../utils/models/admin";
+import { isAdmin } from "../models/admin";
 
 export const joinEnsembleHandler =
   (joinCode: string) => async (ctx: MyContext) => {

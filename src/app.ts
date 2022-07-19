@@ -5,7 +5,7 @@ import fluent from "./locales/fluent";
 import { MyContext } from "./context";
 import { useTemplates } from "./middleware/templates";
 import { startMenu } from "./menus/startMenu";
-import { createEnsemble, getEnsemble } from "./utils/models/ensemble";
+import { createEnsemble, getEnsemble } from "./models/ensemble";
 import { analizeCommand, getCommandFromMessage } from "./utils/commandHandler";
 import { Router } from "@grammyjs/router";
 import {
@@ -19,7 +19,7 @@ import {
   printMembershipHandler,
 } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
-import { getMembershipsForUser } from "./utils/models/membership";
+import { getMembershipsForUser } from "./models/membership";
 import { createInitialSessionData } from "./context/SessionData";
 import { useCreateEvent } from "./composers/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";

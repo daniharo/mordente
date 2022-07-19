@@ -1,5 +1,5 @@
 import { Admin, Membership } from "@prisma/client";
-import prisma from "../../prisma/PrismaClient";
+import prisma from "../prisma/PrismaClient";
 
 export const isAdmin = async ({
   userId,

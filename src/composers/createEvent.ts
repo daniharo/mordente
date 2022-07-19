@@ -8,7 +8,7 @@ import { Router } from "@grammyjs/router";
 import { MyContext } from "../context";
 import { publishEventMenu } from "../menus/publishEventMenu";
 import { calendarMenu } from "../menus/calendarMenu";
-import { isAdmin } from "../utils/models/admin";
+import { isAdmin } from "../models/admin";
 
 export const CREATE_EVENT_STEPS = {
   NAME: "create_event_name",

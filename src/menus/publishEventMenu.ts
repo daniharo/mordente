@@ -1,6 +1,6 @@
 import { Menu } from "@grammyjs/menu";
 import { MyContext } from "../context";
-import { createEvent } from "../utils/models/event";
+import { createEvent } from "../models/event";
 import { printEventHandler } from "../handlers/event";
 
 type MenuMiddleware = Parameters<Menu<MyContext>["text"]>[1];

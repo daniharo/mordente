@@ -1,5 +1,5 @@
 import { Ensemble, Event, Prisma } from "@prisma/client";
-import prisma from "../../prisma/PrismaClient";
+import prisma from "../prisma/PrismaClient";
 
 export const getAllEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
   prisma.event.findMany({ where: { ensembleId } });

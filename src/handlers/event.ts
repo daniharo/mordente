@@ -1,13 +1,13 @@
 import { Ensemble, Event } from "@prisma/client";
 import { MyContext } from "../context";
-import { userIsMember } from "../utils/models/membership";
+import { userIsMember } from "../models/membership";
 import {
   getCurrentEventsForEnsemble,
   getEvent,
   getFutureEventsForEnsemble,
-} from "../utils/models/event";
+} from "../models/event";
 import { InlineKeyboard } from "grammy";
-import { isAdmin } from "../utils/models/admin";
+import { isAdmin } from "../models/admin";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {

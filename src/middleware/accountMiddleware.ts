@@ -1,5 +1,5 @@
 import { Context, MiddlewareFn, SessionFlavor } from "grammy";
-import { createUser, getUser, updateUser } from "../utils/models/user";
+import { createUser, getUser, updateUser } from "../models/user";
 import { User } from "@prisma/client";
 
 export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
