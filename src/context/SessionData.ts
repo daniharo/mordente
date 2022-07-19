@@ -2,6 +2,7 @@ import { AccountSessionData } from "../middleware/accountMiddleware";
 import { Ensemble, Membership } from "@prisma/client";
 import { CREATE_EVENT_STEPS } from "../composers/createEvent";
 import { ValueOf } from "../utilityTypes";
+import { CalendarOptions } from "../calendar/CalendarHelper";
 export interface SessionData extends AccountSessionData {
   step: "idle" | "create_ensemble_name" | ValueOf<typeof CREATE_EVENT_STEPS>;
   ensembleId?: Ensemble["id"];
@@ -13,8 +14,14 @@ export interface SessionData extends AccountSessionData {
     eventType?: string;
     description?: string;
   };
+  calendarOptions: Partial<CalendarOptions>;
 }
 
 export const createInitialSessionData: () => SessionData = () => {
-  return { step: "idle", userId: undefined, createEvent: {} };
+  return {
+    step: "idle",
+    userId: undefined,
+    createEvent: {},
+    calendarOptions: {},
+  };
 };
