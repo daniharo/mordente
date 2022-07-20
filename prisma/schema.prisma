@@ -146,5 +146,5 @@ enum AttendanceAnswer {
 model Session {
   id    Int    @id @default(autoincrement())
   key   String @unique
-  value Json
+  value String
 }
