@@ -22,6 +22,7 @@ import { calendarMenu } from "./menus/calendarMenu";
 import { useMordenteCommand } from "./middleware/useMordenteCommand";
 import { eventMenu } from "./menus/eventMenu";
 import { PrismaStorageAdapter } from "./storageAdapter/PrismaStorageAdapter";
+import prisma from "./prisma/PrismaClient";
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
 bot.use(
   session({
     initial: createInitialSessionData,
-    storage: new PrismaStorageAdapter(),
+    storage: new PrismaStorageAdapter(prisma.session),
   })
 );
 bot.use(useFluent({ fluent }));
