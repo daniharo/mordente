@@ -21,11 +21,17 @@ import { useCreateEvent } from "./composers/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
 import { useMordenteCommand } from "./middleware/useMordenteCommand";
 import { eventMenu } from "./menus/eventMenu";
+import { PrismaStorageAdapter } from "./storageAdapter/PrismaStorageAdapter";
 
 dotenv.config();
 
 const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
-bot.use(session({ initial: createInitialSessionData }));
+bot.use(
+  session({
+    initial: createInitialSessionData,
+    storage: new PrismaStorageAdapter(),
+  })
+);
 bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
 bot.use(useAccount);

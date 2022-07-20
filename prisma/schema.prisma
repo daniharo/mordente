@@ -142,3 +142,9 @@ enum AttendanceAnswer {
   NO
   UNKNOWN
 }
+
+model Session {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value Json
+}
