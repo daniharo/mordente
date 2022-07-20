@@ -2,28 +2,40 @@ import { Context, MiddlewareFn, SessionFlavor } from "grammy";
 import { createUser, getUser, updateUser } from "../models/user";
 import { User } from "@prisma/client";
 
+const REFRESH_DATA_DAYS = 1;
+
+const daysBetweenDates = (date1: Date, date2: Date) => {
+  const difference = date2.getTime() - date1.getTime();
+  return difference / (1000 * 3600 * 24);
+};
+
 export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
   ctx,
   next
 ) => {
-  if (ctx.from?.id === undefined) {
+  if (ctx.from === undefined || ctx.from.is_bot) {
     await next();
     return;
   }
-  if (!ctx.session.userId) {
-    let user = await getUser({ userUid: ctx.from!.id });
+  const now = new Date();
+  if (
+    !ctx.session.userId ||
+    !ctx.session.lastUpdate ||
+    daysBetweenDates(ctx.session.lastUpdate, now) > REFRESH_DATA_DAYS
+  ) {
+    let user = await getUser({ userUid: ctx.from.id });
     if (!user) {
       user = await createUser({
-        uid: ctx.from!.id,
-        username: ctx.from?.username,
-        firstName: ctx.from!.first_name,
-        lastName: ctx.from?.last_name,
+        uid: ctx.from.id,
+        username: ctx.from.username,
+        firstName: ctx.from.first_name,
+        lastName: ctx.from.last_name,
       });
     }
     if (
-      (ctx.from.username && user.username !== ctx.from.username) ||
-      (ctx.from.first_name && user.firstName !== ctx.from.first_name) ||
-      (ctx.from.last_name && user.lastName !== ctx.from.last_name)
+      user.username !== ctx.from.username ||
+      user.firstName !== ctx.from.first_name ||
+      user.lastName !== ctx.from.last_name
     ) {
       user = await updateUser({
         uid: user.uid,
@@ -35,6 +47,7 @@ export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
       });
     }
     ctx.session.userId = user.id;
+    ctx.session.lastUpdate = now;
   }
   ctx.userId = ctx.session.userId;
   await next();
@@ -47,4 +60,5 @@ export type AccountContextFlavor = Context &
 
 export type AccountSessionData = {
   userId?: User["id"];
+  lastUpdate?: Date;
 };
