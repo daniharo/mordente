@@ -40,3 +40,10 @@ export const getEvent = (eventId: Event["id"]) =>
       id: eventId,
     },
   });
+
+export const deleteEvent = (eventId: Event["id"]) =>
+  prisma.event.delete({
+    where: {
+      id: eventId,
+    },
+  });

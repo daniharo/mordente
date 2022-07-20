@@ -8,6 +8,7 @@ import {
 } from "../models/event";
 import { InlineKeyboard } from "grammy";
 import { isAdmin } from "../models/admin";
+import { eventMenu } from "../menus/eventMenu";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
@@ -43,7 +44,9 @@ export const printEventHandler =
       await ctx.reply("No participas en la agrupación.");
       return;
     }
+    ctx.session.eventId = eventId;
     await ctx.reply(ctx.templates.eventDetailTemplate({ event }), {
       parse_mode: "HTML",
+      reply_markup: eventMenu,
     });
   };

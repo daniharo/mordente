@@ -20,6 +20,7 @@ import { createInitialSessionData } from "./context/SessionData";
 import { useCreateEvent } from "./composers/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
 import { useMordenteCommand } from "./middleware/useMordenteCommand";
+import { eventMenu } from "./menus/eventMenu";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ bot.use(useTemplates);
 bot.use(useAccount);
 bot.use(startMenu);
 bot.use(calendarMenu);
+bot.use(eventMenu);
 bot.use(ensembleMenu);
 bot.use(membershipMenu);
 bot.use(useCreateEvent);
