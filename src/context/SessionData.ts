@@ -22,7 +22,6 @@ export interface SessionData extends AccountSessionData {
 export const createInitialSessionData: () => SessionData = () => {
   return {
     step: "idle",
-    userId: undefined,
     createEvent: {},
     calendarOptions: {},
   };
