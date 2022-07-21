@@ -4,6 +4,7 @@ import { MyContext } from "../context";
 
 const templateKeys = Object.keys(templates) as (keyof typeof templates)[];
 
+/* eslint-disable */
 export const useTemplates: MiddlewareFn<MyContext> = async (
   ctx,
   next // is an alias for: () => Promise<void>
@@ -16,3 +17,4 @@ export const useTemplates: MiddlewareFn<MyContext> = async (
   ctx.templates = Object.fromEntries(templateEntries);
   await next();
 };
+/* eslint-enable */

@@ -20,7 +20,8 @@ export const getCommandFromMessage = (message: Message) => {
   if (!message.entities || !message.text) return null;
   const commandEntity = message.entities.find(
     (entity) => entity.type === "bot_command"
-  )!;
+  );
+  if (!commandEntity) return null;
   return message.text.substring(
     commandEntity.offset + 1,
     commandEntity.offset + commandEntity.length

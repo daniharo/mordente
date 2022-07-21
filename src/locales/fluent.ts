@@ -7,6 +7,6 @@ const fluent = new Fluent();
     locales: "es",
     filePath: [`${__dirname}/es.ftl`],
   });
-})();
+})().catch((reason) => console.error("Couldn't load translations", reason));
 
 export default fluent;

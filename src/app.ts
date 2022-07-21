@@ -43,13 +43,15 @@ bot.use(ensembleMenu);
 bot.use(membershipMenu);
 bot.use(useCreateEvent);
 
-bot.api.setMyCommands([
-  { command: "start", description: "Iniciar el bot" },
-  { command: "my_list", description: "Ver mis agrupaciones" },
-  { command: "create", description: "Crear una agrupación" },
-  { command: "join", description: "Unirme a una agrupación" },
-  { command: "cancel", description: "Cancelar operación" },
-]);
+bot.api
+  .setMyCommands([
+    { command: "start", description: "Iniciar el bot" },
+    { command: "my_list", description: "Ver mis agrupaciones" },
+    { command: "create", description: "Crear una agrupación" },
+    { command: "join", description: "Unirme a una agrupación" },
+    { command: "cancel", description: "Cancelar operación" },
+  ])
+  .catch((reason) => console.error("Couldn't set commands", reason));
 
 bot.command("start", async (ctx) => {
   const joinCode = ctx.match;
@@ -100,4 +102,4 @@ router.route("create_ensemble_name", async (ctx) => {
 });
 
 bot.use(router);
-bot.start();
+bot.start().catch((reason) => console.error("Couldn't start the bot", reason));

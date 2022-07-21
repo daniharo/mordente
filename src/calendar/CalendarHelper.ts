@@ -67,7 +67,7 @@ export class CalendarHelper {
 
   #addHeader(keyboard: InlineKeyboard, date: Date) {
     const monthName = this.#options.monthNames[date.getMonth()];
-    let year = date.getFullYear();
+    const year = date.getFullYear();
 
     if (this.#isInMinMonth(date)) {
       // this is min month, I push an empty button
@@ -76,7 +76,7 @@ export class CalendarHelper {
       keyboard.text("<", "calendar-telegram-prev-" + toYyyymmdd(date));
     }
 
-    keyboard.text(monthName + " " + year, "calendar-telegram-ignore-monthname");
+    keyboard.text(`${monthName} ${year}`, "calendar-telegram-ignore-monthname");
 
     if (this.#isInMaxMonth(date)) {
       // this is max month, I push an empty button
@@ -94,7 +94,7 @@ export class CalendarHelper {
     keyboard.add(
       ...weekDays.map((e, i) => ({
         text: e,
-        callback_data: "calendar-telegram-ignore-weekday" + i,
+        callback_data: `calendar-telegram-ignore-weekday-${i}`,
       }))
     );
   }
@@ -245,7 +245,7 @@ const buildFillerRow: (prefix: string) => InlineKeyboardButton[] = (
   const buttonKey = "calendar-telegram-ignore-filler-" + prefix;
   return Array.from({ length: 7 }, (v, k) => ({
     text: " ",
-    callback_data: buttonKey + k,
+    callback_data: `${buttonKey}${k}`,
   }));
 };
 
@@ -276,12 +276,12 @@ const isSameMonth = (myDate: Date, testDate: Date) => {
 };
 
 const toYyyymmdd = (date: Date) => {
-  let mm = date.getMonth() + 1; // getMonth() is zero-based
-  let dd = date.getDate();
+  const mm = date.getMonth() + 1; // getMonth() is zero-based
+  const dd = date.getDate();
 
   return [
     date.getFullYear(),
-    (mm > 9 ? "" : "0") + mm,
-    (dd > 9 ? "" : "0") + dd,
+    `${mm > 9 ? "" : "0"}${mm}`,
+    `${dd > 9 ? "" : "0"}${dd}`,
   ].join("-");
 };

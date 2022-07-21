@@ -33,7 +33,7 @@ export class Calendar<T extends CustomContext = CustomContext>
       ctx.api.config.use(async (prev, method, payload, signal) => {
         const p: Record<string, unknown> = payload;
         if (Array.isArray(p.results)) {
-          p.results.map((r) => this.prepare(r, ctx));
+          p.results.map((r) => this.prepare(r as Record<string, unknown>, ctx));
         } else {
           this.prepare(p, ctx);
         }

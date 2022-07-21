@@ -8,16 +8,21 @@ import { printEventHandler } from "../../handlers/event";
 
 const commandComposer = new Composer<MyContext>();
 
-commandComposer.on("message:entities:bot_command", async (ctx) => {
-  const commandText = getCommandFromMessage(ctx.msg)!;
+commandComposer.on("message:entities:bot_command", async (ctx, next) => {
+  const commandText = getCommandFromMessage(ctx.msg);
+  if (!commandText) {
+    await next();
+    return;
+  }
   const command = analizeCommand(commandText);
 
   if (!command?.id) {
+    await next();
     return;
   }
 
   switch (command?.type) {
-    case "ensemble":
+    case "ensemble": {
       const ensemble = await getEnsemble({ ensembleId: command?.id });
       if (!ensemble) {
         await ctx.reply("Agrupación no encontrada");
@@ -25,6 +30,7 @@ commandComposer.on("message:entities:bot_command", async (ctx) => {
       }
       await printEnsembleHandler(ensemble)(ctx);
       break;
+    }
     case "membership":
       if (!command.id) {
         await ctx.reply("Comando no válido.");
