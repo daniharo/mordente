@@ -18,10 +18,13 @@ export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
     return;
   }
   const now = new Date();
+  const lastUpdate = ctx.session.lastUpdate
+    ? new Date(ctx.session.lastUpdate)
+    : undefined;
   if (
     !ctx.session.userId ||
-    !ctx.session.lastUpdate ||
-    daysBetweenDates(ctx.session.lastUpdate, now) > REFRESH_DATA_DAYS
+    !lastUpdate ||
+    daysBetweenDates(lastUpdate, now) > REFRESH_DATA_DAYS
   ) {
     let user = await getUser({ userUid: ctx.from.id });
     if (!user) {
@@ -47,7 +50,7 @@ export const useAccount: MiddlewareFn<AccountContextFlavor> = async (
       });
     }
     ctx.session.userId = user.id;
-    ctx.session.lastUpdate = now;
+    ctx.session.lastUpdate = now.toISOString();
   }
   ctx.userId = ctx.session.userId;
   await next();
@@ -60,5 +63,5 @@ export type AccountContextFlavor = Context &
 
 export type AccountSessionData = {
   userId?: User["id"];
-  lastUpdate?: Date;
+  lastUpdate?: string;
 };
