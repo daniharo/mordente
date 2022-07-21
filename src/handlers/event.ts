@@ -25,7 +25,7 @@ export const listEventsHandler =
       : undefined;
     await ctx.reply(
       ctx.templates.eventsSummaryTemplate({ currentEvents, futureEvents }),
-      { reply_markup: menu }
+      { reply_markup: menu, parse_mode: "HTML" }
     );
   };
 
