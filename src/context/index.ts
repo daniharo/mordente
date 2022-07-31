@@ -3,7 +3,7 @@ import { FluentContextFlavor } from "@grammyjs/fluent";
 import * as templates from "../utils/templates";
 import { AccountContextFlavor } from "../middleware/useAccount";
 import { SessionData } from "./SessionData";
-import { CalendarContext } from "../calendar/calendarMenuMiddleware";
+import { CalendarContext } from "grammy-calendar";
 
 type Templates = {
   [p in keyof typeof templates]: (

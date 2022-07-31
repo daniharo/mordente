@@ -52,6 +52,14 @@
   resolved "https://registry.yarnpkg.com/@fluent/langneg/-/langneg-0.6.1.tgz#08d82751b330e1751777ebe4be3fbbee9d8867e8"
   integrity sha512-BlP1MNHEtTRKd2Mq/twrFtHIzIBK4snG3t3dKAE1OR6RPOlxt7fzx7Q4jQvBrMPkm6OTg0u6d0ZrcH9XkSvINQ==
 
+"@grammyjs/conversations@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@grammyjs/conversations/-/conversations-0.6.2.tgz#893b8669a80b4e02841bd6ca666523d03a094cae"
+  integrity sha512-z3ZnNSZ3QwCse0KZ66Na1kYmnwXZW0r7L694mRKHA3BojCcrNPsJrD+AACEabA8Sz20/iYdU2C28myQKhUoRWw==
+  dependencies:
+    "@grammyjs/types" "^2.7.0"
+    debug "^4.3.4"
+
 "@grammyjs/fluent@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@grammyjs/fluent/-/fluent-1.0.3.tgz#e9882503e75db6135aa3cf585f51c45913288ef3"
@@ -72,7 +80,7 @@
   resolved "https://registry.yarnpkg.com/@grammyjs/storage-prisma/-/storage-prisma-2.0.0.tgz#5f7a10db256e9cc77838f7d75c51e931c790e006"
   integrity sha512-gAE3VdbGqt3BlpVkWqEHRpKBON7iOXxztsA4UqqVRIowwKSbfZadbEUDxZfdgQRFmH9v7rSTGsOIkZYNv0Csgw==
 
-"@grammyjs/types@^2.8.1":
+"@grammyjs/types@^2.7.0", "@grammyjs/types@^2.8.1":
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@grammyjs/types/-/types-2.8.1.tgz#5e453c07b67c39e29fe2129f5578b9014883a046"
   integrity sha512-cdeagnRnpahbwxyM4XOQR3EQwKnsmEsIktwRlQNyDz3IXI9YBvbRq2lDtufHxO4t6X07mm1+DiwjKEeYCec5bA==
@@ -889,6 +897,14 @@ globby@^11.1.0:
     ignore "^5.2.0"
     merge2 "^1.4.1"
     slash "^3.0.0"
+
+grammy-calendar@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/grammy-calendar/-/grammy-calendar-0.0.2.tgz#4e42e7662a71a34370075522f17170e1e7fd9416"
+  integrity sha512-g+fmRPUL2jqxymzh/Q5f2EKV1CH0ZAZHWUKLGEecIOeQEP8c4nAjlPotmlSS5UgiOl6qMOidmbZ8rKH+jIF0fg==
+  dependencies:
+    "@grammyjs/types" "^2.7.0"
+    debug "^4.3.4"
 
 grammy@^1.9.1:
   version "1.9.1"
