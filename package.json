@@ -11,7 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@grammyjs/conversations": "^0.7.4",
+    "@grammyjs/conversations": "^1.0.1",
     "@grammyjs/fluent": "^1.0.3",
     "@grammyjs/menu": "^1.1.2",
     "@grammyjs/router": "^2.0.0",
@@ -19,7 +19,7 @@
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^4.1.0",
     "dotenv": "^16.0.1",
-    "grammy": "^1.9.1",
+    "grammy": "^1.10.0",
     "grammy-calendar": "^0.0.2",
     "pug": "^3.0.2"
   },
