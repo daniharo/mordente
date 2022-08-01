@@ -1,4 +1,4 @@
-import { Bot, session } from "grammy";
+import { Bot, GrammyError, HttpError, session } from "grammy";
 import dotenv from "dotenv";
 import { useFluent } from "@grammyjs/fluent";
 import fluent from "./locales/fluent";
@@ -86,6 +86,19 @@ bot.command("my_list", async (ctx) => {
 });
 
 bot.use(useMordenteCommand);
+
+bot.catch((err) => {
+  const ctx = err.ctx;
+  console.error(`Error while handling update ${ctx.update.update_id}:`);
+  const e = err.error;
+  if (e instanceof GrammyError) {
+    console.error("Error in request:", e.description);
+  } else if (e instanceof HttpError) {
+    console.error("Could not contact Telegram:", e);
+  } else {
+    console.error("Unknown error:", e);
+  }
+});
 
 const router = new Router<MyContext>((ctx) => ctx.session.step);
 
