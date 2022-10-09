@@ -2,7 +2,7 @@ import { Ensemble, Event, Membership } from "@prisma/client";
 import { CalendarOptions } from "grammy-calendar";
 
 export type SessionData = {
-  step: "idle" | "create_ensemble_name";
+  step: "idle";
   ensembleId?: Ensemble["id"];
   membershipId?: Membership["id"];
   eventId?: Event["id"];

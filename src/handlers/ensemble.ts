@@ -4,10 +4,10 @@ import { ensembleMenu } from "../menus/ensembleMenu";
 import { deleteEnsemble } from "../models/ensemble";
 import { userIsMember } from "../models/membership";
 import { isAdmin } from "../models/admin";
+import { createEnsembleConversation } from "../conversations/createEnsemble";
 
 export const createEnsembleHandler = async (ctx: MyContext) => {
-  await ctx.reply(ctx.t("create_command_answer"));
-  ctx.session.step = "create_ensemble_name";
+  await ctx.conversation.enter(createEnsembleConversation.name);
 };
 
 export const printEnsembleHandler =

@@ -129,5 +129,5 @@ useCreateEvent.callbackQuery(/create_event_(\d+)/, async (ctx) => {
   const match = ctx?.match?.[1];
   if (!match) return;
   ctx.session.ensembleId = +match;
-  await ctx.conversation.enter("createEventConversation");
+  await ctx.conversation.enter(createEventConversation.name);
 });

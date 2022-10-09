@@ -5,12 +5,8 @@ import fluent from "./locales/fluent";
 import { MyContext } from "./context";
 import { useTemplates } from "./middleware/useTemplates";
 import { startMenu } from "./menus/startMenu";
-import { createEnsemble } from "./models/ensemble";
 import { Router } from "@grammyjs/router";
-import {
-  createEnsembleHandler,
-  printEnsembleHandler,
-} from "./handlers/ensemble";
+import { createEnsembleHandler } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/useAccount";
 import { joinEnsembleHandler } from "./handlers/membership";
@@ -24,6 +20,7 @@ import { eventMenu } from "./menus/eventMenu";
 import { PrismaAdapter } from "@grammyjs/storage-prisma";
 import prisma from "./prisma/PrismaClient";
 import { conversations } from "@grammyjs/conversations";
+import { useCreateEnsemble } from "./conversations/createEnsemble";
 
 dotenv.config();
 
@@ -44,6 +41,7 @@ bot.use(eventMenu);
 bot.use(ensembleMenu);
 bot.use(membershipMenu);
 bot.use(useCreateEvent);
+bot.use(useCreateEnsemble);
 
 bot.api
   .setMyCommands([
@@ -105,18 +103,6 @@ bot.catch(async (err) => {
 });
 
 const router = new Router<MyContext>((ctx) => ctx.session.step);
-
-router.route("create_ensemble_name", async (ctx) => {
-  const ensembleName = ctx.msg?.text;
-  if (!ensembleName) return;
-  const ensemble = await createEnsemble({
-    userId: ctx.userId,
-    name: ensembleName,
-    joinCodeEnabled: true,
-  });
-  await printEnsembleHandler(ensemble)(ctx);
-  ctx.session.step = "idle";
-});
 
 bot.use(router);
 bot
