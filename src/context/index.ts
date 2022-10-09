@@ -4,6 +4,7 @@ import * as templates from "../utils/templates";
 import { AccountContextFlavor } from "../middleware/useAccount";
 import { SessionData } from "./SessionData";
 import { CalendarContext } from "grammy-calendar";
+import { type ConversationFlavor } from "@grammyjs/conversations";
 
 type Templates = {
   [p in keyof typeof templates]: (
@@ -17,6 +18,7 @@ export interface TemplateContext {
 
 export type MyContext = Context &
   SessionFlavor<SessionData> &
+  ConversationFlavor &
   FluentContextFlavor &
   AccountContextFlavor &
   CalendarContext &

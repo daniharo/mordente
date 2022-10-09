@@ -1,10 +1,9 @@
-import { AccountSessionData } from "../middleware/useAccount";
 import { Ensemble, Event, Membership } from "@prisma/client";
 import { CREATE_EVENT_STEPS } from "../composers/createEvent";
 import { ValueOf } from "../utilityTypes";
 import { CalendarOptions } from "grammy-calendar";
 
-export interface SessionData extends AccountSessionData {
+export type SessionData = {
   step: "idle" | "create_ensemble_name" | ValueOf<typeof CREATE_EVENT_STEPS>;
   ensembleId?: Ensemble["id"];
   membershipId?: Membership["id"];
@@ -17,7 +16,7 @@ export interface SessionData extends AccountSessionData {
     description?: string;
   };
   calendarOptions: CalendarOptions;
-}
+};
 
 export const createInitialSessionData: () => SessionData = () => {
   return {
