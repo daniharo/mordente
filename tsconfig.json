@@ -3,10 +3,11 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "sourceMap": true,
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
   "lib": ["esnext"]
 }

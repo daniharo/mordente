@@ -16,13 +16,14 @@ import { useAccount } from "./middleware/useAccount";
 import { joinEnsembleHandler } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
 import { getMembershipsForUser } from "./models/membership";
-import { createInitialSessionData } from "./context/SessionData";
-import { useCreateEvent } from "./composers/createEvent";
+import { createInitialSessionData, SessionData } from "./context/SessionData";
+import { useCreateEvent } from "./conversations/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
 import { useMordenteCommand } from "./middleware/useMordenteCommand";
 import { eventMenu } from "./menus/eventMenu";
 import { PrismaAdapter } from "@grammyjs/storage-prisma";
 import prisma from "./prisma/PrismaClient";
+import { conversations } from "@grammyjs/conversations";
 
 dotenv.config();
 
@@ -30,12 +31,13 @@ const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
 bot.use(
   session({
     initial: createInitialSessionData,
-    storage: new PrismaAdapter(prisma.session),
+    storage: new PrismaAdapter<SessionData>(prisma.session),
   })
 );
 bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
 bot.use(useAccount);
+bot.use(conversations());
 bot.use(startMenu);
 bot.use(calendarMenu);
 bot.use(eventMenu);
@@ -72,6 +74,7 @@ bot.command("create", async (ctx) => {
 
 bot.command("cancel", async (ctx) => {
   ctx.session.step = "idle";
+  await ctx.conversation.exit();
   await ctx.reply(ctx.t("operation_cancelled"));
 });
 
@@ -87,7 +90,7 @@ bot.command("my_list", async (ctx) => {
 
 bot.use(useMordenteCommand);
 
-bot.catch((err) => {
+bot.catch(async (err) => {
   const ctx = err.ctx;
   console.error(`Error while handling update ${ctx.update.update_id}:`);
   const e = err.error;
@@ -97,6 +100,7 @@ bot.catch((err) => {
     console.error("Could not contact Telegram:", e);
   } else {
     console.error("Unknown error:", e);
+    await ctx.reply("There was an error handling your message :(");
   }
 });
 
@@ -115,4 +119,7 @@ router.route("create_ensemble_name", async (ctx) => {
 });
 
 bot.use(router);
-bot.start().catch((reason) => console.error("Couldn't start the bot", reason));
+bot
+  .start()
+  .then(() => console.log("Bot started!"))
+  .catch((reason) => console.error("Couldn't start the bot", reason));
