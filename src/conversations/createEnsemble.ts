@@ -1,9 +1,9 @@
 import { Composer } from "grammy";
 import { MyContext } from "../context";
-import { Conversation, createConversation } from "@grammyjs/conversations";
+import { createConversation } from "@grammyjs/conversations";
 import { printEnsembleHandler } from "../handlers/ensemble";
 import { createEnsemble } from "../models/ensemble";
-type MyConversation = Conversation<MyContext>;
+import { MyConversation } from "./utils";
 
 export const useCreateEnsemble = new Composer<MyContext>();
 

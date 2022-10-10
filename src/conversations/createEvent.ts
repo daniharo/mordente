@@ -1,45 +1,19 @@
-import { Conversation, createConversation } from "@grammyjs/conversations";
+import { createConversation } from "@grammyjs/conversations";
 import { MyContext } from "../context";
 import { Composer, InlineKeyboard } from "grammy";
 import { isAdmin } from "../models/admin";
 import { calendarMenu } from "../menus/calendarMenu";
 import { createEvent } from "../models/event";
 import { printEventHandler } from "../handlers/event";
-
-type MyConversation = Conversation<MyContext>;
+import {
+  getMandatoryText,
+  getTextOrSkip,
+  MyConversation,
+  removeSkipButton,
+  SKIP_QUERY,
+} from "./utils";
 
 export const useCreateEvent = new Composer<MyContext>();
-
-const skipQuery = "skip";
-
-const removeSkipButton = async (ctx: MyContext) => {
-  if (ctx.callbackQuery?.data === skipQuery) {
-    await ctx.answerCallbackQuery("¡Siguiente paso!");
-    await ctx.editMessageReplyMarkup();
-  }
-};
-
-async function getMandatoryText(conversation: MyConversation, ctx: MyContext) {
-  ctx = await conversation.wait();
-  while (!ctx.msg?.text) {
-    await ctx.reply(
-      "Eso no es un mensaje de texto... Por favor, envíamelo de nuevo en un mensaje de texto"
-    );
-    ctx = await conversation.wait();
-  }
-  return ctx.msg.text;
-}
-async function getTextOrSkip(conversation: MyConversation, ctx: MyContext) {
-  ctx = await conversation.wait();
-  while (!ctx.msg?.text && ctx.callbackQuery?.data !== skipQuery) {
-    await ctx.reply(
-      "Eso no es un mensaje de texto... Por favor, envíamelo de nuevo en un mensaje de texto"
-    );
-    ctx = await conversation.wait();
-  }
-  await removeSkipButton(ctx);
-  return ctx.callbackQuery?.data ? undefined : ctx.msg?.text;
-}
 
 export async function createEventConversation(
   conversation: MyConversation,
@@ -61,9 +35,9 @@ export async function createEventConversation(
   }
   await ctx.reply("Por favor, dime el nombre del evento");
   ctx = await conversation.wait();
-  const name = await getMandatoryText(conversation, ctx);
+  const name = await getMandatoryText(conversation);
 
-  const skipMenu = new InlineKeyboard().text("Saltar", skipQuery);
+  const skipMenu = new InlineKeyboard().text("Saltar", SKIP_QUERY);
   await ctx.reply("Ahora dime la descripción del evento", {
     reply_markup: skipMenu,
   });
@@ -77,7 +51,8 @@ export async function createEventConversation(
     reply_markup: calendarMenu,
   });
   ctx = await conversation.waitUntil(
-    (ctx) => !!ctx.calendarSelectedDate || ctx.callbackQuery?.data === skipQuery
+    (ctx) =>
+      !!ctx.calendarSelectedDate || ctx.callbackQuery?.data === SKIP_QUERY
   );
   await removeSkipButton(ctx);
   const startDate = ctx.calendarSelectedDate;
@@ -87,7 +62,8 @@ export async function createEventConversation(
     reply_markup: calendarMenu,
   });
   ctx = await conversation.waitUntil(
-    (ctx) => !!ctx.calendarSelectedDate || ctx.callbackQuery?.data === skipQuery
+    (ctx) =>
+      !!ctx.calendarSelectedDate || ctx.callbackQuery?.data === SKIP_QUERY
   );
   await removeSkipButton(ctx);
   const endDate = ctx.calendarSelectedDate;
