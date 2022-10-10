@@ -29,17 +29,17 @@ export const printEnsembleHandler =
   };
 
 export const deleteEnsembleHandler =
-  (ensemble: Ensemble) => async (ctx: MyContext) => {
+  (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
     if (
       !(await isAdmin({
         userId: ctx.userId,
-        ensembleId: ensemble.id,
+        ensembleId: ensembleId,
       }))
     ) {
       await ctx.reply("No eres administrador de esta agrupación.");
       return;
     }
-    await deleteEnsemble({ ensembleId: ensemble.id });
+    const ensemble = await deleteEnsemble(ensembleId);
     await ctx.reply(`La agrupación "${ensemble.name}" ha sido eliminada.`);
   };
 

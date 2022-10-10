@@ -42,11 +42,7 @@ export const updateEnsemble = async ({
   });
 };
 
-export const deleteEnsemble = async ({
-  ensembleId,
-}: {
-  ensembleId: Ensemble["id"];
-}) => {
+export const deleteEnsemble = async (ensembleId: Ensemble["id"]) => {
   return prisma.ensemble.delete({ where: { id: ensembleId } });
 };
 

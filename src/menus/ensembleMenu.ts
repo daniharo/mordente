@@ -54,10 +54,10 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
       range
         .row()
         .text("Eliminar", async (ctx) => {
-          const ensemble = await getEnsemble({ ensembleId });
-          if (ensemble) {
-            await deleteEnsembleHandler(ensemble)(ctx);
-          }
+          ctx.session.ensembleId = ensembleId;
+          await ctx.reply("¿Seguro que quieres eliminar la agrupación?", {
+            reply_markup: deleteConfirmationMenu,
+          });
         })
         .row();
     }
@@ -83,4 +83,20 @@ export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
   }
 );
 
+const deleteConfirmationMenu = new Menu<MyContext>(
+  "ensembleDeleteConfirmationMenu"
+).dynamic((ctx, range) => {
+  const { ensembleId } = ctx.session;
+  if (!ensembleId) {
+    return;
+  }
+  range
+    .text("Sí", async (ctx) => {
+      await deleteEnsembleHandler(ensembleId)(ctx);
+      ctx.menu.close();
+    })
+    .text("No", (ctx) => ctx.deleteMessage());
+});
+
+ensembleMenu.register(deleteConfirmationMenu);
 ensembleMenu.register(membershipMenu);
