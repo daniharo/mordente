@@ -1,6 +1,6 @@
 import { Menu } from "@grammyjs/menu";
 import { MyContext } from "../context";
-import { deleteEvent, getEvent } from "../models/event";
+import { deleteEvent, getEvent, updateEventStatus } from "../models/event";
 import { userIsMember } from "../models/membership";
 import { isAdmin } from "../models/admin";
 
@@ -28,6 +28,13 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
       ensembleId: event.ensembleId,
     });
     if (userIsAdmin) {
+      if (event.status === "DRAFT") {
+        range.text("Publicar", async (ctx) => {
+          const event = await updateEventStatus(eventId, "PUBLISHED");
+          await ctx.reply(`El evento "${event.name}" ha sido publicado.`);
+          ctx.menu.close();
+        });
+      }
       range
         .text("Eliminar", async (ctx) => {
           await ctx.reply("¿Seguro que quieres eliminar el evento?", {

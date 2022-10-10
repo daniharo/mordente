@@ -1,4 +1,4 @@
-import { Ensemble, Event, Prisma } from "@prisma/client";
+import { Ensemble, Event, Prisma, EventStatus } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const getAllEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
@@ -45,5 +45,15 @@ export const deleteEvent = (eventId: Event["id"]) =>
   prisma.event.delete({
     where: {
       id: eventId,
+    },
+  });
+
+export const updateEventStatus = (eventId: Event["id"], status: EventStatus) =>
+  prisma.event.update({
+    where: {
+      id: eventId,
+    },
+    data: {
+      status: status,
     },
   });
