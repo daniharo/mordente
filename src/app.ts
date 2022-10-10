@@ -21,6 +21,7 @@ import { PrismaAdapter } from "@grammyjs/storage-prisma";
 import prisma from "./prisma/PrismaClient";
 import { conversations } from "@grammyjs/conversations";
 import { useCreateEnsemble } from "./conversations/createEnsemble";
+import { useAttendanceConversation } from "./conversations/attendance";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
 bot.use(useAccount);
 bot.use(conversations());
+bot.use(useAttendanceConversation);
 bot.use(startMenu);
 bot.use(calendarMenu);
 bot.use(eventMenu);

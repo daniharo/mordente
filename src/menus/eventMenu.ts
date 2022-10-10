@@ -7,6 +7,7 @@ import {
   getEventAssignation,
   upsertEventAssignationAnswer,
 } from "../models/eventAssignation";
+import { attendanceConversation } from "../conversations/attendance";
 
 export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
   async (ctx, range) => {
@@ -33,15 +34,27 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
       .text(
         `Asistiré${assignation?.attendance === "YES" ? " ✅" : ""}`,
         async (ctx) => {
-          await upsertEventAssignationAnswer(eventId, ctx.userId, "YES");
+          await upsertEventAssignationAnswer(
+            eventId,
+            ctx.userId,
+            "YES",
+            undefined
+          );
           ctx.menu.update();
         }
       )
       .text(
         `No asistiré${assignation?.attendance === "NO" ? " ✅" : ""}`,
         async (ctx) => {
-          await upsertEventAssignationAnswer(eventId, ctx.userId, "NO");
+          await upsertEventAssignationAnswer(
+            eventId,
+            ctx.userId,
+            "NO",
+            undefined
+          );
           ctx.menu.update();
+          ctx.session.eventId = eventId;
+          await ctx.conversation.enter(attendanceConversation.name);
         }
       )
       .row();

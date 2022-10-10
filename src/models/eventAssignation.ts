@@ -1,4 +1,9 @@
-import { User, Event, AttendanceAnswer } from "@prisma/client";
+import {
+  User,
+  Event,
+  AttendanceAnswer,
+  EventAssignedUser,
+} from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const getEventAssignation = (eventId: Event["id"], userId: User["id"]) =>
@@ -9,7 +14,10 @@ export const getEventAssignation = (eventId: Event["id"], userId: User["id"]) =>
 export const upsertEventAssignationAnswer = (
   eventId: Event["id"],
   userId: User["id"],
-  attendance: AttendanceAnswer
+  attendance: AttendanceAnswer,
+  attendanceJustification:
+    | EventAssignedUser["attendanceJustification"]
+    | undefined
 ) =>
   prisma.eventAssignedUser.upsert({
     where: { eventId_userId: { userId, eventId } },
@@ -17,10 +25,12 @@ export const upsertEventAssignationAnswer = (
       eventId,
       userId,
       attendance,
+      attendanceJustification,
     },
     update: {
       eventId,
       userId,
       attendance,
+      attendanceJustification,
     },
   });
