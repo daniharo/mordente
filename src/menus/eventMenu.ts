@@ -3,6 +3,10 @@ import { MyContext } from "../context";
 import { deleteEvent, getEvent, updateEventStatus } from "../models/event";
 import { userIsMember } from "../models/membership";
 import { isAdmin } from "../models/admin";
+import {
+  getEventAssignation,
+  upsertEventAssignationAnswer,
+} from "../models/eventAssignation";
 
 export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
   async (ctx, range) => {
@@ -23,6 +27,25 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
       await ctx.reply("No participas en esta agrupación.");
       return;
     }
+
+    const assignation = await getEventAssignation(eventId, ctx.userId);
+    range
+      .text(
+        `Asistiré${assignation?.attendance === "YES" ? " ✅" : ""}`,
+        async (ctx) => {
+          await upsertEventAssignationAnswer(eventId, ctx.userId, "YES");
+          ctx.menu.update();
+        }
+      )
+      .text(
+        `No asistiré${assignation?.attendance === "NO" ? " ✅" : ""}`,
+        async (ctx) => {
+          await upsertEventAssignationAnswer(eventId, ctx.userId, "NO");
+          ctx.menu.update();
+        }
+      )
+      .row();
+
     const userIsAdmin = await isAdmin({
       userId: ctx.userId,
       ensembleId: event.ensembleId,
