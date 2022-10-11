@@ -38,7 +38,7 @@ export const upsertEventAssignationAnswer = (
 export const getAllAttendances = (eventId: Event["id"]) =>
   prisma.eventAssignedUser.findMany({
     where: { eventId },
-    include: { user: true, event: true },
+    include: { user: true },
   });
 
 export const assignAllMembers = async (eventId: Event["id"]) => {

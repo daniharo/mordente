@@ -4,6 +4,7 @@ import { deleteEvent, getEvent, updateEventStatus } from "../models/event";
 import { userIsMember } from "../models/membership";
 import { isAdmin } from "../models/admin";
 import {
+  getAllAttendances,
   getEventAssignation,
   upsertEventAssignationAnswer,
 } from "../models/eventAssignation";
@@ -73,6 +74,15 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
           ctx.menu.close();
         });
       }
+      range
+        .text("Asistencia prevista", async (ctx) => {
+          const assignations = await getAllAttendances(eventId);
+          await ctx.reply(
+            ctx.templates.eventAssignationsTemplate({ assignations }),
+            { parse_mode: "HTML" }
+          );
+        })
+        .row();
       range
         .text("Eliminar", async (ctx) => {
           await ctx.reply("¿Seguro que quieres eliminar el evento?", {

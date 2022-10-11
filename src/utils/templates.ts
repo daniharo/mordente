@@ -1,6 +1,13 @@
 import pug from "pug";
 import { TranslateFunction } from "@grammyjs/fluent";
-import { Admin, Ensemble, Membership, User, Event } from "@prisma/client";
+import {
+  Admin,
+  Ensemble,
+  Membership,
+  User,
+  Event,
+  EventAssignedUser,
+} from "@prisma/client";
 
 type DefaultTemplateParameter = Parameters<
   ReturnType<typeof pug.compileFile>
@@ -58,4 +65,11 @@ interface EventDetailProps {
 }
 export const eventDetailTemplate = compileFile<EventDetailProps>(
   __dirname + "/../templates/event-detail.pug"
+);
+
+interface EventAssignationProps {
+  assignations: (EventAssignedUser & { user: User })[];
+}
+export const eventAssignationsTemplate = compileFile<EventAssignationProps>(
+  __dirname + "/../templates/ensemble-members.pug"
 );

@@ -1,0 +1,11 @@
+if assignations.length === 0
+    | No hay miembros asignados al evento
+else
+    | Miembros asignados:
+    |
+    |
+    each val, index in assignations
+      | #{index + 1}. 
+      a(href=`tg://${val.user.username}`) #{val.user.firstName} #{val.user.lastName} #{val.attendance === "YES" ? "✅": val.attendance === "NO" ? "❌" : ""}
+      |  #{val.user.attendanceJustification ? `Motivo: ${val.user.attendanceJustification}` : ''}
+      |
