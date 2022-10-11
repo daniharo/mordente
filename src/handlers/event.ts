@@ -9,6 +9,7 @@ import {
 import { InlineKeyboard } from "grammy";
 import { isAdmin } from "../models/admin";
 import { eventMenu } from "../menus/eventMenu";
+import { MyConversation } from "../conversations/utils";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
@@ -30,16 +31,23 @@ export const listEventsHandler =
   };
 
 export const printEventHandler =
-  (eventId: Event["id"]) => async (ctx: MyContext) => {
-    const event = await getEvent(eventId);
+  (eventId: Event["id"]) =>
+  async (ctx: MyContext, conversation?: MyConversation) => {
+    const event = await (conversation
+      ? conversation.external(() => getEvent(eventId))
+      : getEvent(eventId));
     if (!event) {
       await ctx.reply("No se ha encontrado el evento.");
       return;
     }
-    const isMember = await userIsMember({
-      userId: ctx.userId,
-      ensembleId: event.ensembleId,
-    });
+    const getIsMember = () =>
+      userIsMember({
+        userId: ctx.userId,
+        ensembleId: event.ensembleId,
+      });
+    const isMember = await (conversation
+      ? conversation.external(getIsMember)
+      : getIsMember());
     if (!isMember) {
       await ctx.reply("No participas en la agrupación.");
       return;

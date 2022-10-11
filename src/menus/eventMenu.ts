@@ -30,34 +30,36 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
     }
 
     const assignation = await getEventAssignation(eventId, ctx.userId);
-    range
-      .text(
-        `Asistiré${assignation?.attendance === "YES" ? " ✅" : ""}`,
-        async (ctx) => {
-          await upsertEventAssignationAnswer(
-            eventId,
-            ctx.userId,
-            "YES",
-            undefined
-          );
-          ctx.menu.update();
-        }
-      )
-      .text(
-        `No asistiré${assignation?.attendance === "NO" ? " ✅" : ""}`,
-        async (ctx) => {
-          await upsertEventAssignationAnswer(
-            eventId,
-            ctx.userId,
-            "NO",
-            undefined
-          );
-          ctx.menu.update();
-          ctx.session.eventId = eventId;
-          await ctx.conversation.enter(attendanceConversation.name);
-        }
-      )
-      .row();
+    if (assignation) {
+      range
+        .text(
+          `Asistiré${assignation.attendance === "YES" ? " ✅" : ""}`,
+          async (ctx) => {
+            await upsertEventAssignationAnswer(
+              eventId,
+              ctx.userId,
+              "YES",
+              undefined
+            );
+            ctx.menu.update();
+          }
+        )
+        .text(
+          `No asistiré${assignation.attendance === "NO" ? " ✅" : ""}`,
+          async (ctx) => {
+            await upsertEventAssignationAnswer(
+              eventId,
+              ctx.userId,
+              "NO",
+              undefined
+            );
+            ctx.menu.update();
+            ctx.session.eventId = eventId;
+            await ctx.conversation.enter(attendanceConversation.name);
+          }
+        )
+        .row();
+    }
 
     const userIsAdmin = await isAdmin({
       userId: ctx.userId,

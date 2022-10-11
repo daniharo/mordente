@@ -12,6 +12,7 @@ import {
   removeSkipButton,
   SKIP_QUERY,
 } from "./utils";
+import { assignAllMembers } from "../models/eventAssignation";
 
 export const useCreateEvent = new Composer<MyContext>();
 
@@ -96,7 +97,23 @@ export async function createEventConversation(
     })
   );
 
-  await printEventHandler(event.id)(ctx);
+  await printEventHandler(event.id)(ctx, conversation);
+
+  const assignMenu = new InlineKeyboard()
+    .text("Sí", "yes")
+    .row()
+    .text("No, asignaré manualmente", "no")
+    .row();
+  await ctx.reply("¿Quieres asignar el evento a todos los miembros?", {
+    reply_markup: assignMenu,
+  });
+  ctx = await conversation.waitUntil(
+    (ctx) =>
+      ctx.callbackQuery?.data === "yes" || ctx.callbackQuery?.data === "no"
+  );
+  await ctx.editMessageReplyMarkup();
+
+  await assignAllMembers(event.id);
 }
 
 useCreateEvent.use(createConversation(createEventConversation));

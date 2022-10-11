@@ -34,3 +34,28 @@ export const upsertEventAssignationAnswer = (
       attendanceJustification,
     },
   });
+
+export const getAllAttendances = (eventId: Event["id"]) =>
+  prisma.eventAssignedUser.findMany({
+    where: { eventId },
+    include: { user: true, event: true },
+  });
+
+export const assignAllMembers = async (eventId: Event["id"]) => {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+    select: {
+      ensemble: {
+        select: { memberships: { select: { user: { select: { id: true } } } } },
+      },
+    },
+  });
+  if (!event) return null;
+  const userIds = event.ensemble.memberships.map(
+    (membership) => membership.user.id
+  );
+  return prisma.eventAssignedUser.createMany({
+    skipDuplicates: true,
+    data: userIds.map((userId) => ({ userId, eventId })),
+  });
+};
