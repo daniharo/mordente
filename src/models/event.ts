@@ -57,3 +57,11 @@ export const updateEventStatus = (eventId: Event["id"], status: EventStatus) =>
       status: status,
     },
   });
+
+export const getEnsembleId = async (eventId: Event["id"]) =>
+  (
+    await prisma.event.findUnique({
+      where: { id: eventId },
+      select: { ensembleId: true },
+    })
+  )?.ensembleId;

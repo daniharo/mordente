@@ -33,6 +33,10 @@ export const upsertEventAssignationAnswer = (
       attendance,
       attendanceJustification,
     },
+    include: {
+      user: true,
+      event: true,
+    },
   });
 
 export const getAllAttendances = (eventId: Event["id"]) =>

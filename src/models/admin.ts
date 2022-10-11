@@ -1,4 +1,4 @@
-import { Admin, Membership } from "@prisma/client";
+import { Admin, Ensemble, Membership } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const isAdmin = async ({
@@ -72,4 +72,10 @@ export const updateAdmin = async ({
       },
     })
     .admin();
+};
+
+export const getAdmins = async (ensembleId: Ensemble["id"]) => {
+  return prisma.membership.findMany({
+    where: { ensembleId, admin: { isNot: null } },
+  });
 };

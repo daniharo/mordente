@@ -9,6 +9,7 @@ import {
   upsertEventAssignationAnswer,
 } from "../models/eventAssignation";
 import { attendanceConversation } from "../conversations/attendance";
+import { notifyAttendance } from "../notifications/notifyAttendance";
 
 export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
   async (ctx, range) => {
@@ -36,13 +37,14 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
         .text(
           `Asistiré${assignation.attendance === "YES" ? " ✅" : ""}`,
           async (ctx) => {
-            await upsertEventAssignationAnswer(
+            const assignation = await upsertEventAssignationAnswer(
               eventId,
               ctx.userId,
               "YES",
               undefined
             );
-            ctx.menu.update();
+            await ctx.menu.update({ immediate: true });
+            await notifyAttendance(assignation);
           }
         )
         .text(

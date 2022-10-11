@@ -25,7 +25,7 @@ import { useAttendanceConversation } from "./conversations/attendance";
 
 dotenv.config();
 
-const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
+export const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
 bot.use(
   session({
     initial: createInitialSessionData,
