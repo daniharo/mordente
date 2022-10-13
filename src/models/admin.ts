@@ -15,15 +15,11 @@ export const isAdmin = async ({
   return !!membership?.admin;
 };
 
-export const makeAdmin = async ({
-  userId,
-  ensembleId,
-  adminType,
-}: {
-  userId: Membership["userId"];
-  ensembleId: Membership["ensembleId"];
-  adminType?: Admin["adminType"];
-}) =>
+export const makeAdmin = async (
+  userId: Membership["userId"],
+  ensembleId: Membership["ensembleId"],
+  adminType?: Admin["adminType"]
+) =>
   prisma.admin.create({
     data: {
       adminType,
@@ -35,13 +31,10 @@ export const makeAdmin = async ({
     },
   });
 
-export const deleteAdmin = async ({
-  userId,
-  ensembleId,
-}: {
-  userId: Membership["userId"];
-  ensembleId: Membership["ensembleId"];
-}) => {
+export const deleteAdmin = async (
+  userId: Membership["userId"],
+  ensembleId: Membership["ensembleId"]
+) => {
   const membership = await prisma.membership.findUnique({
     where: { userId_ensembleId: { userId, ensembleId } },
   });
