@@ -47,7 +47,6 @@ export async function createEventConversation(
   ctx.session.calendarOptions = {
     shortcutButtons: skipMenu.inline_keyboard[0],
   };
-  ctx.session.ensembleId = 999;
   await ctx.reply("Ahora dime la fecha de inicio", {
     reply_markup: calendarMenu,
   });
