@@ -1,11 +1,7 @@
 import { Ensemble, Event } from "@prisma/client";
 import { MyContext } from "../context";
 import { userIsMember } from "../models/membership";
-import {
-  getCurrentEventsForEnsemble,
-  getEvent,
-  getFutureEventsForEnsemble,
-} from "../models/event";
+import { getCurrentEvents, getEvent, getFutureEvents } from "../models/event";
 import { InlineKeyboard } from "grammy";
 import { isAdmin } from "../models/admin";
 import { eventMenu } from "../menus/eventMenu";
@@ -18,8 +14,8 @@ export const listEventsHandler =
       await ctx.reply("No participas en esta agrupación.");
       return;
     }
-    const currentEvents = await getCurrentEventsForEnsemble(ensembleId);
-    const futureEvents = await getFutureEventsForEnsemble(ensembleId);
+    const currentEvents = await getCurrentEvents(ensembleId, ctx.userId);
+    const futureEvents = await getFutureEvents(ensembleId, ctx.userId);
     const userIsAdmin = await isAdmin({ userId: ctx.userId, ensembleId });
     const menu = userIsAdmin
       ? new InlineKeyboard().text("Crear evento", `create_event_${ensembleId}`)

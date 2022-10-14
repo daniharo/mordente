@@ -1,35 +1,60 @@
-import { Ensemble, Event, Prisma, EventStatus } from "@prisma/client";
+import { Ensemble, Event, Prisma, EventStatus, User } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const getAllEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
   prisma.event.findMany({ where: { ensembleId } });
 
-export const getFutureEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
-  prisma.event.findMany({
-    where: {
-      ensembleId,
-      startDate: { gt: new Date() },
-    },
+async function getEvents(
+  ensembleId: Ensemble["id"],
+  userId: User["id"] | undefined,
+  where: Prisma.EventWhereInput
+): Promise<Event[]> {
+  if (userId === undefined) {
+    return prisma.event.findMany({ where });
+  }
+  const assignations = await prisma.eventAssignedUser.findMany({
+    where: { userId, event: where },
+    select: { event: true },
   });
+  return assignations.map((assignation) => assignation.event);
+}
 
-export const getCurrentEventsForEnsemble = (ensembleId: Ensemble["id"]) => {
+export function getFutureEvents(
+  ensembleId: Ensemble["id"],
+  userId?: User["id"]
+): Promise<Event[]> {
   const now = new Date();
-  return prisma.event.findMany({
-    where: {
-      ensembleId,
-      startDate: { lte: now },
-      endDate: { gte: now },
-    },
-  });
-};
+  const eventWhereArgs: Prisma.EventWhereInput = {
+    ensembleId,
+    startDate: { gt: now },
+  };
+  return getEvents(ensembleId, userId, eventWhereArgs);
+}
 
-export const getPastEventsForEnsemble = (ensembleId: Ensemble["id"]) =>
-  prisma.event.findMany({
-    where: {
-      ensembleId,
-      endDate: { lt: new Date() },
-    },
-  });
+export function getCurrentEvents(
+  ensembleId: Ensemble["id"],
+  userId?: User["id"]
+): Promise<Event[]> {
+  const now = new Date();
+  const eventWhereArgs: Prisma.EventWhereInput = {
+    ensembleId,
+    startDate: { lte: now },
+    endDate: { gte: now },
+  };
+  return getEvents(ensembleId, userId, eventWhereArgs);
+}
+
+export function getPastEvents(
+  ensembleId: Ensemble["id"],
+  userId?: User["id"]
+): Promise<Event[]> {
+  const now = new Date();
+  const eventWhereArgs: Prisma.EventWhereInput = {
+    ensembleId,
+    endDate: { lt: now },
+  };
+  return getEvents(ensembleId, userId, eventWhereArgs);
+}
 
 export const createEvent = (eventData: Prisma.EventCreateInput) =>
   prisma.event.create({ data: eventData });
