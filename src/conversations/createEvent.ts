@@ -13,8 +13,27 @@ import {
   SKIP_QUERY,
 } from "./utils";
 import { assignAllMembers } from "../models/eventAssignation";
+import { parseOnlyTime } from "../utils/dateUtils";
 
 export const useCreateEvent = new Composer<MyContext>();
+
+async function getTime(conversation: MyConversation, ctx: MyContext) {
+  let startTimeString = await getTextOrSkip(conversation, ctx);
+  let startTime: Date | null = null;
+  while (startTimeString && !startTime) {
+    const _startTime = parseOnlyTime(startTimeString);
+    const valid = !isNaN(_startTime.getTime());
+    if (valid) {
+      startTime = _startTime;
+    } else {
+      await ctx.reply(
+        "Esa hora no está en formato HH:MM. Por favor, envíamela de nuevo en ese formato, por ejemplo 18:00"
+      );
+      startTimeString = await getTextOrSkip(conversation, ctx);
+    }
+  }
+  return startTime;
+}
 
 export async function createEventConversation(
   conversation: MyConversation,
@@ -56,8 +75,18 @@ export async function createEventConversation(
   );
   await removeSkipButton(ctx);
   const startDate = ctx.calendarSelectedDate;
-
   ctx.session.calendarOptions.minDate = startDate;
+
+  if (startDate) {
+    await ctx.reply("Ahora dime la hora de inicio en formato HH:MM", {
+      reply_markup: skipMenu,
+    });
+    const startTime = await getTime(conversation, ctx);
+    if (startTime) {
+      startDate.setHours(startTime.getHours(), startTime.getMinutes());
+    }
+  }
+
   await ctx.reply("Ahora dime la fecha de fin del evento", {
     reply_markup: calendarMenu,
   });
@@ -67,6 +96,16 @@ export async function createEventConversation(
   );
   await removeSkipButton(ctx);
   const endDate = ctx.calendarSelectedDate;
+
+  if (startDate) {
+    await ctx.reply("Ahora dime la hora de fin en formato HH:MM", {
+      reply_markup: skipMenu,
+    });
+    const endTime = await getTime(conversation, ctx);
+    if (endTime) {
+      startDate.setHours(endTime.getHours(), endTime.getMinutes());
+    }
+  }
 
   await ctx.reply("Ahora dime el tipo del evento (ensayo, concierto...)", {
     reply_markup: skipMenu,

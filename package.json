@@ -18,6 +18,7 @@
     "@grammyjs/storage-prisma": "^2.0.0",
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^4.4.0",
+    "date-fns": "^2.29.3",
     "dotenv": "^16.0.1",
     "grammy": "^1.11.2",
     "grammy-calendar": "^0.0.2",
