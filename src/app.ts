@@ -22,6 +22,7 @@ import prisma from "./prisma/PrismaClient";
 import { conversations } from "@grammyjs/conversations";
 import { useCreateEnsemble } from "./conversations/createEnsemble";
 import { useAttendanceConversation } from "./conversations/attendance";
+import { reminderCronJob } from "./reminders/cron";
 
 dotenv.config();
 
@@ -111,3 +112,5 @@ bot
   .start()
   .then(() => console.log("Bot started!"))
   .catch((reason) => console.error("Couldn't start the bot", reason));
+
+reminderCronJob.start();

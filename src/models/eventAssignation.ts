@@ -63,3 +63,22 @@ export const assignAllMembers = async (eventId: Event["id"]) => {
     data: userIds.map((userId) => ({ userId, eventId })),
   });
 };
+
+export const getAllAssignationsForTime = async (
+  startTime: Date,
+  endTime: Date
+) =>
+  prisma.eventAssignedUser.findMany({
+    where: {
+      event: {
+        startDate: {
+          lt: endTime,
+        },
+        endDate: {
+          gt: startTime,
+        },
+      },
+      attendance: "YES",
+    },
+    include: { event: true, user: { select: { id: true, uid: true } } },
+  });
