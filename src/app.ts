@@ -6,16 +6,12 @@ import { MyContext } from "./context";
 import { useTemplates } from "./middleware/useTemplates";
 import { startMenu } from "./menus/startMenu";
 import { Router } from "@grammyjs/router";
-import { createEnsembleHandler } from "./handlers/ensemble";
 import { ensembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/useAccount";
-import { joinEnsembleHandler } from "./handlers/membership";
 import { membershipMenu } from "./menus/membershipMenu";
-import { getMembershipsForUser } from "./models/membership";
 import { createInitialSessionData, SessionData } from "./context/SessionData";
 import { useCreateEvent } from "./conversations/createEvent";
 import { calendarMenu } from "./menus/calendarMenu";
-import { useMordenteCommand } from "./middleware/useMordenteCommand";
 import { eventMenu } from "./menus/eventMenu";
 import { PrismaAdapter } from "@grammyjs/storage-prisma";
 import prisma from "./prisma/PrismaClient";
@@ -23,6 +19,7 @@ import { conversations } from "@grammyjs/conversations";
 import { useCreateEnsemble } from "./conversations/createEnsemble";
 import { useAttendanceConversation } from "./conversations/attendance";
 import { reminderCronJob } from "./reminders/cron";
+import { useCommand } from "./composers/useCommand";
 
 dotenv.config();
 
@@ -56,40 +53,7 @@ bot.api
   ])
   .catch((reason) => console.error("Couldn't set commands", reason));
 
-bot.command("start", async (ctx) => {
-  const joinCode = ctx.match;
-  if (joinCode) {
-    await joinEnsembleHandler(joinCode)(ctx);
-    return;
-  }
-  await ctx.reply(ctx.t("start_command_answer"), { reply_markup: startMenu });
-});
-
-bot.command("join", async (ctx) => {
-  await ctx.reply(ctx.t("join_how"));
-});
-
-bot.command("create", async (ctx) => {
-  await createEnsembleHandler(ctx);
-});
-
-bot.command("cancel", async (ctx) => {
-  ctx.session.step = "idle";
-  await ctx.conversation.exit();
-  await ctx.reply(ctx.t("operation_cancelled"));
-});
-
-bot.command("my_list", async (ctx) => {
-  const myMemberships = await getMembershipsForUser(ctx.userId);
-  await ctx.reply(
-    ctx.templates.myMembershipsTemplate({ memberships: myMemberships }),
-    {
-      parse_mode: "HTML",
-    }
-  );
-});
-
-bot.use(useMordenteCommand);
+bot.use(useCommand);
 
 bot.catch(async (err) => {
   const ctx = err.ctx;
