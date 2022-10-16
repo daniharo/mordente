@@ -1,7 +1,10 @@
 import { Menu } from "@grammyjs/menu";
 import { MyContext } from "../context";
-import { getMembersForEvent } from "../models/membership";
-import { assignMember, unassignMember } from "../models/eventAssignation";
+import {
+  assignMember,
+  getMembersForEvent,
+  unassignMember,
+} from "../models/eventAssignation";
 
 const MEMBERS_PER_PAGE = 10;
 

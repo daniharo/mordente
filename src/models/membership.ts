@@ -1,4 +1,4 @@
-import { Ensemble, Event, Membership, User } from "@prisma/client";
+import { Ensemble, Membership, User } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const joinEnsemble = async ({
@@ -44,26 +44,6 @@ export const getMembers = async (ensembleId: Ensemble["id"]) => {
     },
   });
 };
-
-export const getMembersForEvent = async (
-  ensembleId: Ensemble["id"],
-  eventId: Event["id"]
-) =>
-  prisma.membership.findMany({
-    where: { ensembleId },
-    include: {
-      user: {
-        include: {
-          assignedEvents: {
-            where: {
-              eventId,
-            },
-          },
-        },
-      },
-    },
-    orderBy: [{ user: { firstName: "asc" } }, { user: { lastName: "asc" } }],
-  });
 
 export const getMembership = async (membershipId: Membership["id"]) => {
   return prisma.membership.findUnique({

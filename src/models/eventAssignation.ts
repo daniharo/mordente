@@ -1,8 +1,9 @@
 import {
-  User,
-  Event,
   AttendanceAnswer,
+  Ensemble,
+  Event,
   EventAssignedUser,
+  User,
 } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
@@ -89,4 +90,24 @@ export const assignMember = (eventId: Event["id"], userId: User["id"]) =>
 export const unassignMember = (eventId: Event["id"], userId: User["id"]) =>
   prisma.eventAssignedUser.delete({
     where: { eventId_userId: { eventId, userId } },
+  });
+
+export const getMembersForEvent = async (
+  ensembleId: Ensemble["id"],
+  eventId: Event["id"]
+) =>
+  prisma.membership.findMany({
+    where: { ensembleId },
+    include: {
+      user: {
+        include: {
+          assignedEvents: {
+            where: {
+              eventId,
+            },
+          },
+        },
+      },
+    },
+    orderBy: [{ user: { firstName: "asc" } }, { user: { lastName: "asc" } }],
   });
