@@ -10,6 +10,7 @@ import {
 } from "../models/eventAssignation";
 import { attendanceConversation } from "../conversations/attendance";
 import { notifyAttendance } from "../notifications/notifyAttendance";
+import { eventAssignationMenu } from "./eventAssignationMenu";
 
 export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
   async (ctx, range) => {
@@ -76,6 +77,17 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
           ctx.menu.close();
         });
       }
+      range
+        .text("Asignación de miembros", (ctx) => {
+          ctx.session.eventId = eventId;
+          ctx.session.ensembleId = event.ensembleId;
+          ctx.session.eventAssignationPage = 0;
+          return ctx.reply(
+            "Usa este menú para asignar o deasignar miembros a este evento.",
+            { reply_markup: eventAssignationMenu }
+          );
+        })
+        .row();
       range
         .text("Asistencia prevista", async (ctx) => {
           const assignations = await getAllAttendances(eventId);

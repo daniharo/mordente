@@ -20,6 +20,7 @@ import { useCreateEnsemble } from "./conversations/createEnsemble";
 import { useAttendanceConversation } from "./conversations/attendance";
 import { reminderCronJob } from "./reminders/cron";
 import { useCommand } from "./composers/useCommand";
+import { eventAssignationMenu } from "./menus/eventAssignationMenu";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ bot.use(conversations());
 bot.use(useAttendanceConversation);
 bot.use(startMenu);
 bot.use(calendarMenu);
+bot.use(eventAssignationMenu);
 bot.use(eventMenu);
 bot.use(ensembleMenu);
 bot.use(membershipMenu);

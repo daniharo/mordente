@@ -82,3 +82,11 @@ export const getAllAssignationsForTime = async (
     },
     include: { event: true, user: { select: { id: true, uid: true } } },
   });
+
+export const assignMember = (eventId: Event["id"], userId: User["id"]) =>
+  prisma.eventAssignedUser.create({ data: { userId, eventId } });
+
+export const unassignMember = (eventId: Event["id"], userId: User["id"]) =>
+  prisma.eventAssignedUser.delete({
+    where: { eventId_userId: { eventId, userId } },
+  });

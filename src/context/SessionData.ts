@@ -14,6 +14,7 @@ export type SessionData = {
     description?: string;
   };
   calendarOptions: CalendarOptions;
+  eventAssignationPage: number;
 };
 
 export const createInitialSessionData: () => SessionData = () => {
@@ -21,5 +22,6 @@ export const createInitialSessionData: () => SessionData = () => {
     step: "idle",
     createEvent: {},
     calendarOptions: {},
+    eventAssignationPage: 0,
   };
 };
