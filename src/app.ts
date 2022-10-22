@@ -6,7 +6,7 @@ import { MyContext } from "./context";
 import { useTemplates } from "./middleware/useTemplates";
 import { startMenu } from "./menus/startMenu";
 import { Router } from "@grammyjs/router";
-import { ensembleMenu } from "./menus/ensembleMenu";
+import { useEnsembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/useAccount";
 import { membershipMenu } from "./menus/membershipMenu";
 import { createInitialSessionData, SessionData } from "./context/SessionData";
@@ -35,15 +35,19 @@ bot.use(useFluent({ fluent }));
 bot.use(useTemplates);
 bot.use(useAccount);
 bot.use(conversations());
+bot.command("cancel", async (ctx) => {
+  await ctx.conversation.exit();
+  await ctx.reply(ctx.t("operation_cancelled"));
+});
 bot.use(useAttendanceConversation);
+bot.use(useEnsembleMenu);
+bot.use(useCreateEnsemble);
+bot.use(useCreateEvent);
 bot.use(startMenu);
 bot.use(calendarMenu);
 bot.use(eventAssignationMenu);
 bot.use(eventMenu);
-bot.use(ensembleMenu);
 bot.use(membershipMenu);
-bot.use(useCreateEvent);
-bot.use(useCreateEnsemble);
 
 bot.api
   .setMyCommands([

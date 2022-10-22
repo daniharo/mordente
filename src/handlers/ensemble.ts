@@ -5,6 +5,7 @@ import { deleteEnsemble } from "../models/ensemble";
 import { userIsMember } from "../models/membership";
 import { isAdmin } from "../models/admin";
 import { createEnsembleConversation } from "../conversations/createEnsemble";
+import { ensembleDetailTemplate } from "../utils/templates";
 
 export const createEnsembleHandler = async (ctx: MyContext) => {
   await ctx.conversation.enter(createEnsembleConversation.name);
@@ -21,10 +22,9 @@ export const printEnsembleHandler =
       await ctx.reply("No eres miembro de esta agrupación.");
       return;
     }
-    ctx.session.ensembleId = ensemble.id;
-    await ctx.reply(ctx.templates.ensembleDetailTemplate({ ensemble }), {
+    await ctx.reply(ensembleDetailTemplate({ ensemble, t: ctx.t }), {
       parse_mode: "HTML",
-      reply_markup: ensembleMenu,
+      reply_markup: await ensembleMenu(ctx)(ensemble.id),
     });
   };
 

@@ -1,4 +1,3 @@
-import { Menu } from "@grammyjs/menu";
 import {
   disableJoinCode,
   enableAndGetJoinCode,
@@ -14,89 +13,121 @@ import {
 import { isAdmin } from "../models/admin";
 import { getMembers, getMyMembershipId } from "../models/membership";
 import { printMembershipHandler } from "../handlers/membership";
-import { membershipMenu } from "./membershipMenu";
 import { listEventsHandler } from "../handlers/event";
+import { Ensemble } from "@prisma/client";
+import { Composer, InlineKeyboard } from "grammy";
 
-export const ensembleMenu = new Menu<MyContext>("ensemble").dynamic(
-  async (ctx, range) => {
-    const { ensembleId } = ctx.session;
-    if (!ensembleId) {
-      return;
-    }
+export const ensembleMenu =
+  (ctx: MyContext) => async (ensembleId: Ensemble["id"]) => {
+    const menu = new InlineKeyboard();
     const admin = await isAdmin({
       userId: ctx.userId,
       ensembleId,
     });
     if (admin) {
       const ensemble = await getEnsemble({ ensembleId });
-      if (!ensemble) return;
-      range.text("Invitar", async (ctx) => {
-        const obtainCode = ensemble.joinCodeEnabled
-          ? getEnsembleJoinCode
-          : enableAndGetJoinCode;
-        const joinCode = await obtainCode(ensembleId);
-        if (!joinCode) return;
-        if (!ensemble.joinCodeEnabled) {
-          ctx.menu.update();
-          await ctx.reply("Código de invitación habilitado.");
-        }
-        await printJoinCodeHandler(joinCode)(ctx);
-      });
+      if (!ensemble) return undefined;
+      menu.text("Invitar", `ensemble_invite_${ensembleId}`);
       if (ensemble.joinCodeEnabled) {
-        range.text("Deshabilitar invitación", async (ctx) => {
-          await disableJoinCode(ensembleId);
-          ctx.menu.update();
-          await ctx.reply(
-            "El código de invitación se ha deshabilitado con éxito."
-          );
-        });
+        menu.text("Deshabilitar invitación", `ensemble_uninvite_${ensembleId}`);
       }
-      range
+      menu
         .row()
-        .text("Eliminar", async (ctx) => {
-          ctx.session.ensembleId = ensembleId;
-          await ctx.reply("¿Seguro que quieres eliminar la agrupación?", {
-            reply_markup: deleteConfirmationMenu,
-          });
-        })
+        .text("Eliminar", `ensemble_delete_unconfirmed_${ensembleId}`)
         .row();
     }
-    range
-      .text("Miembros", async (ctx) => {
-        const ensembleName = await getEnsembleName({ ensembleId });
-        if (!ensembleName) return;
-        const members = await getMembers(ensembleId);
-        await ctx.reply(
-          ctx.templates.ensembleMembersTemplate({ members, ensembleName }),
-          { parse_mode: "HTML" }
-        );
-      })
+    menu
+      .text("Miembros", `ensemble_members_${ensembleId}`)
       .row()
-      .text("Mi inscripción", async (ctx) => {
-        const myMembershipId = await getMyMembershipId(ctx.userId, ensembleId);
-        if (!myMembershipId) return;
-        await printMembershipHandler(myMembershipId)(ctx);
-      });
-    range.text("Eventos", async (ctx) => {
-      await listEventsHandler(ensembleId)(ctx);
+      .text("Mi inscripción", `ensemble_my_membership_${ensembleId}`);
+    menu.text("Eventos", `ensemble_events_${ensembleId}`);
+    return menu;
+  };
+
+export const useEnsembleMenu = new Composer<MyContext>();
+
+useEnsembleMenu.callbackQuery(/ensemble_invite_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  const ensemble = await getEnsemble({ ensembleId });
+  if (!ensemble) return;
+  const obtainCode = ensemble.joinCodeEnabled
+    ? getEnsembleJoinCode
+    : enableAndGetJoinCode;
+  const joinCode = await obtainCode(ensembleId);
+  if (!joinCode) return;
+  if (!ensemble.joinCodeEnabled) {
+    await ctx.reply("Código de invitación habilitado.");
+  }
+  await ctx.answerCallbackQuery();
+  await printJoinCodeHandler(joinCode)(ctx);
+});
+
+useEnsembleMenu.callbackQuery(/ensemble_uninvite_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  await disableJoinCode(ensembleId);
+  await ctx.answerCallbackQuery();
+  await ctx.reply("El código de invitación se ha deshabilitado con éxito.");
+});
+
+useEnsembleMenu.callbackQuery(/ensemble_members_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  const ensembleName = await getEnsembleName({ ensembleId });
+  if (!ensembleName) return;
+  const members = await getMembers(ensembleId);
+  await ctx.answerCallbackQuery();
+  await ctx.reply(
+    ctx.templates.ensembleMembersTemplate({ members, ensembleName }),
+    { parse_mode: "HTML" }
+  );
+});
+
+useEnsembleMenu.callbackQuery(/ensemble_my_membership_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  const myMembershipId = await getMyMembershipId(ctx.userId, ensembleId);
+  if (!myMembershipId) return;
+  await ctx.answerCallbackQuery();
+  await printMembershipHandler(myMembershipId)(ctx);
+});
+
+useEnsembleMenu.callbackQuery(/ensemble_events_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  await ctx.answerCallbackQuery();
+  await listEventsHandler(ensembleId)(ctx);
+});
+
+useEnsembleMenu.callbackQuery(
+  /ensemble_delete_unconfirmed_(\w+)/,
+  async (ctx) => {
+    if (!ctx.match) return;
+    const ensembleId = +ctx.match[1];
+    await ctx.answerCallbackQuery();
+    return ctx.reply("¿Seguro que quieres eliminar la agrupación?", {
+      reply_markup: deleteConfirmationMenu(ensembleId),
     });
   }
 );
 
-const deleteConfirmationMenu = new Menu<MyContext>(
-  "ensembleDeleteConfirmationMenu"
-).dynamic((ctx, range) => {
-  const { ensembleId } = ctx.session;
-  if (!ensembleId) {
-    return;
-  }
-  range
-    .text("Sí", async (ctx) => {
-      await deleteEnsembleHandler(ensembleId)(ctx);
-      ctx.menu.close();
-    })
-    .text("No", (ctx) => ctx.deleteMessage());
-});
+const deleteConfirmationMenu = (ensembleId: Ensemble["id"]) => {
+  const menu = new InlineKeyboard();
+  return menu
+    .text("Sí", `ensemble_delete_confirmed_${ensembleId}`)
+    .text("No", `ensemble_delete_canceled`);
+};
 
-ensembleMenu.register(deleteConfirmationMenu);
-ensembleMenu.register(membershipMenu);
+const useDeleteConfirmationMenu = new Composer<MyContext>();
+useDeleteConfirmationMenu.callbackQuery(
+  /ensemble_delete_confirmed_(\w+)/,
+  async (ctx) => {
+    if (!ctx.match) return;
+    const ensembleId = +ctx.match[1];
+    await ctx.answerCallbackQuery();
+    await deleteEnsembleHandler(ensembleId)(ctx);
+  }
+);
+
+useEnsembleMenu.use(useDeleteConfirmationMenu);

@@ -25,12 +25,6 @@ useCommand.command("create", async (ctx) => {
   await createEnsembleHandler(ctx);
 });
 
-useCommand.command("cancel", async (ctx) => {
-  ctx.session.step = "idle";
-  await ctx.conversation.exit();
-  await ctx.reply(ctx.t("operation_cancelled"));
-});
-
 useCommand.command("my_list", async (ctx) => {
   const myMemberships = await getMembershipsForUser(ctx.userId);
   await ctx.reply(
