@@ -14,16 +14,19 @@ import { calendarMenu } from "./menus/calendarMenu";
 import { eventMenu } from "./menus/eventMenu";
 import { PrismaAdapter } from "@grammyjs/storage-prisma";
 import prisma from "./prisma/PrismaClient";
-import { conversations } from "@grammyjs/conversations";
+import { conversations, createConversation } from "@grammyjs/conversations";
 import { useCreateEnsemble } from "./conversations/createEnsemble";
 import { useAttendanceConversation } from "./conversations/attendance";
 import { reminderCronJob } from "./reminders/cron";
 import { useCommand } from "./composers/useCommand";
 import { eventAssignationMenu } from "./menus/eventAssignationMenu";
+import { hydrateFiles } from "@grammyjs/files";
+import { createSongConversation } from "./conversations/createSong";
 
 dotenv.config();
 
 export const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
+bot.api.config.use(hydrateFiles(bot.token));
 bot.use(
   session({
     initial: createInitialSessionData,
@@ -39,6 +42,7 @@ bot.command("cancel", async (ctx) => {
   await ctx.reply(ctx.t("operation_cancelled"));
 });
 bot.use(useAttendanceConversation);
+bot.use(createConversation(createSongConversation));
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
 bot.use(eventMenu);

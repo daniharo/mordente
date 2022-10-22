@@ -16,6 +16,7 @@ import { printMembershipHandler } from "../handlers/membership";
 import { listEventsHandler } from "../handlers/event";
 import { Ensemble } from "@prisma/client";
 import { Composer, InlineKeyboard } from "grammy";
+import { createSongConversation } from "../conversations/createSong";
 
 export const ensembleMenu =
   (ctx: MyContext) => async (ensembleId: Ensemble["id"]) => {
@@ -32,6 +33,8 @@ export const ensembleMenu =
         menu.text("Deshabilitar invitación", `ensemble_uninvite_${ensembleId}`);
       }
       menu
+        .row()
+        .text("Añadir obra", `ensemble_create_song_${ensembleId}`)
         .row()
         .text("Eliminar", `ensemble_delete_unconfirmed_${ensembleId}`)
         .row();
@@ -111,6 +114,14 @@ useEnsembleMenu.callbackQuery(
     });
   }
 );
+
+useEnsembleMenu.callbackQuery(/ensemble_create_song_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  await ctx.answerCallbackQuery();
+  ctx.session.ensembleId = ensembleId;
+  await ctx.conversation.enter(createSongConversation.name);
+});
 
 const deleteConfirmationMenu = (ensembleId: Ensemble["id"]) => {
   const menu = new InlineKeyboard();
