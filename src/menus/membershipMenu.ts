@@ -1,6 +1,11 @@
 import { Menu } from "@grammyjs/menu";
 import { MyContext } from "../context";
-import { deleteAdmin, isAdmin, makeAdmin } from "../models/admin";
+import {
+  deleteAdmin,
+  getAdminsCount,
+  isAdmin,
+  makeAdmin,
+} from "../models/admin";
 import { getMembership } from "../models/membership";
 import { deleteMembershipHandler } from "../handlers/membership";
 
@@ -20,10 +25,13 @@ export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(
     if (admin) {
       const userIsAdmin = await isAdmin(membership);
       if (userIsAdmin) {
-        range.text("Quitar de admin", async (ctx) => {
-          await deleteAdmin(membership.userId, membership.ensembleId);
-          ctx.menu.update();
-        });
+        const adminsCount = await getAdminsCount(membership.ensembleId);
+        if (adminsCount > 1) {
+          range.text("Quitar de admin", async (ctx) => {
+            await deleteAdmin(membership.userId, membership.ensembleId);
+            ctx.menu.update();
+          });
+        }
       } else {
         range.text("Hacer admin", async (ctx) => {
           await makeAdmin(membership.userId, membership.ensembleId);

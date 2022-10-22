@@ -72,3 +72,9 @@ export const getAdmins = async (ensembleId: Ensemble["id"]) => {
     where: { ensembleId, admin: { isNot: null } },
   });
 };
+
+export const getAdminsCount = async (ensembleId: Ensemble["id"]) => {
+  return prisma.membership.count({
+    where: { ensembleId, admin: { isNot: null } },
+  });
+};
