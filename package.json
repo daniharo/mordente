@@ -17,7 +17,6 @@
     "@grammyjs/conversations": "^1.0.3",
     "@grammyjs/fluent": "^1.0.3",
     "@grammyjs/menu": "^1.1.2",
-    "@grammyjs/router": "^2.0.0",
     "@grammyjs/storage-prisma": "^2.0.0",
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^4.5.0",

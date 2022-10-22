@@ -5,7 +5,6 @@ import fluent from "./locales/fluent";
 import { MyContext } from "./context";
 import { useTemplates } from "./middleware/useTemplates";
 import { startMenu } from "./menus/startMenu";
-import { Router } from "@grammyjs/router";
 import { useEnsembleMenu } from "./menus/ensembleMenu";
 import { useAccount } from "./middleware/useAccount";
 import { membershipMenu } from "./menus/membershipMenu";
@@ -75,9 +74,6 @@ bot.catch(async (err) => {
   }
 });
 
-const router = new Router<MyContext>((ctx) => ctx.session.step);
-
-bot.use(router);
 bot
   .start()
   .then(() => console.log("Bot started!"))
