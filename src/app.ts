@@ -71,7 +71,7 @@ bot.catch(async (err) => {
     console.error("Could not contact Telegram:", e);
   } else {
     console.error("Unknown error:", e);
-    await ctx.reply("There was an error handling your message :(");
+    await ctx.reply("Ha habido un error gestionando tu mensaje :(");
   }
 });
 
