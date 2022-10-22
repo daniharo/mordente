@@ -71,5 +71,5 @@ interface EventAssignationProps {
   assignations: (EventAssignedUser & { user: User })[];
 }
 export const eventAssignationsTemplate = compileFile<EventAssignationProps>(
-  __dirname + "/../templates/ensemble-members.pug"
+  __dirname + "/../templates/event-attendances.pug"
 );

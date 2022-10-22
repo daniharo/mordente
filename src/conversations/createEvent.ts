@@ -2,7 +2,6 @@ import { createConversation } from "@grammyjs/conversations";
 import { MyContext } from "../context";
 import { Composer, InlineKeyboard } from "grammy";
 import { isAdmin } from "../models/admin";
-import { calendarMenu } from "../menus/calendarMenu";
 import { createEvent } from "../models/event";
 import { printEventHandler } from "../handlers/event";
 import {
@@ -13,7 +12,7 @@ import {
   SKIP_QUERY,
 } from "./utils";
 import { assignAllMembers } from "../models/eventAssignation";
-import { parseOnlyTime } from "../utils/dateUtils";
+import { parseOnlyDate, parseOnlyTime } from "../utils/dateUtils";
 
 export const useCreateEvent = new Composer<MyContext>();
 
@@ -32,7 +31,27 @@ async function getTime(conversation: MyConversation, ctx: MyContext) {
       startTimeString = await getTextOrSkip(conversation, ctx);
     }
   }
+  await removeSkipButton(ctx);
   return startTime;
+}
+
+async function getDate(conversation: MyConversation, ctx: MyContext) {
+  let dateString = await getTextOrSkip(conversation, ctx);
+  let date: Date | null = null;
+  while (dateString && !date) {
+    const _date = parseOnlyDate(dateString);
+    const valid = !isNaN(_date.getTime());
+    if (valid) {
+      date = _date;
+    } else {
+      await ctx.reply(
+        "Esa fecha no está en formato día/mes/año. Por favor, envíamela de nuevo en ese formato, por ejemplo 01/02/2023"
+      );
+      dateString = await getTextOrSkip(conversation, ctx);
+    }
+  }
+  await removeSkipButton(ctx);
+  return date;
 }
 
 export async function createEventConversation(
@@ -54,7 +73,6 @@ export async function createEventConversation(
     return;
   }
   await ctx.reply("Por favor, dime el nombre del evento");
-  ctx = await conversation.wait();
   const name = await getMandatoryText(conversation);
 
   const skipMenu = new InlineKeyboard().text("Saltar", SKIP_QUERY);
@@ -63,19 +81,8 @@ export async function createEventConversation(
   });
   const description = await getTextOrSkip(conversation, ctx);
 
-  ctx.session.calendarOptions = {
-    shortcutButtons: skipMenu.inline_keyboard[0],
-  };
-  await ctx.reply("Ahora dime la fecha de inicio", {
-    reply_markup: calendarMenu,
-  });
-  ctx = await conversation.waitUntil(
-    (ctx) =>
-      !!ctx.calendarSelectedDate || ctx.callbackQuery?.data === SKIP_QUERY
-  );
-  await removeSkipButton(ctx);
-  const startDate = ctx.calendarSelectedDate;
-  ctx.session.calendarOptions.minDate = startDate;
+  await ctx.reply("Ahora dime la fecha de inicio en formato día/mes/año");
+  const startDate = await getDate(conversation, ctx);
 
   if (startDate) {
     await ctx.reply("Ahora dime la hora de inicio en formato HH:MM", {
@@ -87,23 +94,18 @@ export async function createEventConversation(
     }
   }
 
-  await ctx.reply("Ahora dime la fecha de fin del evento", {
-    reply_markup: calendarMenu,
-  });
-  ctx = await conversation.waitUntil(
-    (ctx) =>
-      !!ctx.calendarSelectedDate || ctx.callbackQuery?.data === SKIP_QUERY
+  await ctx.reply(
+    "Ahora dime la fecha de fin del evento en formato día/mes/año"
   );
-  await removeSkipButton(ctx);
-  const endDate = ctx.calendarSelectedDate;
+  const endDate = await getDate(conversation, ctx);
 
-  if (startDate) {
+  if (endDate) {
     await ctx.reply("Ahora dime la hora de fin en formato HH:MM", {
       reply_markup: skipMenu,
     });
     const endTime = await getTime(conversation, ctx);
     if (endTime) {
-      startDate.setHours(endTime.getHours(), endTime.getMinutes());
+      endDate.setHours(endTime.getHours(), endTime.getMinutes());
     }
   }
 

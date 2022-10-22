@@ -6,6 +6,7 @@ import { InlineKeyboard } from "grammy";
 import { isAdmin } from "../models/admin";
 import { eventMenu } from "../menus/eventMenu";
 import { MyConversation } from "../conversations/utils";
+import { eventDetailTemplate } from "../utils/templates";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
@@ -49,7 +50,7 @@ export const printEventHandler =
       return;
     }
     ctx.session.eventId = eventId;
-    await ctx.reply(ctx.templates.eventDetailTemplate({ event }), {
+    await ctx.reply(eventDetailTemplate({ t: ctx.t, event }), {
       parse_mode: "HTML",
       reply_markup: eventMenu,
     });

@@ -42,11 +42,11 @@ bot.command("cancel", async (ctx) => {
 bot.use(useAttendanceConversation);
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
+bot.use(eventMenu);
 bot.use(useCreateEvent);
 bot.use(startMenu);
 bot.use(calendarMenu);
 bot.use(eventAssignationMenu);
-bot.use(eventMenu);
 bot.use(membershipMenu);
 
 bot.api
