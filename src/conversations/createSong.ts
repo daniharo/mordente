@@ -1,6 +1,6 @@
 import { getMandatoryText, MyConversation } from "./utils";
 import { MyContext } from "../context";
-import { uploadFile } from "../s3/s3helper";
+import { getFileUrl, uploadFile } from "../s3/s3helper";
 import { createSong, updateSongPath } from "../models/song";
 
 export async function createSongConversation(
@@ -23,5 +23,6 @@ export async function createSongConversation(
   const s3Key = `${ensembleId}/${song.id}${extension}`;
   await conversation.external(() => uploadFile(s3Key, path));
   await conversation.external(() => updateSongPath(song.id, s3Key));
-  await ctx.reply("Obra subida con éxito");
+  const url = await conversation.external(() => getFileUrl(s3Key));
+  await ctx.reply(`Obra subida con éxito. Puede verla en la URL ${url}`);
 }
