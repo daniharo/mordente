@@ -9,7 +9,9 @@
     "start": "ts-node src/app.ts",
     "dev": "nodemon src/app.ts",
     "pm2": "tsc && pm2-runtime start pm2.config.cjs",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "migrate:dev": "prisma db push",
+    "migrate:prod": "prisma migrate deploy"
   },
   "dependencies": {
     "@grammyjs/conversations": "^1.0.3",
