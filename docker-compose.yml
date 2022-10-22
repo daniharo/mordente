@@ -4,17 +4,12 @@ services:
     build: .
     depends_on:
       - postgres
-    volumes:
-      - ./src:/opt/project/src
+    env_file: .env
     environment:
       - WAIT_HOSTS=postgres:5432
       - NODE_ENV
-    ports:
-      - "9200:9200"
   postgres:
     image: postgres:14.1
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
