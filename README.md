@@ -12,11 +12,27 @@ cp env_template .env
 
 2. You'll have to write your bot token obtained from [BotFather](https://core.telegram.org/bots#6-botfather) in the `.env` file.
 
-3. Then, just run this command to have everything running in your device:
+3. Then, run either of these commands to start the bot:
 
 ```shell
+# For production:
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+# For development:
 docker-compose up
 ```
+
+4. Don't forget to apply database migrations with either of these commands:
+
+```shell
+# For production:
+docker compose exec app yarn run migrate:prod
+
+# For development:
+docker compose exec app yarn run migrate:dev
+```
+
+5. You now have the bot running!
 
 ## Stack
 
