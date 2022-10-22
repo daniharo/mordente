@@ -13,6 +13,13 @@ type DefaultTemplateParameter = Parameters<
   ReturnType<typeof pug.compileFile>
 >[0];
 
+function getPath(templateName: string) {
+  if (process.env.NODE_ENV === "production") {
+    return `${__dirname}/../../src/templates/${templateName}.pug`;
+  }
+  return `${__dirname}/../templates/${templateName}.pug`;
+}
+
 function compileFile<Props extends DefaultTemplateParameter>(
   ...args: Parameters<typeof pug.compileFile>
 ) {
@@ -27,7 +34,7 @@ interface EnsembleDetailProps {
   ensemble: Ensemble;
 }
 export const ensembleDetailTemplate = compileFile<EnsembleDetailProps>(
-  __dirname + "/../templates/ensemble-detail.pug"
+  getPath("ensemble-detail")
 );
 
 interface EnsembleMembersProps {
@@ -35,21 +42,21 @@ interface EnsembleMembersProps {
   members: (Membership & { user: User })[];
 }
 export const ensembleMembersTemplate = compileFile<EnsembleMembersProps>(
-  __dirname + "/../templates/ensemble-members.pug"
+  getPath("ensemble-members")
 );
 
 interface MembershipDetailProps {
   membership: Membership & { user: User; ensemble: Ensemble };
 }
 export const membershipDetailTemplate = compileFile<MembershipDetailProps>(
-  __dirname + "/../templates/membership-detail.pug"
+  getPath("membership-detail")
 );
 
 interface MyMembershipsProps {
   memberships: (Membership & { admin: Admin | null; ensemble: Ensemble })[];
 }
 export const myMembershipsTemplate = compileFile<MyMembershipsProps>(
-  __dirname + "/../templates/my-memberships.pug"
+  getPath("my-memberships")
 );
 
 interface EventsSummaryProps {
@@ -57,19 +64,19 @@ interface EventsSummaryProps {
   futureEvents: Event[];
 }
 export const eventsSummaryTemplate = compileFile<EventsSummaryProps>(
-  __dirname + "/../templates/events-summary.pug"
+  getPath("events-summary")
 );
 
 interface EventDetailProps {
   event: Event;
 }
 export const eventDetailTemplate = compileFile<EventDetailProps>(
-  __dirname + "/../templates/event-detail.pug"
+  getPath("event-detail")
 );
 
 interface EventAssignationProps {
   assignations: (EventAssignedUser & { user: User })[];
 }
 export const eventAssignationsTemplate = compileFile<EventAssignationProps>(
-  __dirname + "/../templates/event-attendances.pug"
+  getPath("event-attendances")
 );

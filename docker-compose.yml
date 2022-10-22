@@ -7,7 +7,8 @@ services:
     volumes:
       - ./src:/opt/project/src
     environment:
-      WAIT_HOSTS: postgres:5432
+      - WAIT_HOSTS=postgres:5432
+      - NODE_ENV
     ports:
       - "9200:9200"
   postgres:

@@ -4,7 +4,7 @@ source ./.env
 yarn run prisma migrate deploy
 
 if [ "$NODE_ENV" = "production" ] ; then
-  yarn start
+  yarn pm2
 else
   yarn dev
 fi
