@@ -6,9 +6,10 @@
   "author": "Daniel Haro Contreras <daniharopadul@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "start": "ts-node src/app.ts",
     "dev": "nodemon src/app.ts",
-    "pm2": "tsc && pm2-runtime start pm2.config.cjs",
+    "pm2": "pm2-runtime start pm2.config.cjs",
     "prepare": "husky install",
     "migrate:dev": "prisma db push",
     "migrate:prod": "prisma migrate deploy"

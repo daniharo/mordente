@@ -1,15 +1,16 @@
-FROM node:16
+FROM node:16 as base
 
 WORKDIR /opt/project
 RUN yarn global add pm2
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
-RUN ["chmod", "+x", "/wait"]
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 COPY ./prisma/schema.prisma ./prisma/
 RUN ["yarn", "run", "prisma", "generate"]
-COPY ./scripts ./scripts/
-RUN ["chmod", "+x", "./scripts/start.sh"]
 COPY . .
 
-CMD /wait && ./scripts/start.sh
+CMD ["yarn", "dev"]
+
+FROM base AS prod
+
+RUN ["yarn", "build"]
+CMD ["yarn", "pm2"]
