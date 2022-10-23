@@ -47,6 +47,7 @@ bot.use(useAttendanceConversation);
 bot.use(createConversation(createSongConversation));
 bot.use(songListMenu);
 bot.use(songMenu);
+bot.use(membershipMenu);
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
 bot.use(eventMenu);
@@ -54,7 +55,6 @@ bot.use(useCreateEvent);
 bot.use(startMenu);
 bot.use(calendarMenu);
 bot.use(eventAssignationMenu);
-bot.use(membershipMenu);
 
 bot.api
   .setMyCommands([
