@@ -2,20 +2,25 @@ name: Deploy
 
 on:
   push:
-    branches: [ main ]
-
+    branches:
+      - main
+    paths-ignore:
+      - "**/README.md"
+      - "**/LICENSE.txt"
+      - "**/env_template"
+      - "**/.idea/**"
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Executing remote ssh commands
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        script: |
-          cd repos/mordente
-          git pull
-          docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+      - name: Executing remote ssh commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd repos/mordente
+            git pull
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
