@@ -11,17 +11,15 @@ export async function createSongConversation(
   if (!ensembleId) return;
   await ctx.reply("Primero dime el nombre de la obra");
   const name = await getMandatoryText(conversation);
-  const song = await createSong(ensembleId, name);
+  const song = await conversation.external(() => createSong(ensembleId, name));
   await ctx.reply("Ahora envíame el archivo, por favor");
   ctx = await conversation.waitFor("message:document");
   const file = await ctx.getFile();
+  const fileName = ctx.msg?.document?.file_name;
+  const mimeType = ctx.msg?.document?.mime_type;
   const path = await file.download();
-  const fileName = path.split("/").pop() ?? path;
-  const nameTokens = fileName.split(".");
-  const extension =
-    nameTokens.length > 1 ? `.${nameTokens[nameTokens.length - 1]}` : "";
-  const s3Key = `${ensembleId}/${song.id}${extension}`;
-  await conversation.external(() => uploadFile(s3Key, path));
+  const s3Key = `${ensembleId}/${song.id}/${fileName ?? `${song.id}.pdf`}`;
+  await conversation.external(() => uploadFile(s3Key, path, mimeType));
   await conversation.external(() => updateSongPath(song.id, s3Key));
   const url = await conversation.external(() => getFileUrl(s3Key));
   await ctx.reply(`Obra subida con éxito. Puede verla en la URL ${url}`);

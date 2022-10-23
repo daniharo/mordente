@@ -10,12 +10,17 @@ import fs from "fs";
 import { s3client } from "./s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-export const uploadFile = async (name: string, path: string) => {
+export const uploadFile = async (
+  name: string,
+  path: string,
+  contentType?: string
+) => {
   const fileStream = fs.createReadStream(path);
   const putParams: PutObjectCommandInput = {
     Bucket: "mordente",
     Key: name,
     Body: fileStream,
+    ContentType: contentType,
   };
   const command = new PutObjectCommand(putParams);
   return s3client.send(command);
