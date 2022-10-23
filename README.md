@@ -1,6 +1,10 @@
 # Mordente
 
+[![Deploy](https://github.com/daniharo/mordente/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/daniharo/mordente/actions/workflows/deploy.yml)
+
 This Telegram bot helps people manage their musical ensemble seamlessly, without leaving their Telegram app.
+
+You can try it by using the demo instance at [@mordente_bot](https://t.me/mordente_bot).
 
 ## Installation
 
@@ -10,7 +14,7 @@ This Telegram bot helps people manage their musical ensemble seamlessly, without
 cp env_template .env
 ```
 
-2. You'll have to write your bot token obtained from [BotFather](https://core.telegram.org/bots#6-botfather) in the `.env` file.
+2. You'll have to write your bot token obtained from [@BotFather](https://t.me/botfather) in the `.env` file.
 
 3. For file storage, add `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_KEY` and `S3_SECRET` in `.env`. You may use any S3-compatible tool. Some of them include [Digital Ocean Spaces](https://www.digitalocean.com/products/spaces), [AWS S3](https://aws.amazon.com/es/s3/) or even [MinIO](https://min.io/), which you can [self-host](https://min.io/docs/minio/container/index.html).
 
