@@ -8,3 +8,9 @@ DATABASE_URL="postgresql://postgres:postgres@postgres:5432/postgres?schema=publi
 
 # Use BotFather (https://t.me/botfather) to create a BOT_TOKEN:
 BOT_TOKEN=
+
+# Use any S3-compatible hosting (like Digital Ocean Spaces or AWS S3) to obtain the following data:
+S3_ENDPOINT=
+S3_BUCKET=
+S3_KEY=
+S3_SECRET=

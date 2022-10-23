@@ -12,7 +12,9 @@ cp env_template .env
 
 2. You'll have to write your bot token obtained from [BotFather](https://core.telegram.org/bots#6-botfather) in the `.env` file.
 
-3. Then, run either of these commands to start the bot:
+3. For file storage, add `S3_ENDPOINT`, `S3_BUCKET`, `S3_KEY` and `S3_SECRET` in `.env`. You may use any S3-compatible tool. Some of them include [Digital Ocean Spaces](https://www.digitalocean.com/products/spaces), [AWS S3](https://aws.amazon.com/es/s3/) or even [MinIO](https://min.io/), which you can [self-host](https://min.io/docs/minio/container/index.html).
+
+4. Then, run either of these commands to start the bot:
 
 ```shell
 # For production:
@@ -22,7 +24,7 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up
 docker-compose up
 ```
 
-4. Don't forget to apply database migrations with either of these commands:
+5. Don't forget to apply database migrations with either of these commands:
 
 ```shell
 # For production:
@@ -32,7 +34,7 @@ docker compose exec app yarn run migrate:prod
 docker compose exec app yarn run migrate:dev
 ```
 
-5. You now have the bot running!
+6. You now have the bot running!
 
 ## Stack
 
