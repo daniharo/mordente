@@ -10,6 +10,8 @@ import fs from "fs";
 import { s3client } from "./s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+const { S3_BUCKET } = process.env;
+
 export const uploadFile = async (
   name: string,
   path: string,
@@ -17,7 +19,7 @@ export const uploadFile = async (
 ) => {
   const fileStream = fs.createReadStream(path);
   const putParams: PutObjectCommandInput = {
-    Bucket: "mordente",
+    Bucket: S3_BUCKET,
     Key: name,
     Body: fileStream,
     ContentType: contentType,
@@ -28,7 +30,7 @@ export const uploadFile = async (
 
 export const getFileUrl = async (name: string) => {
   const getParams: GetObjectCommandInput = {
-    Bucket: "mordente",
+    Bucket: S3_BUCKET,
     Key: name,
   };
   return getSignedUrl(s3client, new GetObjectCommand(getParams), {
@@ -38,7 +40,7 @@ export const getFileUrl = async (name: string) => {
 
 export const deleteFile = async (name: string) => {
   const deleteParams: DeleteObjectCommandInput = {
-    Bucket: "mordente",
+    Bucket: S3_BUCKET,
     Key: name,
   };
   const command = new DeleteObjectCommand(deleteParams);
