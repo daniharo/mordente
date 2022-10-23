@@ -50,11 +50,11 @@ bot.use(songMenu);
 bot.use(membershipMenu);
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
+bot.use(eventAssignationMenu);
 bot.use(eventMenu);
 bot.use(useCreateEvent);
 bot.use(startMenu);
 bot.use(calendarMenu);
-bot.use(eventAssignationMenu);
 
 bot.api
   .setMyCommands([
