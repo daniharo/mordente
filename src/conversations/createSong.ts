@@ -21,6 +21,5 @@ export async function createSongConversation(
   const s3Key = `${ensembleId}/${song.id}/${fileName ?? `${song.id}.pdf`}`;
   await conversation.external(() => uploadFile(s3Key, path, mimeType));
   await conversation.external(() => updateSongPath(song.id, s3Key));
-  const url = await conversation.external(() => getFileUrl(s3Key));
-  await ctx.reply(`Obra subida con éxito. Puede verla en la URL ${url}`);
+  await ctx.reply(`Obra subida con éxito ✅`);
 }

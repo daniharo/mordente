@@ -22,6 +22,8 @@ import { useCommand } from "./composers/useCommand";
 import { eventAssignationMenu } from "./menus/eventAssignationMenu";
 import { hydrateFiles } from "@grammyjs/files";
 import { createSongConversation } from "./conversations/createSong";
+import { songListMenu } from "./menus/songListMenu";
+import { songMenu } from "./menus/songMenu";
 
 dotenv.config();
 
@@ -43,6 +45,8 @@ bot.command("cancel", async (ctx) => {
 });
 bot.use(useAttendanceConversation);
 bot.use(createConversation(createSongConversation));
+bot.use(songListMenu);
+bot.use(songMenu);
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
 bot.use(eventMenu);

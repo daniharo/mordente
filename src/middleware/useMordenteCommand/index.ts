@@ -5,6 +5,7 @@ import { getEnsemble } from "../../models/ensemble";
 import { printEnsembleHandler } from "../../handlers/ensemble";
 import { printMembershipHandler } from "../../handlers/membership";
 import { printEventHandler } from "../../handlers/event";
+import { printSongHandler } from "../../handlers/song";
 
 const commandComposer = new Composer<MyContext>();
 
@@ -44,6 +45,13 @@ commandComposer.on("message:entities:bot_command", async (ctx, next) => {
         return;
       }
       await printEventHandler(command.id)(ctx);
+      break;
+    case "song":
+      if (!command.id) {
+        await ctx.reply("Comando no válido.");
+        return;
+      }
+      await printSongHandler(command.id)(ctx);
       break;
   }
 });

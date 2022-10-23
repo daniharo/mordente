@@ -1,0 +1,11 @@
+if songs.length === 0
+    | No hay ninguna obra añadida en esta agrupación.
+else
+    | Obras:
+    |
+    |
+    each val, index in songs
+      | #{index + 1}. 
+      b= val.name
+      | . Detalles de la obra: /song_#{val.id}.
+      |

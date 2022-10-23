@@ -17,6 +17,8 @@ import { listEventsHandler } from "../handlers/event";
 import { Ensemble } from "@prisma/client";
 import { Composer, InlineKeyboard } from "grammy";
 import { createSongConversation } from "../conversations/createSong";
+import { getSongs } from "../models/song";
+import { songListMenu } from "./songListMenu";
 
 export const ensembleMenu =
   (ctx: MyContext) => async (ensembleId: Ensemble["id"]) => {
@@ -34,7 +36,7 @@ export const ensembleMenu =
       }
       menu
         .row()
-        .text("Añadir obra", `ensemble_create_song_${ensembleId}`)
+        .text("Ver obras", `ensemble_songs_${ensembleId}`)
         .row()
         .text("Eliminar", `ensemble_delete_unconfirmed_${ensembleId}`)
         .row();
@@ -115,12 +117,16 @@ useEnsembleMenu.callbackQuery(
   }
 );
 
-useEnsembleMenu.callbackQuery(/ensemble_create_song_(\w+)/, async (ctx) => {
+useEnsembleMenu.callbackQuery(/ensemble_songs_(\w+)/, async (ctx) => {
   if (!ctx.match) return;
   const ensembleId = +ctx.match[1];
   await ctx.answerCallbackQuery();
   ctx.session.ensembleId = ensembleId;
-  await ctx.conversation.enter(createSongConversation.name);
+  const songs = await getSongs(ensembleId);
+  await ctx.reply(ctx.templates.songListTemplate({ songs }), {
+    parse_mode: "HTML",
+    reply_markup: songListMenu,
+  });
 });
 
 const deleteConfirmationMenu = (ensembleId: Ensemble["id"]) => {

@@ -1,10 +1,11 @@
-import { Ensemble, Event, Membership } from "@prisma/client";
+import { Ensemble, Event, Membership, Song } from "@prisma/client";
 import { CalendarOptions } from "grammy-calendar";
 
 export type SessionData = {
   ensembleId?: Ensemble["id"];
   membershipId?: Membership["id"];
   eventId?: Event["id"];
+  songId?: Song["id"];
   createEvent: {
     name?: string;
     startDate?: Date;

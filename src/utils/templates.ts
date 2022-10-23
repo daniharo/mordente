@@ -7,6 +7,7 @@ import {
   User,
   Event,
   EventAssignedUser,
+  Song,
 } from "@prisma/client";
 
 type DefaultTemplateParameter = Parameters<
@@ -79,4 +80,11 @@ interface EventAssignationProps {
 }
 export const eventAssignationsTemplate = compileFile<EventAssignationProps>(
   getPath("event-attendances")
+);
+
+interface SongListProps {
+  songs: Song[];
+}
+export const songListTemplate = compileFile<SongListProps>(
+  getPath("song-list")
 );
