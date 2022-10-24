@@ -11,6 +11,7 @@ export const notifyAttendance = async (
   if (ensembleId === undefined) return;
   const admins = await getAdmins(ensembleId);
   const promises = admins.map((admin) => {
+    if (admin.userId === assignation.userId) return;
     let text = `Nueva respuesta: el miembro ${assignation.user.firstName} `;
     if (assignation.user.lastName) text += `${assignation.user.lastName} `;
     switch (assignation.attendance) {
