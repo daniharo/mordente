@@ -7,7 +7,7 @@ services:
       - WAIT_HOSTS=postgres:5432
       - NODE_ENV
   postgres:
-    image: postgres:14.1
+    image: postgres:14.5
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
