@@ -46,6 +46,6 @@ Following stack is used for this project:
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Node](https://nodejs.dev/) 16
-- [PostgreSQL](https://www.postgresql.org/) 14.1
+- [PostgreSQL](https://www.postgresql.org/) 14.5
 - [Prisma](https://www.prisma.io/) (Typescript ORM)
 - [grammY](https://grammy.dev/) (bot framework for Node)
