@@ -13,6 +13,9 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    environment:
+      name: Production
+      url: https://t.me/mordente_bot
     steps:
       - name: Executing remote ssh commands
         uses: appleboy/ssh-action@master
