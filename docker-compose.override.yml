@@ -1,5 +1,7 @@
 services:
   app:
+    build:
+      target: dev
     volumes:
       - .:/opt/project/
       - /opt/project/node_modules
