@@ -9,6 +9,7 @@ on:
       - "**/LICENSE.txt"
       - "**/env_template"
       - "**/.idea/**"
+      - "**/dependabot.yml"
 jobs:
   deploy:
     name: Deploy
