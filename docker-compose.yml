@@ -1,7 +1,5 @@
 services:
   app:
-    build:
-      target: base
     depends_on:
       postgres:
         condition: service_healthy

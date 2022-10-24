@@ -8,6 +8,8 @@ COPY ./prisma/schema.prisma ./prisma/
 RUN ["yarn", "run", "prisma", "generate"]
 COPY . .
 
+FROM base as dev
+
 CMD ["yarn", "dev"]
 
 FROM base AS prod
