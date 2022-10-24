@@ -20,7 +20,9 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          script_stop: true
           script: |
             cd repos/mordente
+            git checkout main
             git pull
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
