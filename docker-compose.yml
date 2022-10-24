@@ -1,8 +1,7 @@
 services:
   app:
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     env_file: .env
     environment:
       - WAIT_HOSTS=postgres:5432
@@ -16,10 +15,5 @@ services:
     user: postgres
     volumes:
       - postgresql-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 0.5s
-      timeout: 5s
-      retries: 5
 volumes:
   postgresql-data:
