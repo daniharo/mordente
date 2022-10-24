@@ -4,3 +4,20 @@ services:
       target: prod
     environment:
       - NODE_ENV=production
+  pgbackups:
+    image: eeshugerman/postgres-backup-s3:14
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      #- SCHEDULE=@daily
+      - BACKUP_KEEP_DAYS=7
+      - S3_ENDPOINT: "${S3_ENDPOINT}"
+      - S3_REGION: "${S3_REGION}"
+      - S3_ACCESS_KEY_ID: "${S3_KEY}"
+      - S3_SECRET_ACCESS_KEY: "${S3_SECRET}"
+      - S3_BUCKET: "${S3_BUCKET}"
+      - S3_PREFIX: backup
