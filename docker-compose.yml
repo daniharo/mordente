@@ -1,5 +1,7 @@
 services:
   app:
+    build:
+      context: .
     depends_on:
       - postgres
     env_file: .env
