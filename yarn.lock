@@ -672,10 +672,10 @@
     "@aws-sdk/types" "3.193.0"
     tslib "^2.3.1"
 
-"@aws-sdk/s3-request-presigner@^3.194.0":
-  version "3.194.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/s3-request-presigner/-/s3-request-presigner-3.194.0.tgz#dd7f603cb412cb45c32a901cb12a6c4f4bbaf756"
-  integrity sha512-WQIiOrNYGXbCKVwbYceyUOk8toPmpaOrWgjT9dkn9MhA3sExJUDPfwgQtqsmgG23TZd2VCcZhDgzSeZNhvqMHg==
+"@aws-sdk/s3-request-presigner@^3.196.0":
+  version "3.196.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/s3-request-presigner/-/s3-request-presigner-3.196.0.tgz#b1660ee8bd8ff6e94121f7bc9946db36a7305c7a"
+  integrity sha512-9HGZ1WGNFuKWDSmg9gXwDBbpoLb9p/wYxO5ZXI3phKaLQwThTKjoMsu+cx3UQ3w7hrheW1uiCSgJy2wNoPzK1Q==
   dependencies:
     "@aws-sdk/middleware-endpoint" "3.193.0"
     "@aws-sdk/middleware-sdk-s3" "3.193.0"
@@ -2833,12 +2833,7 @@ tslib@^1.11.1, tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.1.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
-  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
-
-tslib@^2.3.1:
+tslib@^2.1.0, tslib@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==

@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.194.0",
-    "@aws-sdk/s3-request-presigner": "^3.194.0",
+    "@aws-sdk/s3-request-presigner": "^3.196.0",
     "@grammyjs/conversations": "^1.0.3",
     "@grammyjs/files": "^1.0.4",
     "@grammyjs/fluent": "^1.0.3",
