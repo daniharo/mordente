@@ -137,8 +137,6 @@ export async function createEventConversation(
     })
   );
 
-  await printEventHandler(event.id)(ctx, conversation);
-
   const assignMenu = new InlineKeyboard()
     .text("Sí", "yes")
     .row()
@@ -151,9 +149,16 @@ export async function createEventConversation(
     (ctx) =>
       ctx.callbackQuery?.data === "yes" || ctx.callbackQuery?.data === "no"
   );
-  await ctx.editMessageReplyMarkup();
+  await ctx.answerCallbackQuery();
+  await ctx.editMessageReplyMarkup({});
 
-  await assignAllMembers(event.id);
+  if (ctx.callbackQuery?.data === "yes") {
+    await assignAllMembers(event.id);
+    await ctx.reply("Evento asignado a todos los miembros 👍");
+  }
+
+  await ctx.reply("Este es el evento que has creado:");
+  await printEventHandler(event.id)(ctx, conversation);
 }
 
 useCreateEvent.use(createConversation(createEventConversation));
