@@ -3,7 +3,17 @@
 hey = Bienvenido! Encendido y funcionando
 received = Mensaje recibido
 
-start_command_answer = ¡Bienvenido a {-bot-name}! Elige una de las opciones del menú para continuar:
+about_command_answer =
+    Este bot ha sido creado por Daniel Haro Contreras (@daniharo) como Trabajo de Fin de Grado del Grado en Ingeniería Informática de la Universidad de Granada. 
+    El código fuente está disponible en https://github.com/daniharo/mordente.
+
+start_command_answer = 
+    ¡Bienvenido a {-bot-name}! 
+    Este bot te ayudará a gestionar tu agrupación musical de manera simple y sencilla 🎶
+    Con él podrás organizar tus ensayos, conciertos, obras, etc. y compartirlos con tus compañeros de banda.
+    
+    Elige una de las opciones del menú para empezar ⬇️
+
 start_join = Unirme a un grupo
 start_create = Crear un nuevo grupo
 join_how = Para unirte a una agrupación, tienes que acceder al enlace que te hayan proporcionado y hacer clic en "Iniciar".

@@ -8,6 +8,10 @@ import { MyContext } from "../context";
 
 export const useCommand = new Composer<MyContext>();
 
+useCommand.command("about", (ctx) => {
+  return ctx.reply(ctx.t("about_command_answer"));
+});
+
 useCommand.command("start", async (ctx) => {
   const joinCode = ctx.match;
   if (joinCode) {
