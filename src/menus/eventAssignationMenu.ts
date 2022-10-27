@@ -23,7 +23,7 @@ export const eventAssignationMenu = new Menu<MyContext>(
   for (const membership of currentMemberships) {
     let fullName = membership.user.firstName;
     if (membership.user.lastName) {
-      fullName += membership.user.lastName;
+      fullName += ` ${membership.user.lastName}`;
     }
     const assigned = membership.user.assignedEvents.length > 0;
     const assignedString = assigned ? "✅ " : "";
