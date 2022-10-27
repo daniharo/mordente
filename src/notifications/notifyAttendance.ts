@@ -27,5 +27,5 @@ export const notifyAttendance = async (
     text += ` al evento "${assignation.event.name}".`;
     return bot.api.sendMessage(admin.userId, text);
   });
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };

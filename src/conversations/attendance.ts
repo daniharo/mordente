@@ -24,7 +24,8 @@ export async function attendanceConversation(
     "NO",
     answer
   );
-  await notifyAttendance(assignation);
+  await ctx.reply("Gracias por tu respuesta 😊");
+  await conversation.external(() => notifyAttendance(assignation));
 }
 
 useAttendanceConversation.use(createConversation(attendanceConversation));
