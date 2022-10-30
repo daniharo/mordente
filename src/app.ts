@@ -24,6 +24,7 @@ import { hydrateFiles } from "@grammyjs/files";
 import { createSongConversation } from "./conversations/createSong";
 import { songListMenu } from "./menus/songListMenu";
 import { songMenu } from "./menus/songMenu";
+import { useEditEnsemble } from "./composers/useEditEnsemble";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ bot.use(createConversation(createSongConversation));
 bot.use(songListMenu);
 bot.use(songMenu);
 bot.use(membershipMenu);
+bot.use(useEditEnsemble);
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
 bot.use(eventAssignationMenu);
