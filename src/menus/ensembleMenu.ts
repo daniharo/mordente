@@ -16,9 +16,9 @@ import { printMembershipHandler } from "../handlers/membership";
 import { listEventsHandler } from "../handlers/event";
 import { Ensemble } from "@prisma/client";
 import { Composer, InlineKeyboard } from "grammy";
-import { createSongConversation } from "../conversations/createSong";
 import { getSongs } from "../models/song";
 import { songListMenu } from "./songListMenu";
+import { editEnsembleMenu } from "../composers/useEditEnsemble";
 
 export const ensembleMenu =
   (ctx: MyContext) => async (ensembleId: Ensemble["id"]) => {
@@ -36,12 +36,14 @@ export const ensembleMenu =
       }
       menu
         .row()
-        .text("Ver obras", `ensemble_songs_${ensembleId}`)
+        .text("Editar", `ensemble_edit_${ensembleId}`)
         .row()
         .text("Eliminar", `ensemble_delete_unconfirmed_${ensembleId}`)
         .row();
     }
     menu
+      .text("Ver obras", `ensemble_songs_${ensembleId}`)
+      .row()
       .text("Miembros", `ensemble_members_${ensembleId}`)
       .row()
       .text("Mi inscripción", `ensemble_my_membership_${ensembleId}`);
@@ -103,6 +105,14 @@ useEnsembleMenu.callbackQuery(/ensemble_events_(\w+)/, async (ctx) => {
   const ensembleId = +ctx.match[1];
   await ctx.answerCallbackQuery();
   await listEventsHandler(ensembleId)(ctx);
+});
+
+useEnsembleMenu.callbackQuery(/ensemble_edit_(\w+)/, async (ctx) => {
+  if (!ctx.match) return;
+  const ensembleId = +ctx.match[1];
+  ctx.session.ensembleId = ensembleId;
+  await ctx.answerCallbackQuery();
+  await ctx.editMessageReplyMarkup({ reply_markup: editEnsembleMenu });
 });
 
 useEnsembleMenu.callbackQuery(

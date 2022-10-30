@@ -32,12 +32,12 @@ export const getEnsemblesForUser = async ({
   return memberships.map((membership) => membership.ensemble);
 };
 
-export const updateEnsemble = async ({
-  id,
-  ...data
-}: { id: Ensemble["id"] } & Prisma.EnsembleUpdateInput) => {
+export const updateEnsemble = async (
+  ensembleId: Ensemble["id"],
+  data: Prisma.EnsembleUpdateInput
+) => {
   return prisma.ensemble.update({
-    where: { id },
+    where: { id: ensembleId },
     data,
   });
 };
