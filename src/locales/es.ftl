@@ -6,7 +6,7 @@ received = Mensaje recibido
 about_command_answer =
     Este bot ha sido creado por Daniel Haro Contreras (@daniharo) como Trabajo de Fin de Grado del Grado en Ingeniería Informática de la Universidad de Granada. 
     
-    El código fuente está disponible en https://github.com/daniharo/mordente.
+    Aprende más sobre Mordente en https://mordente.es
 
 start_command_answer = 
     ¡Bienvenido a {-bot-name}! 
