@@ -11,13 +11,7 @@ export const getUser = ({ userUid }: { userUid: User["uid"] }) => {
   return prisma.user.findUnique({ where: { uid: userUid } });
 };
 
-export const updateUser = ({
-  uid,
-  ...data
-}: {
-  uid: User["uid"];
-  data: Prisma.UserUpdateInput;
-}) => {
+export const updateUser = (uid: User["uid"], data: Prisma.UserUpdateInput) => {
   return prisma.user.update({
     where: { uid },
     data,
