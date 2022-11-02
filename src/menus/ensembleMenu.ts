@@ -87,7 +87,7 @@ useEnsembleMenu.callbackQuery(/ensemble_members_(\w+)/, async (ctx) => {
   await ctx.answerCallbackQuery();
   await ctx.reply(
     ctx.templates.ensembleMembersTemplate({ members, ensembleName }),
-    { parse_mode: "HTML" }
+    { parse_mode: "HTML", disable_web_page_preview: true }
   );
 });
 
