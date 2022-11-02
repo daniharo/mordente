@@ -93,7 +93,7 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
           const assignations = await getAllAttendances(eventId);
           await ctx.reply(
             ctx.templates.eventAssignationsTemplate({ assignations }),
-            { parse_mode: "HTML" }
+            { parse_mode: "HTML", disable_web_page_preview: true }
           );
         })
         .row();

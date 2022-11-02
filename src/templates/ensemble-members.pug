@@ -6,6 +6,6 @@ else
     |
     each val, index in members
       | #{index + 1}. 
-      a(href=`tg://${val.user.username}`) #{val.user.firstName} #{val.user.lastName}
+      a(href=`https://t.me/${val.user.username}`) #{val.user.firstName} #{val.user.lastName}
       |  Detalles: /membership_#{val.id}
       |
