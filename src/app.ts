@@ -66,6 +66,7 @@ bot.api
     { command: "create", description: "Crear una agrupación" },
     { command: "join", description: "Unirme a una agrupación" },
     { command: "cancel", description: "Cancelar operación" },
+    { command: "support", description: "Obtener soporte técnico" },
   ])
   .catch((reason) => console.error("Couldn't set commands", reason));
 

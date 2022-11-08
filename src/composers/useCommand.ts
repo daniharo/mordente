@@ -12,6 +12,10 @@ useCommand.command("about", (ctx) => {
   return ctx.reply(ctx.t("about_command_answer"));
 });
 
+useCommand.command("support", (ctx) => {
+  return ctx.reply(ctx.t("support_command_answer"));
+});
+
 useCommand.command("start", async (ctx) => {
   const joinCode = ctx.match;
   if (joinCode) {

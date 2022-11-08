@@ -8,6 +8,9 @@ about_command_answer =
     
     Aprende más sobre Mordente en https://mordente.es
 
+support_command_answer =
+    Si tienes alguna duda o sugerencia, puedes obtener soporte a través del correo electrónico soporte@mordente.es.
+
 start_command_answer = 
     ¡Bienvenido a {-bot-name}! 
     Este bot te ayudará a gestionar tu agrupación musical de manera simple y sencilla 🎶
