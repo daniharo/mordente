@@ -25,6 +25,7 @@ import { createSongConversation } from "./conversations/createSong";
 import { songListMenu } from "./menus/songListMenu";
 import { songMenu } from "./menus/songMenu";
 import { useEditEnsemble } from "./composers/useEditEnsemble";
+import { later } from "./utils/otherUtils";
 
 dotenv.config();
 
@@ -74,7 +75,9 @@ bot.use(useCommand);
 
 bot.use(async (ctx) => {
   await ctx.reply("😬");
+  await later(1000);
   await ctx.reply(ctx.t("unknown_message_1"));
+  await later(1000);
   await ctx.reply(ctx.t("unknown_message_2"));
 });
 
