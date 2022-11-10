@@ -26,7 +26,7 @@ async function getTime(conversation: MyConversation, ctx: MyContext) {
       startTime = _startTime;
     } else {
       await ctx.reply(
-        "Esa hora no está en formato HH:MM. Por favor, envíamela de nuevo en ese formato, por ejemplo 18:00"
+        "Esa hora no está en formato HH:MM o no existe. Por favor, envíamela de nuevo en ese formato, por ejemplo 18:00"
       );
       startTimeString = await getTextOrSkip(conversation, ctx);
     }
@@ -45,7 +45,7 @@ async function getDate(conversation: MyConversation, ctx: MyContext) {
       date = _date;
     } else {
       await ctx.reply(
-        "Esa fecha no está en formato día/mes/año. Por favor, envíamela de nuevo en ese formato, por ejemplo 01/02/2023"
+        "Esa fecha no está en formato día/mes/año o no existe. Por favor, envíamela de nuevo en ese formato, por ejemplo 01/02/2023"
       );
       dateString = await getTextOrSkip(conversation, ctx);
     }
