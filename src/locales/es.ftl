@@ -9,6 +9,8 @@ about_command_answer =
     Aprende más sobre Mordente en https://mordente.es
 
 support_command_answer =
+    ¿Has encontrado un problema?
+    Intenta solucionarlo usando el comando /cancel para cancelar la operación actual.
     Si tienes alguna duda o sugerencia, puedes obtener soporte a través del correo electrónico soporte@mordente.es.
 
 start_command_answer = 
@@ -29,3 +31,9 @@ create_command_answer = Vamos a crear un nuevo grupo. Por favor, indícanos el n
 ensemble = Ensemble
 
 operation_cancelled = Operación cancelada 👍
+
+unknown_message_1 = 
+    Realmente no sé qué hacer con eso que me acabas de mandar 🤨
+    Seguramente sea culpa de mi programador, que no me ha programado bien 🤦‍
+    ✉️ Si quieres que te ayude usa el comando /support️.
+unknown_message_2 = De todas formas, asegúrate de que el mensaje que me has enviado es correcto y vuelve a intentarlo.

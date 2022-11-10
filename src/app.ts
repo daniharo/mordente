@@ -72,6 +72,12 @@ bot.api
 
 bot.use(useCommand);
 
+bot.use(async (ctx) => {
+  await ctx.reply("😬");
+  await ctx.reply(ctx.t("unknown_message_1"));
+  await ctx.reply(ctx.t("unknown_message_2"));
+});
+
 bot.catch(async (err) => {
   const ctx = err.ctx;
   console.error(`Error while handling update ${ctx.update.update_id}:`);
