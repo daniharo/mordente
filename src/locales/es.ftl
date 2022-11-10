@@ -35,5 +35,5 @@ operation_cancelled = Operación cancelada 👍
 unknown_message_1 = 
     Realmente no sé qué hacer con eso que me acabas de mandar 🤨
     Seguramente sea culpa de mi programador, que no me ha programado bien 🤦‍
-    ✉️ Si quieres que te ayude usa el comando /support️.
+    ✉️ Si quieres que te ayude usa el comando /support.
 unknown_message_2 = De todas formas, asegúrate de que el mensaje que me has enviado es correcto y vuelve a intentarlo.
