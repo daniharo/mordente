@@ -24,6 +24,8 @@
     "@grammyjs/storage-prisma": "^2.0.0",
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^4.5.0",
+    "@sentry/node": "^7.19.0",
+    "@sentry/tracing": "^7.19.0",
     "cron": "^2.1.0",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",

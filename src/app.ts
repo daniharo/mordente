@@ -25,10 +25,13 @@ import { createSongConversation } from "./conversations/createSong";
 import { songListMenu } from "./menus/songListMenu";
 import { songMenu } from "./menus/songMenu";
 import { useEditEnsemble } from "./composers/useEditEnsemble";
+import { Sentry } from "./Sentry";
+import { useSentry } from "./middleware/useSentry";
 
 dotenv.config();
 
 export const bot = new Bot<MyContext>(process.env.BOT_TOKEN ?? "");
+bot.use(useSentry);
 bot.api.config.use(hydrateFiles(bot.token));
 bot.use(
   session({
@@ -42,6 +45,10 @@ bot.use(useAccount);
 bot.use(conversations());
 bot.command("cancel", async (ctx) => {
   await ctx.conversation.exit();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  foo();
   await ctx.reply(ctx.t("operation_cancelled"));
 });
 bot.use(useAttendanceConversation);
@@ -76,6 +83,7 @@ bot.catch(async (err) => {
   const ctx = err.ctx;
   console.error(`Error while handling update ${ctx.update.update_id}:`);
   const e = err.error;
+  Sentry.captureException(e);
   if (e instanceof GrammyError) {
     console.error("Error in request:", e.description);
   } else if (e instanceof HttpError) {
