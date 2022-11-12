@@ -25,6 +25,7 @@ import { createSongConversation } from "./conversations/createSong";
 import { songListMenu } from "./menus/songListMenu";
 import { songMenu } from "./menus/songMenu";
 import { useEditEnsemble } from "./composers/useEditEnsemble";
+import { later } from "./utils/otherUtils";
 import { Sentry } from "./Sentry";
 import { useSentry } from "./middleware/useSentry";
 
@@ -74,6 +75,14 @@ bot.api
   .catch((reason) => console.error("Couldn't set commands", reason));
 
 bot.use(useCommand);
+
+bot.use(async (ctx) => {
+  await ctx.reply("😬");
+  await later(1000);
+  await ctx.reply(ctx.t("unknown_message_1"));
+  await later(1000);
+  await ctx.reply(ctx.t("unknown_message_2"));
+});
 
 bot.catch(async (err) => {
   const ctx = err.ctx;
