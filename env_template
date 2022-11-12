@@ -15,3 +15,6 @@ S3_REGION=
 S3_BUCKET=
 S3_KEY=
 S3_SECRET=
+
+# Sentry is an error tracking service. You can sign up for a free account at https://sentry.io/signup/
+SENTRY_DSN=
