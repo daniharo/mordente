@@ -23,7 +23,7 @@
     "@grammyjs/menu": "^1.1.2",
     "@grammyjs/storage-prisma": "^2.0.0",
     "@moebius/fluent": "^1.1.0",
-    "@prisma/client": "^4.5.0",
+    "@prisma/client": "^4.6.1",
     "@sentry/node": "^7.19.0",
     "@sentry/tracing": "^7.19.0",
     "cron": "^2.1.0",
