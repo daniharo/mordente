@@ -45,10 +45,6 @@ bot.use(useAccount);
 bot.use(conversations());
 bot.command("cancel", async (ctx) => {
   await ctx.conversation.exit();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  foo();
   await ctx.reply(ctx.t("operation_cancelled"));
 });
 bot.use(useAttendanceConversation);
