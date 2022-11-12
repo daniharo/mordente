@@ -20,7 +20,7 @@ cp env_template .env
 
 4. You can also add a `SENTRY_DSN` environment variable to log errors to [Sentry](https://sentry.io/).
 
-5Then, run either of these commands to start the bot:
+5. Then, run either of these commands to start the bot:
 
 ```shell
 # For production:
