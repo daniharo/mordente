@@ -22,7 +22,7 @@
     "@grammyjs/fluent": "^1.0.3",
     "@grammyjs/menu": "^1.1.2",
     "@grammyjs/storage-prisma": "^2.0.0",
-    "@grammyjs/types": "^2.9.1",
+    "@grammyjs/types": "^2.10.2",
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^4.6.1",
     "@sentry/node": "^7.19.0",

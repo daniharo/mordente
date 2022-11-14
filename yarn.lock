@@ -1057,10 +1057,10 @@
   resolved "https://registry.yarnpkg.com/@grammyjs/storage-prisma/-/storage-prisma-2.0.0.tgz#5f7a10db256e9cc77838f7d75c51e931c790e006"
   integrity sha512-gAE3VdbGqt3BlpVkWqEHRpKBON7iOXxztsA4UqqVRIowwKSbfZadbEUDxZfdgQRFmH9v7rSTGsOIkZYNv0Csgw==
 
-"@grammyjs/types@^2.10.0", "@grammyjs/types@^2.7.0", "@grammyjs/types@^2.8.2", "@grammyjs/types@^2.9.1":
-  version "2.10.1"
-  resolved "https://registry.yarnpkg.com/@grammyjs/types/-/types-2.10.1.tgz#26d3f560547a9f3bd382d456880c5c76f2d9f57c"
-  integrity sha512-FSkl3BZFGJTp7/Y5iw9QH/pdl7JuQue9iZmPMnrTH3ZLOjGOWAhKRe2ElKMmGYe3TmCQKVUrftuvsTuPkoz0Dw==
+"@grammyjs/types@^2.10.0", "@grammyjs/types@^2.10.2", "@grammyjs/types@^2.7.0", "@grammyjs/types@^2.8.2":
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/@grammyjs/types/-/types-2.10.2.tgz#c72d9379518aa191ce030e14756954949bef771f"
+  integrity sha512-YhOQEkl4KwZvHH2BSvSkN27R5s5MGVLnK8W3bh8h3OMwA1ZlrqNPsnTyvenrmv6sKk62CZlDlFJpPb3MFUWXUA==
 
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.6"
