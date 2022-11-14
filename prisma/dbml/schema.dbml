@@ -1,0 +1,171 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  uid Float [unique, not null]
+  username String [unique]
+  firstName String [not null]
+  lastName String
+  memberships Membership [not null]
+  assignedEvents EventAssignedUser [not null]
+}
+
+Table Ensemble {
+  id Int [pk, increment]
+  name String [not null]
+  type String
+  description String
+  memberships Membership [not null]
+  songs Song [not null]
+  events Event [not null]
+  groups InstrumentGroup [not null]
+  joinCode String [unique, not null]
+  joinCodeEnabled Boolean [not null, default: true]
+}
+
+Table Membership {
+  id Int [pk, increment]
+  ensemble Ensemble [not null]
+  user User [not null]
+  creationDate DateTime [default: `now()`, not null]
+  ensembleId Int [not null]
+  userId Int [not null]
+  instrument Instrument
+  admin Admin
+
+  indexes {
+    (userId, ensembleId) [unique]
+  }
+}
+
+Table Song {
+  id Int [pk, increment]
+  name String [not null]
+  description String
+  link String
+  type String
+  ensemble Ensemble [not null]
+  ensembleId Int [not null]
+  parts Part [not null]
+}
+
+Table Part {
+  id Int [pk, increment]
+  name String [not null]
+  fileId String [not null]
+  song Song [not null]
+  instrument Instrument [not null]
+  songId Int [not null]
+}
+
+Table Event {
+  id Int [pk, increment]
+  name String [not null]
+  startDate DateTime
+  endDate DateTime
+  description String
+  eventType String
+  ensemble Ensemble [not null]
+  ensembleId Int [not null]
+  status EventStatus [not null, default: 'DRAFT']
+  assignedUsers EventAssignedUser [not null]
+}
+
+Table EventAssignedUser {
+  id Int [pk, increment]
+  event Event [not null]
+  user User [not null]
+  eventId Int [not null]
+  userId Int [not null]
+  attendance AttendanceAnswer
+  attendanceJustification String
+
+  indexes {
+    (eventId, userId) [unique]
+  }
+}
+
+Table Admin {
+  id Int [pk, increment]
+  adminType String
+  membership Membership [not null]
+  membershipId Int [unique, not null]
+}
+
+Table InstrumentGroup {
+  id Int [pk, increment]
+  name String [not null]
+  ensemble Ensemble [not null]
+  ensembleId Int [not null]
+  instruments InstrumentInGroup [not null]
+}
+
+Table InstrumentInGroup {
+  id Int [pk, increment]
+  instrumentGroup InstrumentGroup [not null]
+  instrumentGroupId Int [not null]
+  instrument Instrument [not null]
+
+  indexes {
+    (instrument, instrumentGroupId) [unique]
+  }
+}
+
+Table Session {
+  id Int [pk, increment]
+  key String [unique, not null]
+  value String [not null]
+}
+
+Enum EventStatus {
+  DRAFT
+  CANCELED
+  POSTPONED
+  PUBLISHED
+}
+
+Enum Instrument {
+  FLUTE
+  CLARINET
+  SAX
+  HORN
+  BASS
+  PERCUSSION
+  TRUMPET
+  TROMBONE
+  BASSOON
+  OBOE
+  VIOLIN
+  VIOLA
+  CELLO
+  GUITAR
+  PIANO
+}
+
+Enum AttendanceAnswer {
+  YES
+  NO
+  UNKNOWN
+}
+
+Ref: Membership.ensembleId > Ensemble.id [delete: Cascade]
+
+Ref: Membership.userId > User.id [delete: Cascade]
+
+Ref: Song.ensembleId > Ensemble.id [delete: Cascade]
+
+Ref: Part.songId > Song.id [delete: Cascade]
+
+Ref: Event.ensembleId > Ensemble.id [delete: Cascade]
+
+Ref: EventAssignedUser.eventId > Event.id [delete: Cascade]
+
+Ref: EventAssignedUser.userId > User.id [delete: Cascade]
+
+Ref: Admin.membershipId - Membership.id [delete: Cascade]
+
+Ref: InstrumentGroup.ensembleId > Ensemble.id [delete: Cascade]
+
+Ref: InstrumentInGroup.instrumentGroupId > InstrumentGroup.id [delete: Cascade]
