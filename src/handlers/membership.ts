@@ -10,13 +10,17 @@ import { Membership } from "@prisma/client";
 import { membershipMenu } from "../menus/membershipMenu";
 import { isAdmin } from "../models/admin";
 import { formatDate } from "../utils/dateUtils";
+import { notifyJoin } from "../notifications/notifyJoin";
 
 export const joinEnsembleHandler =
   (joinCode: string) => async (ctx: MyContext) => {
-    const ensemble = await joinEnsemble({ userId: ctx.userId, joinCode });
-    if (ensemble) {
-      await ctx.reply(ctx.t("join_success", { ensembleName: ensemble.name }));
-      await printEnsembleHandler(ensemble)(ctx);
+    const membership = await joinEnsemble({ userId: ctx.userId, joinCode });
+    if (membership) {
+      await ctx.reply(
+        ctx.t("join_success", { ensembleName: membership.ensemble.name })
+      );
+      await printEnsembleHandler(membership.ensemble)(ctx);
+      await notifyJoin(membership);
     } else {
       await ctx.reply(ctx.t("join_error"));
     }

@@ -12,9 +12,9 @@ export const joinEnsemble = async ({
   if (!ensemble || !ensemble.joinCodeEnabled) {
     return null;
   }
-  return prisma.ensemble.update({
-    where: { joinCode },
-    data: { memberships: { create: { userId } } },
+  return prisma.membership.create({
+    data: { ensembleId: ensemble.id, userId },
+    include: { ensemble: true, user: true },
   });
 };
 
