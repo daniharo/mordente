@@ -1,6 +1,6 @@
 import { getMandatoryText, MyConversation } from "./utils";
 import { MyContext } from "../context";
-import { getFileUrl, uploadFile } from "../s3/s3helper";
+import { uploadFile } from "../s3/s3helper";
 import { createSong, updateSongPath } from "../models/song";
 
 export async function createSongConversation(
@@ -12,7 +12,10 @@ export async function createSongConversation(
   await ctx.reply("Primero dime el nombre de la obra");
   const name = await getMandatoryText(conversation);
   const song = await conversation.external(() => createSong(ensembleId, name));
-  await ctx.reply("Ahora envíame el archivo, por favor");
+  await ctx.reply(
+    "Ahora envíame el archivo, por favor." +
+      "\nAsegúrate de que sea de menos de 20MB para que me llegue correctamente."
+  );
   ctx = await conversation.waitFor("message:document");
   const file = await ctx.getFile();
   const fileName = ctx.msg?.document?.file_name;

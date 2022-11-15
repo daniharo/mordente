@@ -91,6 +91,13 @@ bot.catch(async (err) => {
   Sentry.captureException(e);
   if (e instanceof GrammyError) {
     console.error("Error in request:", e.description);
+    if (e.description.includes("file is too big")) {
+      await ctx.reply(
+        "Me has enviado un archivo demasiado grande 😢" +
+          "\nPor favor, prueba con uno de menos de 20MB." +
+          "\nSi quieres enviarme archivos más grandes, contacta conmigo usando el comando /support."
+      );
+    }
   } else if (e instanceof HttpError) {
     console.error("Could not contact Telegram:", e);
   } else {
