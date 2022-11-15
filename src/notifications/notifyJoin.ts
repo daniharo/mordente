@@ -14,6 +14,5 @@ export const notifyJoin = async (
       parse_mode: "MarkdownV2",
     });
   });
-  console.log({ admins, promises });
   return Promise.allSettled(promises);
 };
