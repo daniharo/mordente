@@ -72,3 +72,6 @@ export const getMyMembershipId = async (
   });
   return membership?.id;
 };
+
+export const getMembershipCount = (ensembleId: Ensemble["id"]) =>
+  prisma.membership.count({ where: { ensembleId } });

@@ -6,7 +6,7 @@ import {
   isAdmin,
   makeAdmin,
 } from "../models/admin";
-import { getMembership } from "../models/membership";
+import { getMembership, getMembershipCount } from "../models/membership";
 import { deleteMembershipHandler } from "../handlers/membership";
 
 export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(
@@ -41,14 +41,17 @@ export const membershipMenu = new Menu<MyContext>("membershipMenu").dynamic(
       range.row();
     }
     if (admin || itsMe) {
-      range
-        .text(
-          itsMe ? "Eliminarme de la agrupación" : "Eliminar de la agrupación",
-          async (ctx) => {
-            await deleteMembershipHandler(membershipId)(ctx);
-          }
-        )
-        .row();
+      const membershipsCount = await getMembershipCount(membership.ensembleId);
+      if (membershipsCount > 1) {
+        range
+          .text(
+            itsMe ? "Eliminarme de la agrupación" : "Eliminar de la agrupación",
+            async (ctx) => {
+              await deleteMembershipHandler(membershipId)(ctx);
+            }
+          )
+          .row();
+      }
     }
   }
 );
