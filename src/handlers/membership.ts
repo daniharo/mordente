@@ -9,6 +9,7 @@ import { printEnsembleHandler } from "./ensemble";
 import { Membership } from "@prisma/client";
 import { membershipMenu } from "../menus/membershipMenu";
 import { isAdmin } from "../models/admin";
+import { formatDate } from "../utils/dateUtils";
 
 export const joinEnsembleHandler =
   (joinCode: string) => async (ctx: MyContext) => {
@@ -38,7 +39,10 @@ export const printMembershipHandler =
       await ctx.reply("No eres participante en esta agrupación.");
       return;
     }
-    const text = ctx.templates.membershipDetailTemplate({ membership });
+    const text = ctx.templates.membershipDetailTemplate({
+      membership,
+      creationDateString: formatDate(membership.creationDate),
+    });
     ctx.session.membershipId = membershipId;
     await ctx.reply(text, { parse_mode: "HTML", reply_markup: membershipMenu });
   };

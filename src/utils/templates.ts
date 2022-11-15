@@ -48,6 +48,7 @@ export const ensembleMembersTemplate = compileFile<EnsembleMembersProps>(
 
 interface MembershipDetailProps {
   membership: Membership & { user: User; ensemble: Ensemble };
+  creationDateString: string;
 }
 export const membershipDetailTemplate = compileFile<MembershipDetailProps>(
   getPath("membership-detail")

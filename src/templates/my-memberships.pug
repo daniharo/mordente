@@ -7,5 +7,7 @@ else
     each val, index in memberships
       | #{index + 1}. 
       b= val.ensemble.name
-      | . Detalles de la agrupación: /ensemble_#{val.ensemble.id}. Detalles de la inscripción: /membership_#{val.id}
+      | .
+      |    Detalles de la agrupación: /ensemble_#{val.ensemble.id}
+      |    Detalles de la inscripción: /membership_#{val.id}
       |
