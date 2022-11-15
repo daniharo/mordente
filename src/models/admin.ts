@@ -73,6 +73,13 @@ export const getAdmins = async (ensembleId: Ensemble["id"]) => {
   });
 };
 
+export const getAdminsWithUsers = async (ensembleId: Ensemble["id"]) => {
+  return prisma.membership.findMany({
+    where: { ensembleId, admin: { isNot: null } },
+    include: { user: true },
+  });
+};
+
 export const getAdminsCount = async (ensembleId: Ensemble["id"]) => {
   return prisma.membership.count({
     where: { ensembleId, admin: { isNot: null } },
