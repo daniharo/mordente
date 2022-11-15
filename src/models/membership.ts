@@ -1,4 +1,4 @@
-import { Ensemble, Membership, User } from "@prisma/client";
+import { Ensemble, Membership, Prisma, User } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const joinEnsemble = async ({
@@ -12,10 +12,20 @@ export const joinEnsemble = async ({
   if (!ensemble || !ensemble.joinCodeEnabled) {
     return null;
   }
-  return prisma.membership.create({
-    data: { ensembleId: ensemble.id, userId },
-    include: { ensemble: true, user: true },
-  });
+  try {
+    return prisma.membership.create({
+      data: { ensembleId: ensemble.id, userId },
+      include: { ensemble: true, user: true },
+    });
+  } catch (e) {
+    if (
+      e instanceof Prisma.PrismaClientKnownRequestError &&
+      e.code === "P2002"
+    ) {
+      return null;
+    }
+    throw e;
+  }
 };
 
 export const userIsMember = async ({
