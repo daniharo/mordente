@@ -1,11 +1,17 @@
 if members.length === 0
-    | No hay miembros
+  | No hay miembros aún.
 else
-    | Miembros en #{ensembleName}:
+  | Miembros en #{ensembleName}:
+  |
+  |
+  each val, index in members
+    - 
+      let fullName = val.user.firstName
+      if (val.user.lastName) fullName += ` ${val.user.lastName}`
+    | #{index + 1}. 
+    if val.user.username
+      a(href=`https://t.me/${val.user.username}`) #{fullName}
+    else
+      | #{fullName}
+    | . Detalles: /membership_#{val.id}
     |
-    |
-    each val, index in members
-      | #{index + 1}. 
-      a(href=`https://t.me/${val.user.username}`) #{val.user.firstName} #{val.user.lastName}
-      |  Detalles: /membership_#{val.id}
-      |

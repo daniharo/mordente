@@ -2,7 +2,19 @@
 b= event.name
 
 if event.description
-    |
-    |
-    |
-    i= event.description
+  |
+  |
+  |
+  i= event.description
+  |
+  |
+
+if event.startDate
+  |
+  | 🗓️ Comienza el 
+  b= startDateString
+  
+if event.endDate
+  |
+  | ⏳ Termina el 
+  b= endDateString

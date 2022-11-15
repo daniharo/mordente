@@ -5,7 +5,7 @@ if currentEvents.length > 0
     each val, index in currentEvents
       | #{index + 1}. 
       b= val.name
-      | .Detalles: /event_#{val.id}
+      | . Detalles: /event_#{val.id}
       |
     
 if futureEvents.length > 0
@@ -15,7 +15,7 @@ if futureEvents.length > 0
     each val, index in futureEvents
         | #{index + 1}. 
         b= val.name
-        | .Detalles: /event_#{val.id}
+        | . Detalles: /event_#{val.id}
         |
       
 if currentEvents.length === 0 && futureEvents.length === 0

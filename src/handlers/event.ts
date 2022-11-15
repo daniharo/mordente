@@ -7,6 +7,7 @@ import { isAdmin } from "../models/admin";
 import { eventMenu } from "../menus/eventMenu";
 import { MyConversation } from "../conversations/utils";
 import { eventDetailTemplate } from "../utils/templates";
+import { formatDate } from "../utils/dateUtils";
 
 export const listEventsHandler =
   (ensembleId: Ensemble["id"]) => async (ctx: MyContext) => {
@@ -50,8 +51,18 @@ export const printEventHandler =
       return;
     }
     ctx.session.eventId = eventId;
-    await ctx.reply(eventDetailTemplate({ t: ctx.t, event }), {
-      parse_mode: "HTML",
-      reply_markup: eventMenu,
-    });
+    await ctx.reply(
+      eventDetailTemplate({
+        t: ctx.t,
+        event,
+        startDateString: event.startDate
+          ? formatDate(event.startDate)
+          : undefined,
+        endDateString: event.endDate ? formatDate(event.endDate) : undefined,
+      }),
+      {
+        parse_mode: "HTML",
+        reply_markup: eventMenu,
+      }
+    );
   };

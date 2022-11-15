@@ -70,6 +70,8 @@ export const eventsSummaryTemplate = compileFile<EventsSummaryProps>(
 
 interface EventDetailProps {
   event: Event;
+  startDateString?: string;
+  endDateString?: string;
 }
 export const eventDetailTemplate = compileFile<EventDetailProps>(
   getPath("event-detail")
