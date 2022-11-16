@@ -20,7 +20,7 @@ export const joinEnsemble = async ({
   } catch (e) {
     if (
       e instanceof Prisma.PrismaClientKnownRequestError &&
-      e.code === "P2002"
+      e.code === "P2002" // Unique constraint error
     ) {
       return null;
     }
