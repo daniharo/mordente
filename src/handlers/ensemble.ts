@@ -45,6 +45,10 @@ export const deleteEnsembleHandler =
 
 export const printJoinCodeHandler =
   (joinCode: string) => async (ctx: MyContext) => {
+    await ctx.reply(
+      "Aquí tienes el enlace de invitación. " +
+        "Envíaselo a tus compañeros para que se unan a la agrupación 😀"
+    );
     await ctx.reply(getInvitationLink(ctx.me.username, joinCode));
   };
 
