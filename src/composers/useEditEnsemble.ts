@@ -58,12 +58,13 @@ async function editEnsembleNameConversation(
   conversation: MyConversation,
   ctx: MyContext
 ) {
-  if (ctx.session.ensembleId === undefined) {
+  const { ensembleId } = ctx.session;
+  if (ensembleId === undefined) {
     return;
   }
   await ctx.reply("Escribe el nuevo nombre de la agrupación");
   const name = await getMandatoryText(conversation);
-  await updateEnsemble(ctx.session.ensembleId, { name });
+  await conversation.external(() => updateEnsemble(ensembleId, { name }));
   await ctx.reply(SUCCESS_MESSAGE);
 }
 
@@ -71,12 +72,15 @@ async function editEnsembleDescriptionConversation(
   conversation: MyConversation,
   ctx: MyContext
 ) {
-  if (ctx.session.ensembleId === undefined) {
+  const { ensembleId } = ctx.session;
+  if (ensembleId === undefined) {
     return;
   }
   await ctx.reply("Escribe la nueva descripción de la agrupación");
   const description = await getMandatoryText(conversation);
-  await updateEnsemble(ctx.session.ensembleId, { description });
+  await conversation.external(() =>
+    updateEnsemble(ensembleId, { description })
+  );
   await ctx.reply(SUCCESS_MESSAGE);
 }
 
@@ -84,12 +88,13 @@ async function editEnsembleTypeConversation(
   conversation: MyConversation,
   ctx: MyContext
 ) {
-  if (ctx.session.ensembleId === undefined) {
+  const { ensembleId } = ctx.session;
+  if (ensembleId === undefined) {
     return;
   }
   await ctx.reply("Escribe el nuevo tipo de la agrupación");
   const type = await getMandatoryText(conversation);
-  await updateEnsemble(ctx.session.ensembleId, { type });
+  await conversation.external(() => updateEnsemble(ensembleId, { type }));
   await ctx.reply(SUCCESS_MESSAGE);
 }
 
