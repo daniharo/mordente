@@ -3,6 +3,7 @@ import { MyContext } from "../context";
 import { deleteSong, getSong } from "../models/song";
 import { isAdmin } from "../models/admin";
 import { deleteFile, getFileUrl } from "../s3/s3helper";
+import { editSongMenu } from "../composers/useEditSong";
 
 export const songMenu = new Menu<MyContext>("songMenu").dynamic(
   async (ctx, range) => {
@@ -15,13 +16,16 @@ export const songMenu = new Menu<MyContext>("songMenu").dynamic(
       ensembleId: song.ensembleId,
     });
     if (userIsAdmin) {
-      range.text("Eliminar", async (ctx) => {
-        const song = await deleteSong(songId);
-        if (song.link) {
-          await deleteFile(song.link);
-        }
-        await ctx.reply("La obra ha sido eliminada correctamente.");
-      });
+      range
+        .text("Editar", (ctx) => ctx.menu.nav("editSongMenu"))
+        .text("Eliminar", async (ctx) => {
+          const song = await deleteSong(songId);
+          if (song.link) {
+            await deleteFile(song.link);
+          }
+          await ctx.reply("La obra ha sido eliminada correctamente.");
+        })
+        .row();
     }
     const fileName = song.link;
     if (fileName) {
@@ -34,3 +38,4 @@ export const songMenu = new Menu<MyContext>("songMenu").dynamic(
     }
   }
 );
+songMenu.register(editSongMenu);

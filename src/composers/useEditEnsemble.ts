@@ -10,12 +10,18 @@ import { ensembleMenu } from "../menus/ensembleMenu";
 const SUCCESS_MESSAGE = "Se ha actualizado la agrupación correctamente 🎉";
 
 const CONVERSATIONS = {
-  EDIT_NAME: { name: "EDIT_NAME", conversation: editEnsembleNameConversation },
+  EDIT_NAME: {
+    name: "EDIT_ENSEMBLE_NAME",
+    conversation: editEnsembleNameConversation,
+  },
   EDIT_DESCRIPTION: {
-    name: "EDIT_DESCRIPTION",
+    name: "EDIT_ENSEMBLE_DESCRIPTION",
     conversation: editEnsembleDescriptionConversation,
   },
-  EDIT_TYPE: { name: "EDIT_TYPE", conversation: editEnsembleTypeConversation },
+  EDIT_TYPE: {
+    name: "EDIT_ENSEMBLE_TYPE",
+    conversation: editEnsembleTypeConversation,
+  },
 } as const;
 
 export const useEditEnsemble = new Composer<MyContext>();

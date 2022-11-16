@@ -28,6 +28,7 @@ import { useEditEnsemble } from "./composers/useEditEnsemble";
 import { later } from "./utils/otherUtils";
 import { Sentry } from "./Sentry";
 import { useSentry } from "./middleware/useSentry";
+import { useEditSong } from "./composers/useEditSong";
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ bot.command("cancel", async (ctx) => {
 bot.use(useAttendanceConversation);
 bot.use(createConversation(createSongConversation));
 bot.use(songListMenu);
+bot.use(useEditSong);
 bot.use(songMenu);
 bot.use(membershipMenu);
 bot.use(useEditEnsemble);

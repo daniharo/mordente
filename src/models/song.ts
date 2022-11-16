@@ -1,4 +1,4 @@
-import { Ensemble, Song } from "@prisma/client";
+import { Ensemble, Prisma, Song } from "@prisma/client";
 import prisma from "../prisma/PrismaClient";
 
 export const createSong = (ensembleId: Ensemble["id"], name: Song["name"]) => {
@@ -17,3 +17,6 @@ export const getSong = (songId: Song["id"]) =>
 
 export const deleteSong = (songId: Song["id"]) =>
   prisma.song.delete({ where: { id: songId } });
+
+export const updateSong = (songId: Song["id"], data: Prisma.SongUpdateInput) =>
+  prisma.song.update({ where: { id: songId }, data });
