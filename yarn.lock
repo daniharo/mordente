@@ -2470,10 +2470,10 @@ graceful-fs@^4.1.15, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
-grammy-calendar@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/grammy-calendar/-/grammy-calendar-0.0.2.tgz#4e42e7662a71a34370075522f17170e1e7fd9416"
-  integrity sha512-g+fmRPUL2jqxymzh/Q5f2EKV1CH0ZAZHWUKLGEecIOeQEP8c4nAjlPotmlSS5UgiOl6qMOidmbZ8rKH+jIF0fg==
+grammy-calendar@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/grammy-calendar/-/grammy-calendar-0.0.4.tgz#d1449cd02b9ce4bd8d511124d2713f419d7af512"
+  integrity sha512-O7xsvzX1TQGI4CI6euPI1acHwtxdX9WFH1n3U9dzIOJdY+WhnsIKOUOHHcVNUv+zD10kUc4GBwHXRaE2FgS2Eg==
   dependencies:
     "@grammyjs/types" "^2.7.0"
     debug "^4.3.4"
