@@ -29,6 +29,7 @@ import { later } from "./utils/otherUtils";
 import { Sentry } from "./Sentry";
 import { useSentry } from "./middleware/useSentry";
 import { useEditSong } from "./composers/useEditSong";
+import { useEditEvent } from "./composers/useEditEvent";
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ bot.use(useEditEnsemble);
 bot.use(useEnsembleMenu);
 bot.use(useCreateEnsemble);
 bot.use(eventAssignationMenu);
+bot.use(useEditEvent);
 bot.use(eventMenu);
 bot.use(useCreateEvent);
 bot.use(startMenu);

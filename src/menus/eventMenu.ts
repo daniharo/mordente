@@ -11,6 +11,7 @@ import {
 import { attendanceConversation } from "../conversations/attendance";
 import { notifyAttendance } from "../notifications/notifyAttendance";
 import { eventAssignationMenu } from "./eventAssignationMenu";
+import { editEventMenu } from "../composers/useEditEvent";
 
 export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
   async (ctx, range) => {
@@ -98,6 +99,7 @@ export const eventMenu = new Menu<MyContext>("eventMenu").dynamic(
         })
         .row();
       range
+        .text("Editar", (ctx) => ctx.menu.nav("editEventMenu"))
         .text("Eliminar", async (ctx) => {
           await ctx.reply("¿Seguro que quieres eliminar el evento?", {
             reply_markup: confirmationMenu,
@@ -125,3 +127,4 @@ const confirmationMenu = new Menu<MyContext>(
 });
 
 eventMenu.register(confirmationMenu);
+eventMenu.register(editEventMenu);
