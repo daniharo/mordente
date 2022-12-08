@@ -26,7 +26,7 @@
     "@moebius/fluent": "^1.1.0",
     "@prisma/client": "^4.6.1",
     "@sentry/node": "^7.19.0",
-    "@sentry/tracing": "^7.19.0",
+    "@sentry/tracing": "^7.24.2",
     "@types/cron": "^2.0.0",
     "@types/node": "^18.11.9",
     "@types/pug": "^2.0.6",
